@@ -26,8 +26,18 @@
 	</modules>
 
 	<properties>
-		<java.version>11</java.version>
-		<spring-cloud.version>Greenwich.RC1</spring-cloud.version>
+		<java.version>10</java.version>
+		<!-- Skip mvn goal -->
+		<skipCheckstyle>false</skipCheckstyle>
+		<!-- Plugins -->
+		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+		<org.apache.maven.plugins.checkstyle.version>3.0.0</org.apache.maven.plugins.checkstyle.version>
+		<!-- Checkstyle -->
+		<checkstyle.basedir>${session.executionRootDirectory}/build/rules</checkstyle.basedir>
+		<checkstyle.config.location>${checkstyle.basedir}/checkstyle_rules.xml</checkstyle.config.location>
+		<checkstyle.consoleOutput>true</checkstyle.consoleOutput>
+		<checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
+		<checkstyle.suppressions.location>${checkstyle.basedir}/checkstyle_suppressions.xml</checkstyle.suppressions.location>
 	</properties>
 
 	<dependencies>
@@ -99,15 +109,30 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- Setup maven checkstyle plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${org.apache.maven.plugins.checkstyle.version}</version>
+				<inherited>true</inherited>
+				<configuration>
+					<includeTestSourceDirectory>${checkstyle.includeTestSourceDirectory}</includeTestSourceDirectory>
+					<configLocation>${checkstyle.config.location}</configLocation>
+					<propertyExpansion>samedir=${checkstyle.basedir}</propertyExpansion>
+					<suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
+					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+					<consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
+					<skip>${skipCheckstyle}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>
-	</repositories>
 
 </project>
