@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <springProperty name="canonical.name" source="canonical.name" defaultValue="bss-webcentral" />
+  <property name="GENERIC_MESSAGE_PATTERN" value="%-5p %c %d{ISO8601} [build=${BUILD_LABEL}] [%thread] - %msg%n" />
+
+  <appender name="FILE_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>logs/${canonical.name}.log</file>
+      <append>true</append>
+      <encoder>
+        <charset>UTF-8</charset>
+        <pattern>${GENERIC_MESSAGE_PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>logs/${canonical.name}.%d{yyyy-MM-dd}.log</fileNamePattern>
+      </rollingPolicy>
+    </appender>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="FILE_APPENDER" />
+  </root>
+
+  <springProfile name="!disableConsoleLog">
+    <appender name="STDOUT_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+      <appender class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+          <charset>UTF-8</charset>
+          <pattern>${GENERIC_MESSAGE_PATTERN}</pattern>
+        </encoder>
+      </appender>
+    </appender>
+
+    <logger name="feign.Logger" level="debug" additivity="false">
+      <appender-ref ref="STDOUT_APPENDER" />
+    </logger>
+
+    <root level="info">
+      <appender-ref ref="STDOUT_APPENDER" />
+    </root>
+  </springProfile>
+
+</configuration>
