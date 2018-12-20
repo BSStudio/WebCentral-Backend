@@ -1,0 +1,22 @@
+### Maven ###
+target
+.checkstyle
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+#eclipse
+.project
+.classpath
+.settings
+.springBeans
+
+### OSX ###
+.DS_Store
+
+### Logging ###
+**/*.log
+logs/*
