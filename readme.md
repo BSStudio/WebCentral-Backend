@@ -21,7 +21,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Database
 
-Install PostgreSQL and set its port to the default `5432`, create database with the name `webcentral`.
+Install PostgreSQL and
+* set its port to the default `5432`
+* set password to "admin"
+* create database with the name `webcentral`.
 
 ### Checkstyle configuration
 
