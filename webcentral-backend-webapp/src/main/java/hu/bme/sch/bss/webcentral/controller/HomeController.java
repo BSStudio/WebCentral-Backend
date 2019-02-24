@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
+
+    private static final String WELCOME = "Hello";
+
     @RequestMapping("/")
-    public String home() {
-        return "index";
+    public final String home() {
+        return WELCOME;
     }
 }
-
