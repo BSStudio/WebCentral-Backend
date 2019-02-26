@@ -11,7 +11,7 @@ public class MvcConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected final void configure(final HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/**").permitAll();
+        http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll();
     }
 
 }
