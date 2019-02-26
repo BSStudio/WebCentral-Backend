@@ -23,8 +23,11 @@ public final class VideoService {
         Video video = Video.builder()
                 .withLongName(request.getLongName())
                 .withCanonicalName(request.getCanonicalName())
+                .withProjectName(request.getProjectName())
                 .withDescription(request.getDescription())
                 .withVisible(request.getVisible())
+                .withVideoLocation(request.getVideoLocation())
+                .withImageLocation(request.getImageLocation())
                 .build();
         videoDao.save(video);
         logger.info("Video creation succeed");
