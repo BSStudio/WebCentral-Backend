@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Path;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -28,19 +29,32 @@ public final class Video extends DomainAuditModel {
     private String canonicalName;
 
     @NotBlank
+    private final String projectName;
+
+    @NotBlank
     private String description;
 
     @NotNull
     private Boolean visible;
 
+    @NotNull
+    private String videoLocation;
+
+    @NotNull
+    private String imageLocation;
+
     private Video(final Builder builder) {
         this.longName = builder.longName;
         this.canonicalName = builder.canonicalName;
+        this.projectName = builder.projectName;
         this.description = builder.description;
         this.visible = builder.visible;
+        this.videoLocation = builder.videoLocation;
+        this.imageLocation = builder.imageLocation;
     }
 
     public Long getId() {
+
         return id;
     }
 
@@ -52,12 +66,24 @@ public final class Video extends DomainAuditModel {
         return canonicalName;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public Boolean getVisible() {
         return visible;
+    }
+
+    public String getVideoLocation() {
+        return videoLocation;
+    }
+
+    public String getImageLocation() {
+        return imageLocation;
     }
 
     public static Builder builder() {
@@ -67,28 +93,47 @@ public final class Video extends DomainAuditModel {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-        private @NotBlank String longName;
-        private @NotBlank String canonicalName;
-        private @NotBlank String description;
-        private @NotNull Boolean visible;
+        private String longName;
+        private String canonicalName;
+        private String projectName;
+        private String description;
+        private Boolean visible;
+        private String videoLocation;
+        private String imageLocation;
 
-        public Builder withLongName(@NotBlank final String longName) {
+
+        public Builder withLongName(final String longName) {
             this.longName = longName;
             return this;
         }
 
-        public Builder withCanonicalName(@NotBlank final String canonicalName) {
+        public Builder withCanonicalName(final String canonicalName) {
             this.canonicalName = canonicalName;
             return this;
         }
 
-        public Builder withDescription(@NotBlank final String description) {
+        public Builder withProjectName(final String projectName) {
+            this.projectName = projectName;
+            return this;
+        }
+
+        public Builder withDescription(final String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withVisible(@NotNull final Boolean visible) {
+        public Builder withVisible(final Boolean visible) {
             this.visible = visible;
+            return this;
+        }
+
+        public Builder withVideoLocation(final String videoLocation) {
+            this.videoLocation = videoLocation;
+            return this;
+        }
+
+        public Builder withImageLocation(final String imageLocation) {
+            this.imageLocation = imageLocation;
             return this;
         }
 
