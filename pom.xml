@@ -90,7 +90,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.5</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -130,11 +130,6 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
-                <configuration>
-                    <fork>true</fork>
-                    <executable>/var/jdk/bin/javac</executable>
-                </configuration>
-
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
