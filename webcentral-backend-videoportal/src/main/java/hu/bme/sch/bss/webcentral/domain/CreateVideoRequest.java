@@ -5,8 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@SuppressWarnings("finalclass")
 @JsonDeserialize(builder = CreateVideoRequest.Builder.class)
-public final class CreateVideoRequest {
+public class CreateVideoRequest {
 
     @NotBlank
     private final String longName;
