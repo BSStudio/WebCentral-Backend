@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral;
+package hu.bme.sch.bss.webcentral.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

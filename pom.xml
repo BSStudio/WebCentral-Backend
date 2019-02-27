@@ -31,6 +31,8 @@
     <!-- Skip mvn goal -->
     <skipCheckstyle>false</skipCheckstyle>
     <skipJacoco>false</skipJacoco>
+    <skipPit>false</skipPit>
+    <skipPmd>false</skipPmd>
     <!-- Siblings -->
     <webcentral-backend-core.version>0.0.1-SNAPSHOT</webcentral-backend-core.version>
     <webcentral-backend-videoportal.version>0.0.1-SNAPSHOT</webcentral-backend-videoportal.version>
@@ -54,6 +56,8 @@
     <org.apache.maven.plugins.maven-surfire-plugin.version>2.22.0
     </org.apache.maven.plugins.maven-surfire-plugin.version>
     <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
+    <org.jacoco.version>0.8.2</org.jacoco.version>
+    <org.apache.maven.plugins.pmd.version>3.11.0</org.apache.maven.plugins.pmd.version>
     <maven.sevntu.checkstyle.plugin.version>1.32.0</maven.sevntu.checkstyle.plugin.version>
     <org.codehaus.mojo-properties-maven-plugin.version>1.0.0
     </org.codehaus.mojo-properties-maven-plugin.version>
@@ -68,6 +72,13 @@
     <!-- Jacoco -->
     <jacoco.branchRatio>0.75</jacoco.branchRatio>
     <jacoco.lineRatio>0.80</jacoco.lineRatio>
+    <!-- PMD -->
+    <pmd.basedir>${session.executionRootDirectory}/build/rules</pmd.basedir>
+    <pmd.config.location>${pmd.basedir}/pmd_rules.xml</pmd.config.location>
+    <pmd.skipEmptyReport>true</pmd.skipEmptyReport>
+    <!-- PIT -->
+    <org.pitest.pitest.maven.version>1.4.3</org.pitest.pitest.maven.version>
+    <pitest-junit5-plugin.version>0.7</pitest-junit5-plugin.version>
   </properties>
 
 
@@ -375,6 +386,81 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- PMD for static code analysis -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${org.apache.maven.plugins.pmd.version}</version>
+        <inherited>true</inherited>
+        <configuration>
+          <printFailingErrors>true</printFailingErrors>
+          <skip>${skipPmd}</skip>
+          <aggregate>true</aggregate>
+          <skipEmptyReport>${pmd.skipEmptyReport}</skipEmptyReport>
+          <rulesets>
+            <ruleset>${pmd.config.location}</ruleset>
+          </rulesets>
+          <typeResolution>false</typeResolution>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- PIT mutation testing metric -->
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>${org.pitest.pitest.maven.version}</version>
+        <configuration>
+          <mutationThreshold>90</mutationThreshold>
+          <skip>${skipPit}</skip>
+          <targetClasses>
+            <param>hu.bme.sch.bss**.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>hu.bme.sch.bss**.*Test</param>
+          </targetTests>
+          <excludedClasses>
+            <excludedClass>hu.bme.sch.bss.**.configuration.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.domain.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.controller.test.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.dto.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.exception.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.model.*</excludedClass>
+          </excludedClasses>
+          <mutators>
+            <mutator>CONSTRUCTOR_CALLS</mutator>
+            <mutator>VOID_METHOD_CALLS</mutator>
+            <mutator>RETURN_VALS</mutator>
+            <mutator>NON_VOID_METHOD_CALLS</mutator>
+            <mutator>REMOVE_CONDITIONALS</mutator>
+            <mutator>INCREMENTS</mutator>
+            <mutator>MATH</mutator>
+            <mutator>NEGATE_CONDITIONALS</mutator>
+            <mutator>INVERT_NEGS</mutator>
+            <mutator>CONDITIONALS_BOUNDARY</mutator>
+          </mutators>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>mutationCoverage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>${pitest-junit5-plugin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

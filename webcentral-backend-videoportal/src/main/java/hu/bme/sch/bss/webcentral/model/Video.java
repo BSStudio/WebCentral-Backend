@@ -91,7 +91,7 @@ public final class Video extends DomainAuditModel {
         return new Builder();
     }
 
-    /* AUTO GENERATED CODE STARTS */
+    // Generated code begins here
 
     @Override
     public boolean equals(final Object o) {
@@ -126,7 +126,7 @@ public final class Video extends DomainAuditModel {
         );
     }
 
-    /* AUTO GENERATED CODE ENDS */
+    // Generated code ends here
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
