@@ -34,6 +34,9 @@
     <!-- Siblings -->
     <webcentral-backend-core.version>0.0.1-SNAPSHOT</webcentral-backend-core.version>
     <webcentral-backend-videoportal.version>0.0.1-SNAPSHOT</webcentral-backend-videoportal.version>
+    <webcentral-backend-broadcastmanager.version>0.0.1-SNAPSHOT</webcentral-backend-broadcastmanager.version>
+    <webcentral-backend-productionmanager.version>0.0.1-SNAPSHOT</webcentral-backend-productionmanager.version>
+    <webcentral-backend-webapp.version>0.0.1-SNAPSHOT</webcentral-backend-webapp.version>
     <!-- Dependencies -->
     <org.springframework.version>5.1.2.RELEASE</org.springframework.version>
     <spring-boot-starter.version>2.1.1.RELEASE</spring-boot-starter.version>
@@ -81,6 +84,24 @@
         <groupId>hu.bme.sch.bss</groupId>
         <artifactId>webcentral-backend-videoportal</artifactId>
         <version>${webcentral-backend-videoportal.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-broadcastmanager</artifactId>
+        <version>${webcentral-backend-broadcastmanager.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-productionmanager</artifactId>
+        <version>${webcentral-backend-productionmanager.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-webapp</artifactId>
+        <version>${webcentral-backend-webapp.version}</version>
         <scope>compile</scope>
       </dependency>
       <!-- Spring -->
@@ -303,17 +324,14 @@
         <configuration>
           <skip>${skipJacoco}</skip>
           <excludes>
+            <!-- For equals, hash (etc...) functions -->
             <exclude>**/Application.class</exclude>
             <exclude>**/*Configuration.class</exclude>
-            <!-- We include them if needed -->
-            <!--
-            <exclude>**/*Request.class</exclude>
             <exclude>**/domain/**/*.class</exclude>
-            <exclude>**/*controller/test/*.class</exclude>
+            <exclude>**/*Request.class</exclude>
             <exclude>**/dto/*.class</exclude>
             <exclude>**/dao/*.class</exclude>
-            <exclude>**/jgit/*.class</exclude>
-            -->
+            <exclude>**/model/*.class</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -325,7 +343,14 @@
             </goals>
           </execution>
           <execution>
-            <id>default-check</id>
+            <id>jacoco-report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-check</id>
             <goals>
               <goal>check</goal>
             </goals>

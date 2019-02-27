@@ -4,6 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>webcentral-backend-videoportal</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <name>webcentral-backend-videoportal</name>
   <description>BSS WebCentral Video Portal</description>
   <packaging>jar</packaging>
@@ -15,6 +16,7 @@
   </parent>
 
   <dependencies>
+    <!-- Siblings -->
     <dependency>
       <groupId>hu.bme.sch.bss</groupId>
       <artifactId>webcentral-backend-core</artifactId>
