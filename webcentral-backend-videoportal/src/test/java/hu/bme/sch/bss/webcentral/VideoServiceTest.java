@@ -3,10 +3,19 @@ package hu.bme.sch.bss.webcentral;
 import hu.bme.sch.bss.webcentral.dao.VideoDao;
 import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
 import hu.bme.sch.bss.webcentral.model.Video;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,5 +79,4 @@ class VideoServiceTest {
         assertEquals(VIDEO_LOCATION, result.getVideoLocation());
         assertEquals(IMAGE_LOCATION, result.getImageLocation());
     }
-
 }

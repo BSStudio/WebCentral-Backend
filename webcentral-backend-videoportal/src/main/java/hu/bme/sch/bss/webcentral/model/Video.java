@@ -36,10 +36,10 @@ public final class Video extends DomainAuditModel {
     @NotNull
     private Boolean visible;
 
-    @NotNull
+    @NotBlank
     private String videoLocation;
 
-    @NotNull
+    @NotBlank
     private String imageLocation;
 
     private Video(final Builder builder) {

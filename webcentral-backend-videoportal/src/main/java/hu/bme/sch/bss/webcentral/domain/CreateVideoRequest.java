@@ -24,10 +24,10 @@ public class CreateVideoRequest {
     @NotNull
     private final Boolean visible;
 
-    @NotNull
+    @NotBlank
     private String videoLocation;
 
-    @NotNull
+    @NotBlank
     private String imageLocation;
 
     private CreateVideoRequest(final Builder builder) {
@@ -66,6 +66,10 @@ public class CreateVideoRequest {
 
     public String getImageLocation() {
         return imageLocation;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @SuppressWarnings("hiddenfield")
