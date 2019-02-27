@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.DomainAuditModel;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -88,6 +90,43 @@ public final class Video extends DomainAuditModel {
     public static Builder builder() {
         return new Builder();
     }
+
+    /* AUTO GENERATED CODE STARTS */
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Video video = (Video) o;
+        return Objects.equals(id, video.id)
+                && Objects.equals(longName, video.longName)
+                && Objects.equals(canonicalName, video.canonicalName)
+                && Objects.equals(projectName, video.projectName)
+                && Objects.equals(description, video.description)
+                && Objects.equals(visible, video.visible)
+                && Objects.equals(videoLocation, video.videoLocation)
+                && Objects.equals(imageLocation, video.imageLocation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                id,
+                longName,
+                canonicalName,
+                projectName,
+                description,
+                visible,
+                videoLocation,
+                imageLocation
+        );
+    }
+
+    /* AUTO GENERATED CODE ENDS */
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {

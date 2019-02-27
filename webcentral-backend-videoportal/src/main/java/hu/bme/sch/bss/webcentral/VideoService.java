@@ -8,12 +8,13 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class VideoService {
+@SuppressWarnings("designforextension")
+public class VideoService {
 
     private final VideoDao videoDao;
     private final Logger logger;
 
-    public VideoService(final VideoDao videoDao, final Logger logger) {
+    VideoService(final VideoDao videoDao, final Logger logger) {
         this.videoDao = videoDao;
         this.logger = logger;
     }
