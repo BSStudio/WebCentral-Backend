@@ -6,7 +6,8 @@ pipeline {
                 docker { image 'maven:3.6.0-jdk-11-slim' }
             }
             steps {
-                sh 'mvn clean install'
+                sh 'git status'
+                sh 'mvn clean install -B'
             }
         }
     }
