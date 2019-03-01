@@ -11,6 +11,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.http.ResponseEntity;
 
 public class VideoControllerTest {
 
@@ -57,9 +58,9 @@ public class VideoControllerTest {
         given(mockVideoService.create(request)).willReturn(expectedResult);
 
         // WHEN
-        CreateVideoResponse actualResult = underTest.createVideo(request);
+        ResponseEntity actualResult = underTest.createVideo(request);
 
         // THEN
-        assertEquals(expectedResult, actualResult.getVideo());
+        assertEquals(expectedResult, ((CreateVideoResponse)actualResult.getBody()).getVideo());
     }
 }

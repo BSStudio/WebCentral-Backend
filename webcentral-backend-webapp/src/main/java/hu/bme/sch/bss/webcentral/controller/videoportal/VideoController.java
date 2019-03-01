@@ -4,12 +4,12 @@ import hu.bme.sch.bss.webcentral.VideoService;
 import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
 import hu.bme.sch.bss.webcentral.domain.CreateVideoResponse;
 import hu.bme.sch.bss.webcentral.domain.ListVideosResponse;
-import hu.bme.sch.bss.webcentral.model.Video;
 
 import java.util.ArrayList;
-import java.util.List;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,29 +27,29 @@ public class VideoController {
     }
 
     @PostMapping()
-    public final CreateVideoResponse createVideo(
+    public final ResponseEntity createVideo(
             @Valid @RequestBody final CreateVideoRequest request
     ) {
-        Video result = videoService.create(request);
-        return CreateVideoResponse.builder()
-                .withVideo(result)
+        CreateVideoResponse result = CreateVideoResponse.builder()
+                .withVideo(videoService.create(request))
                 .build();
+        return new ResponseEntity(result, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/published")
-    public final ListVideosResponse listPublicVideos() {
-        List<Video> videoList = videoService.findPublished();
-        return ListVideosResponse.builder()
-                .withVideos(videoList)
+    public final ResponseEntity listPublicVideos() {
+        ListVideosResponse result = ListVideosResponse.builder()
+                .withVideos(videoService.findPublished())
                 .build();
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @GetMapping(value = "/all")
-    public final ListVideosResponse listAllVideos() {
-        ArrayList<Video> videoList = new ArrayList<>(videoService.findAll());
-        return ListVideosResponse.builder()
-                .withVideos(videoList)
+    public final ResponseEntity listAllVideos() {
+        ListVideosResponse result = ListVideosResponse.builder()
+                .withVideos(new ArrayList<>(videoService.findAll()))
                 .build();
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
 }
