@@ -4,6 +4,8 @@ import hu.bme.sch.bss.webcentral.dao.VideoDao;
 import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
 import hu.bme.sch.bss.webcentral.model.Video;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +21,7 @@ public class VideoService {
         this.logger = logger;
     }
 
-    public Video createVideo(final CreateVideoRequest request) {
+    public Video create(final CreateVideoRequest request) {
         logger.info("Video creation started");
         Video video = Video.builder()
                 .withLongName(request.getLongName())
@@ -33,5 +35,13 @@ public class VideoService {
         videoDao.save(video);
         logger.info("Video creation succeed");
         return video;
+    }
+
+    public List<Video> findPublished() {
+        return videoDao.findAllPublished();
+    }
+
+    public List<Video> findAll() {
+        return videoDao.findAll();
     }
 }

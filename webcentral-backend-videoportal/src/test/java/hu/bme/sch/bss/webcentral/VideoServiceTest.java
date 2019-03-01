@@ -11,12 +11,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -60,7 +54,7 @@ class VideoServiceTest {
         // GIVEN setup
 
         // WHEN
-        Video result = underTest.createVideo(mockCreateVideoRequest);
+        Video result = underTest.create(mockCreateVideoRequest);
 
         // THEN
         then(mockCreateVideoRequest).should().getLongName();

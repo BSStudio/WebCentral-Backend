@@ -2,6 +2,7 @@ package hu.bme.sch.bss.webcentral.controller.videoportal;
 
 import hu.bme.sch.bss.webcentral.VideoService;
 import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
+import hu.bme.sch.bss.webcentral.domain.CreateVideoResponse;
 import hu.bme.sch.bss.webcentral.model.Video;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -53,12 +54,12 @@ public class VideoControllerTest {
                 .withVideoLocation(VIDEO_LOCATION)
                 .withImageLocation(IMAGE_LOCATION)
                 .build();
-        given(mockVideoService.createVideo(request)).willReturn(expectedResult);
+        given(mockVideoService.create(request)).willReturn(expectedResult);
 
         // WHEN
-        Video actualResult = underTest.createVideo(request);
+        CreateVideoResponse actualResult = underTest.createVideo(request);
 
         // THEN
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult.getVideo());
     }
 }
