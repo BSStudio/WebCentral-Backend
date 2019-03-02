@@ -48,17 +48,5 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>hu.bme.sch.bss</groupId>
-      <artifactId>webcentral-backend-core</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>hu.bme.sch.bss</groupId>
-      <artifactId>webcentral-backend-core</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
 </project>

@@ -98,7 +98,6 @@ public final class Video extends DomainAuditModel {
     }
 
     // Generated code begins here
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

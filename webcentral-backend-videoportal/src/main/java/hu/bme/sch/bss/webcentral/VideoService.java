@@ -13,6 +13,13 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("designforextension")
 public class VideoService {
 
+    private static final String CREATE_VIDEO_STARTED = "Video creation started";
+    private static final String CREATE_VIDEO_SUCCEED = "Video creation succeed";
+    private static final String PUBLIC_VIDEOS_SEARCH_STARTED = "Search for public videos started";
+    private static final String PUBLIC_VIDEOS_SEARCH_SUCCEED = "Search for public videos succeed";
+    private static final String ALL_VIDEOS_SEARCH_STARTED = "Search for all videos started";
+    private static final String ALL_VIDEOS_SEARCH_SUCCEED = "Search for all videos succeed";
+
     private final VideoDao videoDao;
     private final Logger logger;
 
@@ -22,8 +29,29 @@ public class VideoService {
     }
 
     public Video create(final CreateVideoRequest request) {
-        logger.info("Video creation started");
-        Video video = Video.builder()
+        logger.info(CREATE_VIDEO_STARTED);
+        Video video = createVideoWithRequestData(request);
+        videoDao.save(video);
+        logger.info(CREATE_VIDEO_SUCCEED);
+        return video;
+    }
+
+    public List<Video> findPublished() {
+        logger.info(PUBLIC_VIDEOS_SEARCH_STARTED);
+        List<Video> publicVideoList = videoDao.findAllPublished();
+        logger.info(PUBLIC_VIDEOS_SEARCH_SUCCEED);
+        return publicVideoList;
+    }
+
+    public List<Video> findAll() {
+        logger.info(ALL_VIDEOS_SEARCH_STARTED);
+        List<Video> videoList = videoDao.findAll();
+        logger.info(ALL_VIDEOS_SEARCH_SUCCEED);
+        return videoList;
+    }
+
+    Video createVideoWithRequestData(final CreateVideoRequest request) {
+        return Video.builder()
                 .withLongName(request.getLongName())
                 .withCanonicalName(request.getCanonicalName())
                 .withProjectName(request.getProjectName())
@@ -32,16 +60,5 @@ public class VideoService {
                 .withVideoLocation(request.getVideoLocation())
                 .withImageLocation(request.getImageLocation())
                 .build();
-        videoDao.save(video);
-        logger.info("Video creation succeed");
-        return video;
-    }
-
-    public List<Video> findPublished() {
-        return videoDao.findAllPublished();
-    }
-
-    public List<Video> findAll() {
-        return videoDao.findAll();
     }
 }

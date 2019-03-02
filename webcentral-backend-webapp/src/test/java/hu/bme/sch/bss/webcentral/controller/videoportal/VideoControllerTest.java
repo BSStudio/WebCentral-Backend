@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class VideoControllerTest {
+class VideoControllerTest {
 
     private static final String LONG_NAME = "long name";
     private static final String CANONICAL_NAME = "canonical-name";
@@ -34,7 +34,7 @@ public class VideoControllerTest {
     private Video video;
 
     @BeforeEach
-    public void init(){
+    void init(){
         initMocks(this);
         underTest = new VideoController(mockVideoService);
         video = Video.builder()
@@ -50,7 +50,7 @@ public class VideoControllerTest {
 
 
     @Test
-    public void testCreateVideo() {
+    void testCreateVideo() {
         // GIVEN
         CreateVideoRequest request = CreateVideoRequest.builder()
                 .withLongName(LONG_NAME)
@@ -71,7 +71,7 @@ public class VideoControllerTest {
     }
 
     @Test
-    public void TestListPublicVideos(){
+    void TestListPublicVideos(){
         // GIVEN
         List<Video> videoList = new ArrayList<>();
 
@@ -91,7 +91,7 @@ public class VideoControllerTest {
     }
 
     @Test
-    public void TestListAllVideos(){
+    void TestListAllVideos(){
         // GIVEN
         List<Video> videoList = new ArrayList<>();
 
