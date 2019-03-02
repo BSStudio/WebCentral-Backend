@@ -27,11 +27,6 @@ public class CreateVideoRequestTest {
 
     private CreateVideoRequest underTest;
 
-    @BeforeEach
-    public void init() {
-
-    }
-
     @Test
     public void testValidationShouldFailForMissingLongName() {
         // GIVEN
