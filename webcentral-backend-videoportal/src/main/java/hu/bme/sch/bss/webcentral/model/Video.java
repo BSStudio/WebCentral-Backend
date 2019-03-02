@@ -61,7 +61,6 @@ public final class Video extends DomainAuditModel {
     }
 
     public Long getId() {
-
         return id;
     }
 
