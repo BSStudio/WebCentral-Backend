@@ -2,10 +2,12 @@ package hu.bme.sch.bss.webcentral.controller.videoportal;
 
 import hu.bme.sch.bss.webcentral.VideoService;
 import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
-import hu.bme.sch.bss.webcentral.domain.CreateVideoResponse;
-import hu.bme.sch.bss.webcentral.domain.ListVideosResponse;
+import hu.bme.sch.bss.webcentral.domain.VideoListResponse;
+import hu.bme.sch.bss.webcentral.domain.VideoResponse;
 import hu.bme.sch.bss.webcentral.model.Video;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -13,10 +15,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 class VideoControllerTest {
 
@@ -27,6 +31,7 @@ class VideoControllerTest {
     private static final Boolean VISIBILITY = true;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
+    public static final long VIDEO_ID = 16L;
 
     @Mock
     private VideoService mockVideoService;
@@ -34,7 +39,7 @@ class VideoControllerTest {
     private Video video;
 
     @BeforeEach
-    void init(){
+    void init() {
         initMocks(this);
         underTest = new VideoController(mockVideoService);
         video = Video.builder()
@@ -64,14 +69,14 @@ class VideoControllerTest {
         given(mockVideoService.create(request)).willReturn(video);
 
         // WHEN
-        ResponseEntity response = underTest.createVideo(request);
+        VideoResponse response = underTest.createVideo(request);
 
         // THEN
-        assertEquals(video, ((CreateVideoResponse)response.getBody()).getVideo());
+        assertEquals(video, response.getVideo());
     }
 
     @Test
-    void TestListPublicVideos(){
+    void testListPublicVideos() {
         // GIVEN
         List<Video> videoList = new ArrayList<>();
 
@@ -84,14 +89,47 @@ class VideoControllerTest {
         given(mockVideoService.findPublished()).willReturn(videoList);
 
         // WHEN
-        ResponseEntity response = underTest.listPublicVideos();
+        VideoListResponse response = underTest.listPublicVideos();
 
         // THEN
-        assertEquals(videoList, Arrays.asList(((ListVideosResponse) response.getBody()).getVideos()));
+        assertEquals(videoList, Arrays.asList(response.getVideos()));
     }
 
     @Test
-    void TestListAllVideos(){
+    void testGetVideo() {
+        // GIVEN
+        Video video = Video.builder()
+                .build();
+
+        given(mockVideoService.findById(VIDEO_ID)).willReturn(video);
+
+        // WHEN
+        VideoResponse response = underTest.getVideo(VIDEO_ID);
+
+        // THEN
+        assertEquals(video, response.getVideo());
+    }
+
+    @Test
+    void testGetVideoShouldThrowNoSuchElementExceptionWhenWrongId() {
+        // GIVEN
+        given(mockVideoService.findById(VIDEO_ID)).willThrow(new NoSuchElementException());
+
+        // WHEN
+        ResponseStatusException exception = null;
+        try {
+            underTest.getVideo(VIDEO_ID);
+        } catch (ResponseStatusException e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
+        assertEquals("404 NOT_FOUND \"Video Not Found\"; nested exception is java.util.NoSuchElementException", exception.getMessage());
+    }
+
+    @Test
+    void testListAllVideos() {
         // GIVEN
         List<Video> videoList = new ArrayList<>();
 
@@ -104,9 +142,9 @@ class VideoControllerTest {
         given(mockVideoService.findAll()).willReturn(videoList);
 
         // WHEN
-        ResponseEntity response = underTest.listAllVideos();
+        VideoListResponse response = underTest.listAllVideos();
 
         // THEN
-        assertEquals(videoList, Arrays.asList(((ListVideosResponse) response.getBody()).getVideos()));
+        assertEquals(videoList, Arrays.asList(response.getVideos()));
     }
 }

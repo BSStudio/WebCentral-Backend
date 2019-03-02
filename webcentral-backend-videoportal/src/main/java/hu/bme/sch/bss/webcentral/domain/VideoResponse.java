@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.model.Video;
 
 @JsonSerialize
-public final class CreateVideoResponse {
+public final class VideoResponse {
 
     private final Video video;
 
-    public CreateVideoResponse(final Builder builder) {
+    public VideoResponse(final Builder builder) {
         this.video = builder.video;
     }
 
@@ -30,8 +30,8 @@ public final class CreateVideoResponse {
             return this;
         }
 
-        public CreateVideoResponse build() {
-            return new CreateVideoResponse(this);
+        public VideoResponse build() {
+            return new VideoResponse(this);
         }
     }
 }

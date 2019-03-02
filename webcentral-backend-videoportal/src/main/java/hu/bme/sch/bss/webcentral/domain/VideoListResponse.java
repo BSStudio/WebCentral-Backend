@@ -6,11 +6,11 @@ import hu.bme.sch.bss.webcentral.model.Video;
 import java.util.List;
 
 @JsonSerialize
-public final class ListVideosResponse {
+public final class VideoListResponse {
 
     private final Video[] videos;
 
-    public ListVideosResponse(final Builder builder) {
+    public VideoListResponse(final Builder builder) {
         this.videos = builder.videos;
     }
 
@@ -38,8 +38,8 @@ public final class ListVideosResponse {
             return this;
         }
 
-        public ListVideosResponse build() {
-            return new ListVideosResponse(this);
+        public VideoListResponse build() {
+            return new VideoListResponse(this);
         }
     }
 }

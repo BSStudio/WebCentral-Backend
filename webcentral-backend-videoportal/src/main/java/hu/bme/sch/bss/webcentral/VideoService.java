@@ -5,6 +5,8 @@ import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
 import hu.bme.sch.bss.webcentral.model.Video;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -48,6 +50,12 @@ public class VideoService {
         List<Video> videoList = videoDao.findAll();
         logger.info(ALL_VIDEOS_SEARCH_SUCCEED);
         return videoList;
+    }
+
+    public Video findById(final Long id) {
+        Optional<Video> video = videoDao.findById(id);
+        video.orElseThrow(NoSuchElementException::new);
+        return video.get();
     }
 
     Video createVideoWithRequestData(final CreateVideoRequest request) {

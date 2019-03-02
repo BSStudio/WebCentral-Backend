@@ -4,7 +4,7 @@ import hu.bme.sch.bss.webcentral.dao.VideoDao;
 import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
 import hu.bme.sch.bss.webcentral.model.Video;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 class VideoServiceTest {
 
@@ -28,6 +30,7 @@ class VideoServiceTest {
     private static final boolean VISIBILITY = true;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
+    private static final long VIDEO_ID = 16L;
 
     @Mock
     private CreateVideoRequest mockCreateVideoRequest;
@@ -143,5 +146,37 @@ class VideoServiceTest {
 
         // THEN
         assertEquals(videoList, result);
+    }
+
+    @Test
+    void testFindById() {
+        // GIVEN setup
+        Video video = Video.builder()
+                .build();
+
+        given(mockVideoDao.findById(VIDEO_ID)).willReturn(Optional.of(video));
+
+        // WHEN
+        Video result = underTest.findById(VIDEO_ID);
+
+        // THEN
+        assertEquals(video, result);
+    }
+
+    @Test
+    void testFindByIdShouldThrowNoSuchElementExceptionWhenWrongId() {
+        // GIVEN setup
+        given(mockVideoDao.findById(any())).willReturn(Optional.empty());
+
+        // WHEN
+        NoSuchElementException exception = null;
+        try {
+            underTest.findById(VIDEO_ID);
+        } catch (NoSuchElementException e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
     }
 }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CreateVideoResponseTest {
+class VideoResponseTest {
 
     @Test
     void testBuilder(){
@@ -13,7 +13,7 @@ class CreateVideoResponseTest {
         Video actual = Video.builder().build();
 
         // WHEN
-        CreateVideoResponse result = CreateVideoResponse.builder()
+        VideoResponse result = VideoResponse.builder()
                 .withVideo(actual)
                 .build();
 
