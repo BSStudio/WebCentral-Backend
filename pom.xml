@@ -44,7 +44,6 @@
     <spring-boot-starter.version>2.1.1.RELEASE</spring-boot-starter.version>
     <spring.cloud.release.train.version>Greenwich.RELEASE</spring.cloud.release.train.version>
     <spring-cloud.hystrix.version>2.0.2.RELEASE</spring-cloud.hystrix.version>
-    <org.jacoco.version>0.8.2</org.jacoco.version>
     <maven.sevntu-checkstyle-check.checkstyle.version>8.12
     </maven.sevntu-checkstyle-check.checkstyle.version>
     <!-- Testing -->
@@ -56,7 +55,7 @@
     <org.apache.maven.plugins.maven-surfire-plugin.version>2.22.0
     </org.apache.maven.plugins.maven-surfire-plugin.version>
     <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
-    <org.jacoco.version>0.8.2</org.jacoco.version>
+    <org.jacoco.version>0.8.3</org.jacoco.version>
     <org.apache.maven.plugins.pmd.version>3.11.0</org.apache.maven.plugins.pmd.version>
     <maven.sevntu.checkstyle.plugin.version>1.32.0</maven.sevntu.checkstyle.plugin.version>
     <org.codehaus.mojo-properties-maven-plugin.version>1.0.0
