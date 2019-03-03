@@ -1,6 +1,6 @@
-package hu.bme.sch.bss.webcentral.domain;
+package hu.bme.sch.bss.webcentral.videoportal.domain;
 
-import hu.bme.sch.bss.webcentral.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

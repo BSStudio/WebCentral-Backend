@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral.domain;
+package hu.bme.sch.bss.webcentral.videoportal.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 

@@ -1,10 +1,10 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
-import hu.bme.sch.bss.webcentral.VideoService;
-import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
-import hu.bme.sch.bss.webcentral.domain.VideoListResponse;
-import hu.bme.sch.bss.webcentral.domain.VideoResponse;
-import hu.bme.sch.bss.webcentral.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
+import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
+import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,7 +14,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package hu.bme.sch.bss.webcentral.dao;
+package hu.bme.sch.bss.webcentral.videoportal.dao;
 
-import hu.bme.sch.bss.webcentral.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral.model;
+package hu.bme.sch.bss.webcentral.videoportal.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

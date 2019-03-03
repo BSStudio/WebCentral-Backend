@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral.model;
+package hu.bme.sch.bss.webcentral.videoportal.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

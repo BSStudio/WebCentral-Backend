@@ -1,8 +1,9 @@
-package hu.bme.sch.bss.webcentral;
+package hu.bme.sch.bss.webcentral.videoportal;
 
-import hu.bme.sch.bss.webcentral.dao.VideoDao;
-import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
-import hu.bme.sch.bss.webcentral.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.dao.VideoDao;
+import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

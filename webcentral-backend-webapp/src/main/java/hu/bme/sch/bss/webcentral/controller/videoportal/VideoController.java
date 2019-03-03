@@ -1,9 +1,9 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
-import hu.bme.sch.bss.webcentral.VideoService;
-import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
-import hu.bme.sch.bss.webcentral.domain.VideoListResponse;
-import hu.bme.sch.bss.webcentral.domain.VideoResponse;
+import hu.bme.sch.bss.webcentral.videoportal.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
+import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
+import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
