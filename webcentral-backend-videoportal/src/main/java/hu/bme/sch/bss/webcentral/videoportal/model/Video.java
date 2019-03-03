@@ -40,6 +40,9 @@ public final class Video extends DomainAuditModel {
     @NotNull
     private Boolean visible;
 
+    @NotNull
+    private Boolean archived;
+
     @NotBlank
     private String videoLocation;
 
@@ -58,6 +61,7 @@ public final class Video extends DomainAuditModel {
         this.visible = builder.visible;
         this.videoLocation = builder.videoLocation;
         this.imageLocation = builder.imageLocation;
+        this.archived = false;
     }
 
     public Long getId() {
@@ -84,6 +88,10 @@ public final class Video extends DomainAuditModel {
         return visible;
     }
 
+    public Boolean getArchived() {
+        return archived;
+    }
+
     public String getVideoLocation() {
         return videoLocation;
     }
@@ -92,11 +100,32 @@ public final class Video extends DomainAuditModel {
         return imageLocation;
     }
 
+    public void archive() {
+        archived = true;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
 
     // Generated code begins here
+
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "id=" + id +
+                ", longName='" + longName +
+                ", canonicalName='" + canonicalName +
+                ", projectName='" + projectName +
+                ", description='" + description +
+                ", visible=" + visible +
+                ", archived=" + archived +
+                ", videoLocation='" + videoLocation +
+                ", imageLocation='" + imageLocation +
+                '}';
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

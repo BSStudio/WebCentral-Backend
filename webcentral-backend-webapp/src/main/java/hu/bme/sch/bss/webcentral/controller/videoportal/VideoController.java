@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import javax.validation.Valid;
 
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -55,6 +57,14 @@ public class VideoController {
                 .build();
     }
 
+    @GetMapping(value = "/archived")
+    @ResponseStatus(HttpStatus.OK)
+    public final VideoListResponse listAllArchived() {
+        return VideoListResponse.builder()
+                .withVideos(new ArrayList<>(videoService.findArchived()))
+                .build();
+    }
+
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public final VideoResponse getVideo(@PathVariable("id") final Long id) {
@@ -65,6 +75,13 @@ public class VideoController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Video Not Found", e);
         }
         return responseBuilder.build();
+    }
+
+    @PutMapping(value = "/{id}/archive")
+    @ResponseStatus(HttpStatus.OK)
+    public final void archiveVideo(@PathVariable("id") final Long id) {
+        Video video = videoService.findById(id);
+        videoService.archive(video);
     }
 
 }

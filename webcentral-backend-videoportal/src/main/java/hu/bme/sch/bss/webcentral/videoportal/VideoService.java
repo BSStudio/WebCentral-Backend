@@ -16,11 +16,15 @@ import org.springframework.stereotype.Component;
 public class VideoService {
 
     private static final String CREATE_VIDEO_STARTED = "Video creation started";
-    private static final String CREATE_VIDEO_SUCCEED = "Video creation succeed";
+    private static final String CREATE_VIDEO_SUCCEED = "Video creation succeed, created {}";
     private static final String PUBLIC_VIDEOS_SEARCH_STARTED = "Search for public videos started";
-    private static final String PUBLIC_VIDEOS_SEARCH_SUCCEED = "Search for public videos succeed";
+    private static final String PUBLIC_VIDEOS_SEARCH_SUCCEED = "Search for public videos succeed, found {}";
     private static final String ALL_VIDEOS_SEARCH_STARTED = "Search for all videos started";
-    private static final String ALL_VIDEOS_SEARCH_SUCCEED = "Search for all videos succeed";
+    private static final String ALL_VIDEOS_SEARCH_SUCCEED = "Search for all videos succeed, found {}";
+    private static final String VIDEO_SEARCH_STARTED = "Search for videos started";
+    private static final String VIDEO_SEARCH_FINISHED = "Search for videos finished, found {}";
+    private static final String VIDEO_ARCHIVE_STARTED = "Video archive started";
+    private static final String VIDEO_ARCHIVE_SUCCEED = "Video archive succeed, archived {}";
 
     private final VideoDao videoDao;
     private final Logger logger;
@@ -34,28 +38,44 @@ public class VideoService {
         logger.info(CREATE_VIDEO_STARTED);
         Video video = createVideoWithRequestData(request);
         videoDao.save(video);
-        logger.info(CREATE_VIDEO_SUCCEED);
+        logger.info(CREATE_VIDEO_SUCCEED, video);
         return video;
     }
 
     public List<Video> findPublished() {
         logger.info(PUBLIC_VIDEOS_SEARCH_STARTED);
         List<Video> publicVideoList = videoDao.findAllPublished();
-        logger.info(PUBLIC_VIDEOS_SEARCH_SUCCEED);
+        logger.info(PUBLIC_VIDEOS_SEARCH_SUCCEED, publicVideoList);
         return publicVideoList;
     }
 
     public List<Video> findAll() {
         logger.info(ALL_VIDEOS_SEARCH_STARTED);
         List<Video> videoList = videoDao.findAll();
-        logger.info(ALL_VIDEOS_SEARCH_SUCCEED);
+        logger.info(ALL_VIDEOS_SEARCH_SUCCEED, videoList);
         return videoList;
     }
 
+    public List<Video> findArchived() {
+        logger.info(ALL_VIDEOS_SEARCH_STARTED);
+        List<Video> archivedList = videoDao.findAllArchived();
+        logger.info(ALL_VIDEOS_SEARCH_SUCCEED, archivedList);
+        return archivedList;
+    }
+
     public Video findById(final Long id) {
+        logger.info(VIDEO_SEARCH_STARTED);
         Optional<Video> video = videoDao.findById(id);
         video.orElseThrow(NoSuchElementException::new);
+        logger.info(VIDEO_SEARCH_FINISHED, video);
         return video.get();
+    }
+
+    public void archive(Video video) {
+        logger.info(VIDEO_ARCHIVE_STARTED);
+        video.archive();
+        videoDao.save(video);
+        logger.info(VIDEO_ARCHIVE_SUCCEED, video);
     }
 
     Video createVideoWithRequestData(final CreateVideoRequest request) {
