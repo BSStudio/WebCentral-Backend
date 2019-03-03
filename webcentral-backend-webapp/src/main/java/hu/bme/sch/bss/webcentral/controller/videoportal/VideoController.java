@@ -4,12 +4,12 @@ import hu.bme.sch.bss.webcentral.videoportal.VideoService;
 import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import javax.validation.Valid;
 
-import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

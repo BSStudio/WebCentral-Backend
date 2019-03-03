@@ -18,9 +18,11 @@ public class VideoService {
     private static final String CREATE_VIDEO_STARTED = "Video creation started";
     private static final String CREATE_VIDEO_SUCCEED = "Video creation succeed, created {}";
     private static final String PUBLIC_VIDEOS_SEARCH_STARTED = "Search for public videos started";
-    private static final String PUBLIC_VIDEOS_SEARCH_SUCCEED = "Search for public videos succeed, found {}";
+    private static final String PUBLIC_VIDEOS_SEARCH_SUCCEED =
+            "Search for public videos succeed, found {}";
     private static final String ALL_VIDEOS_SEARCH_STARTED = "Search for all videos started";
-    private static final String ALL_VIDEOS_SEARCH_SUCCEED = "Search for all videos succeed, found {}";
+    private static final String ALL_VIDEOS_SEARCH_SUCCEED =
+            "Search for all videos succeed, found {}";
     private static final String VIDEO_SEARCH_STARTED = "Search for videos started";
     private static final String VIDEO_SEARCH_FINISHED = "Search for videos finished, found {}";
     private static final String VIDEO_ARCHIVE_STARTED = "Video archive started";
@@ -71,7 +73,7 @@ public class VideoService {
         return video.get();
     }
 
-    public void archive(Video video) {
+    public void archive(final Video video) {
         logger.info(VIDEO_ARCHIVE_STARTED);
         video.archive();
         videoDao.save(video);

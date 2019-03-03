@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
+import com.sun.mail.imap.protocol.ID;
 import hu.bme.sch.bss.webcentral.videoportal.VideoService;
 import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
@@ -9,6 +10,7 @@ import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +32,7 @@ class VideoControllerTest {
     private static final Boolean VISIBILITY = true;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
-    public static final long VIDEO_ID = 16L;
+    private static final long VIDEO_ID = 16L;
 
     @Mock
     private VideoService mockVideoService;
@@ -145,5 +147,38 @@ class VideoControllerTest {
 
         // THEN
         assertEquals(videoList, Arrays.asList(response.getVideos()));
+    }
+
+    @Test
+    void testListArchivedVideos() {
+        // GIVEN
+        List<Video> archivedList = new ArrayList<>();
+
+        Video video2 = Video.builder()
+                .build();
+
+        archivedList.add(video);
+        archivedList.add(video2);
+
+        given(mockVideoService.findArchived()).willReturn(archivedList);
+
+        // WHEN
+        VideoListResponse response = underTest.listAllArchived();
+
+        // THEN
+        assertEquals(archivedList, Arrays.asList(response.getVideos()));
+    }
+
+    @Test
+    void testListArchiveVideo() {
+        // GIVEN
+        given(mockVideoService.findById(VIDEO_ID)).willReturn(video);
+
+        // WHEN
+        underTest.archiveVideo(VIDEO_ID);
+
+        // THEN
+        then(mockVideoService).should().findById(VIDEO_ID);
+        then(mockVideoService).should().archive(video);
     }
 }

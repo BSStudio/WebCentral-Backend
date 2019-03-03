@@ -21,14 +21,15 @@ class VideoTest {
     private static final String CANONICAL_NAME = "canonical-name";
     private static final String PROJECT_NAME = "projectName";
     private static final String DESCRIPTION = "description";
-    private static final Boolean VISIBILITY = true;
+    private static final Boolean VISIBLE = true;
+    private static final boolean UNARCHIVED = false;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
 
     private Video underTest;
 
     @Test
-    void testConstructorAndGetters(){
+    void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
@@ -40,13 +41,14 @@ class VideoTest {
         assertEquals(CANONICAL_NAME, underTest.getCanonicalName());
         assertEquals(PROJECT_NAME, underTest.getProjectName());
         assertEquals(DESCRIPTION, underTest.getDescription());
-        assertEquals(VISIBILITY, underTest.getVisible());
+        assertEquals(VISIBLE, underTest.getVisible());
+        assertEquals(UNARCHIVED, underTest.getArchived());
         assertEquals(IMAGE_LOCATION, underTest.getImageLocation());
         assertEquals(VIDEO_LOCATION, underTest.getVideoLocation());
     }
 
     @Test
-    void testEquals(){
+    void testEquals() {
         // GIVEN
         Video.Builder builder = getDefaultValuesBuilder();
 
@@ -60,6 +62,18 @@ class VideoTest {
         // THEN
         assertTrue(video1.equals(video2));
         assertFalse(video1.equals(video3));
+    }
+
+    @Test
+    void testArchiving() {
+        // GIVEN
+        Video video = getDefaultValuesBuilder().build();
+
+        // WHEN
+        video.archive();
+
+        // THEN
+        assertTrue(video.getArchived());
     }
 
     @Test
@@ -250,7 +264,7 @@ class VideoTest {
                 .withCanonicalName(CANONICAL_NAME)
                 .withDescription(DESCRIPTION)
                 .withProjectName(PROJECT_NAME)
-                .withVisible(VISIBILITY)
+                .withVisible(VISIBLE)
                 .withVideoLocation(VIDEO_LOCATION)
                 .withImageLocation(IMAGE_LOCATION);
     }

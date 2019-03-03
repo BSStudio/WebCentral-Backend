@@ -180,4 +180,36 @@ class VideoServiceTest {
         // THEN
         assertNotNull(exception);
     }
+
+    @Test
+    void testFindArchived() {
+        // GIVEN setup
+        List<Video> archivedList = new ArrayList<>();
+
+        Video video2 = Video.builder()
+                .build();
+
+        archivedList.add(video);
+        archivedList.add(video2);
+
+        given(mockVideoDao.findAllArchived()).willReturn(archivedList);
+
+        // WHEN
+        List<Video> result = underTest.findArchived();
+
+        // THEN
+        assertEquals(archivedList, result);
+    }
+
+    @Test
+    void testArchiving() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.archive(video);
+
+        // THEN
+        assertTrue(video.getArchived());
+        then(mockVideoDao).should().save(video);
+    }
 }

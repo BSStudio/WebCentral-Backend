@@ -113,17 +113,17 @@ public final class Video extends DomainAuditModel {
 
     @Override
     public String toString() {
-        return "Video{" +
-                "id=" + id +
-                ", longName='" + longName +
-                ", canonicalName='" + canonicalName +
-                ", projectName='" + projectName +
-                ", description='" + description +
-                ", visible=" + visible +
-                ", archived=" + archived +
-                ", videoLocation='" + videoLocation +
-                ", imageLocation='" + imageLocation +
-                '}';
+        return "Video{"
+                + "id=" + id
+                + ", longName='" + longName
+                + ", canonicalName='" + canonicalName
+                + ", projectName='" + projectName
+                + ", description='" + description
+                + ", visible=" + visible
+                + ", archived=" + archived
+                + ", videoLocation='" + videoLocation
+                + ", imageLocation='" + imageLocation
+                + '}';
     }
 
     @Override
