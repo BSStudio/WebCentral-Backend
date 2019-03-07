@@ -84,4 +84,11 @@ public class VideoController {
         videoService.archive(video);
     }
 
+    @PutMapping(value = "/{id}/restore")
+    @ResponseStatus(HttpStatus.OK)
+    public final void restoreVideo(@PathVariable("id") final Long id) {
+        Video video = videoService.findById(id);
+        videoService.restore(video);
+    }
+
 }

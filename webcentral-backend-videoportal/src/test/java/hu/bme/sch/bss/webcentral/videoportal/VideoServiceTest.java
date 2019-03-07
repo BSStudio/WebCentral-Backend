@@ -212,4 +212,16 @@ class VideoServiceTest {
         assertTrue(video.getArchived());
         then(mockVideoDao).should().save(video);
     }
+
+    @Test
+    void testRestore() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.restore(video);
+
+        // THEN
+        assertFalse(video.getArchived());
+        then(mockVideoDao).should().save(video);
+    }
 }

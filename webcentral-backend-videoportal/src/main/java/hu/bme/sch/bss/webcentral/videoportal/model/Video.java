@@ -100,8 +100,8 @@ public final class Video extends DomainAuditModel {
         return imageLocation;
     }
 
-    public void archive() {
-        archived = true;
+    public void setArchived(@NotNull final Boolean archived) {
+        this.archived = archived;
     }
 
     public static Builder builder() {

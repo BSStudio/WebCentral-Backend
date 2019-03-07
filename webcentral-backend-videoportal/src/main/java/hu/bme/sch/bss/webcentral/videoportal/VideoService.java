@@ -27,6 +27,8 @@ public class VideoService {
     private static final String VIDEO_SEARCH_FINISHED = "Search for videos finished, found {}";
     private static final String VIDEO_ARCHIVE_STARTED = "Video archive started";
     private static final String VIDEO_ARCHIVE_SUCCEED = "Video archive succeed, archived {}";
+    private static final String VIDEO_RESTORE_STARTED = "Video restore started";
+    private static final String VIDEO_RESTORE_SUCCEED = "Video restore succeed, archived {}";
 
     private final VideoDao videoDao;
     private final Logger logger;
@@ -75,9 +77,16 @@ public class VideoService {
 
     public void archive(final Video video) {
         logger.info(VIDEO_ARCHIVE_STARTED);
-        video.archive();
+        video.setArchived(true);
         videoDao.save(video);
         logger.info(VIDEO_ARCHIVE_SUCCEED, video);
+    }
+
+    public void restore(final Video video) {
+        logger.info(VIDEO_RESTORE_STARTED);
+        video.setArchived(false);
+        videoDao.save(video);
+        logger.info(VIDEO_RESTORE_SUCCEED, video);
     }
 
     Video createVideoWithRequestData(final CreateVideoRequest request) {
@@ -91,4 +100,5 @@ public class VideoService {
                 .withImageLocation(request.getImageLocation())
                 .build();
     }
+
 }

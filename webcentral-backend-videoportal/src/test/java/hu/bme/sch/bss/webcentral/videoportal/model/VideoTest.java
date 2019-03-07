@@ -65,15 +65,27 @@ class VideoTest {
     }
 
     @Test
-    void testArchiving() {
+    void testSetArchivedShouldArchiveVideo() {
         // GIVEN
         Video video = getDefaultValuesBuilder().build();
 
         // WHEN
-        video.archive();
+        video.setArchived(true);
 
         // THEN
         assertTrue(video.getArchived());
+    }
+
+    @Test
+    void testSetArchivedShouldRestoreVideo() {
+        // GIVEN
+        Video video = getDefaultValuesBuilder().build();
+
+        // WHEN
+        video.setArchived(false);
+
+        // THEN
+        assertFalse(video.getArchived());
     }
 
     @Test
