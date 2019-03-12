@@ -1,9 +1,8 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
-import com.sun.mail.imap.protocol.ID;
 import hu.bme.sch.bss.webcentral.videoportal.VideoService;
 import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
-import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
+import hu.bme.sch.bss.webcentral.videoportal.domain.ListVideoResponse;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
@@ -90,7 +89,7 @@ class VideoControllerTest {
         given(mockVideoService.findPublished()).willReturn(videoList);
 
         // WHEN
-        VideoListResponse response = underTest.listPublicVideos();
+        ListVideoResponse response = underTest.listPublicVideos();
 
         // THEN
         assertEquals(videoList, Arrays.asList(response.getVideos()));
@@ -143,7 +142,7 @@ class VideoControllerTest {
         given(mockVideoService.findAll()).willReturn(videoList);
 
         // WHEN
-        VideoListResponse response = underTest.listAllVideos();
+        ListVideoResponse response = underTest.listAllVideos();
 
         // THEN
         assertEquals(videoList, Arrays.asList(response.getVideos()));
@@ -163,7 +162,7 @@ class VideoControllerTest {
         given(mockVideoService.findArchived()).willReturn(archivedList);
 
         // WHEN
-        VideoListResponse response = underTest.listAllArchived();
+        ListVideoResponse response = underTest.listAllArchived();
 
         // THEN
         assertEquals(archivedList, Arrays.asList(response.getVideos()));
@@ -180,5 +179,18 @@ class VideoControllerTest {
         // THEN
         then(mockVideoService).should().findById(VIDEO_ID);
         then(mockVideoService).should().archive(video);
+    }
+
+    @Test
+    void testDeleteVideo() {
+        // GIVEN
+        given(mockVideoService.findById(VIDEO_ID)).willReturn(video);
+
+        // WHEN
+        underTest.deleteVideo(VIDEO_ID);
+
+        // THEN
+        then(mockVideoService).should().findById(VIDEO_ID);
+        then(mockVideoService).should().delete(video);
     }
 }

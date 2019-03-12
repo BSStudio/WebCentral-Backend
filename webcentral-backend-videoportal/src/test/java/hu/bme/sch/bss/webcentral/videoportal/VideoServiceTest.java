@@ -224,4 +224,15 @@ class VideoServiceTest {
         assertFalse(video.getArchived());
         then(mockVideoDao).should().save(video);
     }
+
+    @Test
+    void testDelete() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.delete(video);
+
+        // THEN
+        then(mockVideoDao).should().delete(video);
+    }
 }

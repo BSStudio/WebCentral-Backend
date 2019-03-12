@@ -7,6 +7,7 @@ import hu.bme.sch.bss.webcentral.DomainAuditModel;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,9 +27,11 @@ public final class Video extends DomainAuditModel {
     private Long id;
 
     @NotBlank
+    @Column(name = "long_name", nullable = false)
     private String longName;
 
     @NotBlank
+    @Column(name = "canonical_name", nullable = false)
     private String canonicalName;
 
     @NotBlank
@@ -49,7 +52,9 @@ public final class Video extends DomainAuditModel {
     @NotBlank
     private String imageLocation;
 
-    // No-arg constructor for hibernate
+    /**
+     * No-arg constructor for hibernate
+     */
     public Video() {
     }
 
