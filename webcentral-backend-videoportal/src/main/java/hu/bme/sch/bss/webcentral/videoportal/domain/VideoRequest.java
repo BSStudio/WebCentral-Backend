@@ -1,13 +1,15 @@
 package hu.bme.sch.bss.webcentral.videoportal.domain;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("finalclass")
-@JsonDeserialize(builder = CreateVideoRequest.Builder.class)
-public class CreateVideoRequest {
+@JsonDeserialize(builder = VideoRequest.Builder.class)
+@JsonRootName("video")
+public class VideoRequest {
 
     @NotBlank
     private final String longName;
@@ -25,12 +27,12 @@ public class CreateVideoRequest {
     private final Boolean visible;
 
     @NotBlank
-    private String videoLocation;
+    private final String videoLocation;
 
     @NotBlank
-    private String imageLocation;
+    private final String imageLocation;
 
-    private CreateVideoRequest(final Builder builder) {
+    private VideoRequest(final Builder builder) {
         this.longName = builder.longName;
         this.canonicalName = builder.canonicalName;
         this.projectName = builder.projectName;
@@ -70,6 +72,19 @@ public class CreateVideoRequest {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    @Override
+    public String toString() {
+        return "VideoRequest{"
+            + "longName='" + longName + "'"
+            + ", canonicalName='" + canonicalName + "'"
+            + ", projectName='" + projectName + "'"
+            + ", description='" + description + "'"
+            + ", visible=" + visible
+            + ", videoLocation='" + videoLocation + "'"
+            + ", imageLocation='" + imageLocation + "'"
+            + '}';
     }
 
     @SuppressWarnings("hiddenfield")
@@ -119,8 +134,8 @@ public class CreateVideoRequest {
             return this;
         }
 
-        public CreateVideoRequest build() {
-            return new CreateVideoRequest(this);
+        public VideoRequest build() {
+            return new VideoRequest(this);
         }
     }
 }

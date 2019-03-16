@@ -1,37 +1,69 @@
 package hu.bme.sch.bss.webcentral.videoportal.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 @JsonSerialize
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+@JsonTypeName("video")
 public final class VideoResponse {
+    private final Long id;
+    private final String longName;
+    private final String canonicalName;
+    private final String projectName;
+    private final String description;
+    private final Boolean visible;
+    private final Boolean archived;
+    private final String videoLocation;
+    private final String imageLocation;
 
-    private final Video video;
-
-    public VideoResponse(final Builder builder) {
-        this.video = builder.video;
+    public VideoResponse(final Video video) {
+        this.id = video.getId();
+        this.longName = video.getLongName();
+        this.canonicalName = video.getCanonicalName();
+        this.projectName = video.getProjectName();
+        this.description = video.getDescription();
+        this.visible = video.getVisible();
+        this.archived = video.getArchived();
+        this.videoLocation = video.getVideoLocation();
+        this.imageLocation = video.getImageLocation();
     }
 
-    public Video getVideo() {
-        return video;
+    public Long getId() {
+        return id;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public String getLongName() {
+        return longName;
     }
 
-    @SuppressWarnings("hiddenfield")
-    public static final class Builder {
+    public String getCanonicalName() {
+        return canonicalName;
+    }
 
-        private Video video;
+    public String getProjectName() {
+        return projectName;
+    }
 
-        public Builder withVideo(final Video video) {
-            this.video = video;
-            return this;
-        }
+    public String getDescription() {
+        return description;
+    }
 
-        public VideoResponse build() {
-            return new VideoResponse(this);
-        }
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public Boolean getArchived() {
+        return archived;
+    }
+
+    public String getVideoLocation() {
+        return videoLocation;
+    }
+
+    public String getImageLocation() {
+        return imageLocation;
     }
 }

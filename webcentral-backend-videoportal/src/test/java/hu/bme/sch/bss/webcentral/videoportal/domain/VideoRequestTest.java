@@ -12,7 +12,7 @@ import javax.validation.Validator;
 
 import org.junit.jupiter.api.Test;
 
-class CreateVideoRequestTest {
+class VideoRequestTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
             .getValidator();
@@ -25,7 +25,7 @@ class CreateVideoRequestTest {
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
 
-    private CreateVideoRequest underTest;
+    private VideoRequest underTest;
 
     @Test
     void testConstructorAndGetters(){
@@ -53,7 +53,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "longName");
@@ -67,7 +67,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "longName");
@@ -81,7 +81,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "canonicalName");
@@ -95,7 +95,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "canonicalName");
@@ -109,7 +109,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "projectName");
@@ -123,7 +123,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "projectName");
@@ -137,7 +137,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "description");
@@ -151,7 +151,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "description");
@@ -165,7 +165,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be null", "visible");
@@ -179,7 +179,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "videoLocation");
@@ -193,7 +193,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "videoLocation");
@@ -207,7 +207,7 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "imageLocation");
@@ -221,14 +221,14 @@ class CreateVideoRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<CreateVideoRequest>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "imageLocation");
     }
 
-    private CreateVideoRequest.Builder getDefaultValuesBuilder() {
-        return CreateVideoRequest.builder()
+    private VideoRequest.Builder getDefaultValuesBuilder() {
+        return VideoRequest.builder()
                 .withLongName(LONG_NAME)
                 .withCanonicalName(CANONICAL_NAME)
                 .withDescription(DESCRIPTION)
@@ -238,10 +238,10 @@ class CreateVideoRequestTest {
                 .withImageLocation(IMAGE_LOCATION);
     }
 
-    private void thenValidationFails(Set<ConstraintViolation<CreateVideoRequest>> violations,
+    private void thenValidationFails(Set<ConstraintViolation<VideoRequest>> violations,
                                      String expectedMessage, String expectedProperty) {
         assertThat(violations.size(), is(1));
-        ConstraintViolation<CreateVideoRequest> violation = violations.stream().findFirst().get();
+        ConstraintViolation<VideoRequest> violation = violations.stream().findFirst().get();
         assertThat(violation.getMessage(), is(expectedMessage));
         assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
     }
