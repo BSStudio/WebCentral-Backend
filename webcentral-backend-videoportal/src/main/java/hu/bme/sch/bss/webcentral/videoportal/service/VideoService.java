@@ -23,6 +23,10 @@ public class VideoService {
     private static final String VIDEO_RESTORE_SUCCEED = "Video restore succeed. Restored {}";
     private static final String VIDEO_UPDATE_STARTED = "Video update started. {}";
     private static final String VIDEO_UPDATE_SUCCEED = "Video update succeed. Updated {}";
+    private static final String VIDEO_PUBLISH_STARTED = "Video publish started. {}";
+    private static final String VIDEO_PUBLISH_SUCCEED = "Video publish succeed. Updated {}";
+    private static final String VIDEO_HIDE_STARTED = "Video hide started. {}";
+    private static final String VIDEO_HIDE_SUCCEED = "Video hide succeed. Updated {}";
     private static final String VIDEO_DELETE_STARTED = "Video delete started. {}";
     private static final String VIDEO_DELETE_SUCCEED = "Video delete succeed. Deleted {}";
 
@@ -78,6 +82,20 @@ public class VideoService {
         logger.info(VIDEO_RESTORE_SUCCEED, video);
     }
 
+    public void publish(final Video video) {
+        logger.info(VIDEO_PUBLISH_STARTED, video);
+        video.setVisible(true);
+        videoDao.save(video);
+        logger.info(VIDEO_PUBLISH_SUCCEED, video);
+    }
+
+    public void hide(final Video video) {
+        logger.info(VIDEO_HIDE_STARTED, video);
+        video.setVisible(false);
+        videoDao.save(video);
+        logger.info(VIDEO_HIDE_SUCCEED, video);
+    }
+
     public void delete(final Video video) {
         logger.info(VIDEO_DELETE_STARTED, video);
         videoDao.delete(video);
@@ -91,7 +109,7 @@ public class VideoService {
             logger.warn("Video not found with id {}", id);
             throw new NoSuchElementException("Video Not Found");
         }
-        logger.info(VIDEO_SEARCH_FINISHED, video);
+        logger.info(VIDEO_SEARCH_FINISHED, video.get());
         return video.get();
     }
 

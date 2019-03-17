@@ -60,7 +60,6 @@ class VideoControllerTest {
                 .build();
     }
 
-
     @Test
     void testCreateVideo() {
         // GIVEN
@@ -268,5 +267,34 @@ class VideoControllerTest {
             () -> assertEquals(request.getImageLocation(), response.getImageLocation()),
             () -> assertEquals(request.getVideoLocation(), response.getVideoLocation())
         );
+    }
+
+    @Test
+    void testPublishVideo() {
+        // GIVEN
+        video.setVisible(false);
+        given(mockVideoService.findById(VIDEO_ID)).willReturn(video);
+
+        // WHEN
+        underTest.publishVideo(VIDEO_ID);
+
+        // THEN
+        then(mockVideoService).should().findById(VIDEO_ID);
+        then(mockVideoService).should().publish(video);
+    }
+
+    @Test
+    void testHideVideo() {
+        // GIVEN
+        video.setVisible(true);
+        given(mockVideoService.findById(VIDEO_ID)).willReturn(video);
+
+
+        // WHEN
+        underTest.hideVideo(VIDEO_ID);
+
+        // THEN
+        then(mockVideoService).should().findById(VIDEO_ID);
+        then(mockVideoService).should().hide(video);
     }
 }
