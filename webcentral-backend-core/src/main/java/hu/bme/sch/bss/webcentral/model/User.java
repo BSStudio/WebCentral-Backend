@@ -39,6 +39,38 @@ public final class User extends DomainAuditModel {
     public User() {
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageURI() {
+        return imageURI;
+    }
+
     public User(final Builder builder) {
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
