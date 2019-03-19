@@ -1,9 +1,9 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
-import hu.bme.sch.bss.webcentral.domain.UserRequest;
-import hu.bme.sch.bss.webcentral.domain.UserResponse;
-import hu.bme.sch.bss.webcentral.model.User;
-import hu.bme.sch.bss.webcentral.service.UserService;
+import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
+import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
+import hu.bme.sch.bss.webcentral.core.model.User;
+import hu.bme.sch.bss.webcentral.core.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

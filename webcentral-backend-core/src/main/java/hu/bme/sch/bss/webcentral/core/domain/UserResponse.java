@@ -1,10 +1,10 @@
-package hu.bme.sch.bss.webcentral.domain;
+package hu.bme.sch.bss.webcentral.core.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import hu.bme.sch.bss.webcentral.model.User;
+import hu.bme.sch.bss.webcentral.core.model.User;
 
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)

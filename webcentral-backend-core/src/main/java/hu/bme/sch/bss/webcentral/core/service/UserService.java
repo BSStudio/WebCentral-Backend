@@ -1,8 +1,8 @@
-package hu.bme.sch.bss.webcentral.service;
+package hu.bme.sch.bss.webcentral.core.service;
 
-import hu.bme.sch.bss.webcentral.dao.UserDao;
-import hu.bme.sch.bss.webcentral.domain.UserRequest;
-import hu.bme.sch.bss.webcentral.model.User;
+import hu.bme.sch.bss.webcentral.core.dao.UserDao;
+import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
+import hu.bme.sch.bss.webcentral.core.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
