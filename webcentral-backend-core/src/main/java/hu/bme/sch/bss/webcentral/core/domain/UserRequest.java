@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral.domain;
+package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
