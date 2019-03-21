@@ -1,17 +1,16 @@
 package hu.bme.sch.bss.webcentral.videoportal.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
+
+import javax.validation.constraints.NotBlank;
 
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = VideoTypeRequest.Builder.class)
 @JsonRootName("videoType")
-public class VideoTypeRequest {
-
+public final class VideoTypeRequest {
     @NotBlank
     private final String longName;
     @NotBlank
@@ -19,7 +18,7 @@ public class VideoTypeRequest {
     @NotBlank
     private final String description;
 
-    private VideoTypeRequest(Builder builder) {
+    private VideoTypeRequest(final Builder builder) {
         this.longName = builder.longName;
         this.canonicalName = builder.canonicalName;
         this.description = builder.description;
@@ -49,7 +48,7 @@ public class VideoTypeRequest {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -69,6 +68,7 @@ public class VideoTypeRequest {
 
     // Generated code ends here
 
+    @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
         private String longName;

@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 class VideoControllerTest {
-
     private static final String LONG_NAME = "long name";
     private static final String CANONICAL_NAME = "canonical-name";
     private static final String PROJECT_NAME = "projectName";
@@ -38,7 +37,7 @@ class VideoControllerTest {
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
     private static final long VIDEO_ID = 16L;
-    public static final String VIDEO_TYPE_CANONICAL_NAME = "video-type";
+    private static final String VIDEO_TYPE_CANONICAL_NAME = "video-type";
 
     private VideoController underTest;
     private Video video;
@@ -49,6 +48,8 @@ class VideoControllerTest {
     private VideoTypeService mockVideoTypeService;
     @Mock
     private Logger mockLogger;
+    @Mock
+    private VideoType mockVideoType;
 
     @BeforeEach
     void init() {
@@ -59,10 +60,13 @@ class VideoControllerTest {
             .withCanonicalName(CANONICAL_NAME)
             .withDescription(DESCRIPTION)
             .withProjectName(PROJECT_NAME)
+            .withVideoType(mockVideoType)
             .withVisible(VISIBLE)
             .withVideoLocation(VIDEO_LOCATION)
             .withImageLocation(IMAGE_LOCATION)
             .build();
+        given(mockVideoType.getCanonicalName()).willReturn(VIDEO_TYPE_CANONICAL_NAME);
+        given(mockVideoTypeService.findByCanonicalName(VIDEO_TYPE_CANONICAL_NAME)).willReturn(mockVideoType);
     }
 
     @Test
@@ -78,9 +82,7 @@ class VideoControllerTest {
             .withImageLocation(IMAGE_LOCATION)
             .withVideoType(VIDEO_TYPE_CANONICAL_NAME)
             .build();
-        VideoType mockVideoType = mock(VideoType.class);
-        given(mockVideoType.getCanonicalName()).willReturn(VIDEO_TYPE_CANONICAL_NAME);
-        given(mockVideoTypeService.findByCanonicalName(VIDEO_TYPE_CANONICAL_NAME)).willReturn(mockVideoType);
+
         given(mockVideoService.create(request, mockVideoType)).willReturn(video);
 
         // WHEN
@@ -103,12 +105,17 @@ class VideoControllerTest {
     void testListPublicVideos() {
         // GIVEN
         List<Video> videoList = new ArrayList<>();
+        List<VideoResponse> responseList = new ArrayList<>();
 
         Video video2 = Video.builder()
+            .withVideoType(mockVideoType)
             .build();
 
         videoList.add(video);
         videoList.add(video2);
+
+        responseList.add(new VideoResponse(video));
+        responseList.add(new VideoResponse(video2));
 
         given(mockVideoService.findPublished()).willReturn(videoList);
 
@@ -116,7 +123,7 @@ class VideoControllerTest {
         VideoListResponse response = underTest.listPublicVideos();
 
         // THEN
-        assertEquals(videoList, Arrays.asList(response.getVideos()));
+        assertEquals(responseList, Arrays.asList(response.getVideos()));
     }
 
     @Test
@@ -173,12 +180,17 @@ class VideoControllerTest {
     void testListAllVideos() {
         // GIVEN
         List<Video> videoList = new ArrayList<>();
+        List<VideoResponse> responseList = new ArrayList<>();
 
         Video video2 = Video.builder()
+            .withVideoType(mockVideoType)
             .build();
 
         videoList.add(video);
         videoList.add(video2);
+
+        responseList.add(new VideoResponse(video));
+        responseList.add(new VideoResponse(video2));
 
         given(mockVideoService.findAll()).willReturn(videoList);
 
@@ -186,19 +198,24 @@ class VideoControllerTest {
         VideoListResponse response = underTest.listAllVideos();
 
         // THEN
-        assertEquals(videoList, Arrays.asList(response.getVideos()));
+        assertEquals(responseList, Arrays.asList(response.getVideos()));
     }
 
     @Test
     void testListArchivedVideos() {
         // GIVEN
         List<Video> archivedList = new ArrayList<>();
+        List<VideoResponse> responseList = new ArrayList<>();
 
         Video video2 = Video.builder()
+            .withVideoType(mockVideoType)
             .build();
 
         archivedList.add(video);
         archivedList.add(video2);
+
+        responseList.add(new VideoResponse(video));
+        responseList.add(new VideoResponse(video2));
 
         given(mockVideoService.findArchived()).willReturn(archivedList);
 
@@ -206,7 +223,7 @@ class VideoControllerTest {
         VideoListResponse response = underTest.listAllArchived();
 
         // THEN
-        assertEquals(archivedList, Arrays.asList(response.getVideos()));
+        assertEquals(responseList, Arrays.asList(response.getVideos()));
     }
 
     @Test

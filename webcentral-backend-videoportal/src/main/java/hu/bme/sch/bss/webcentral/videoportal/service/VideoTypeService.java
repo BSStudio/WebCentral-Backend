@@ -1,16 +1,17 @@
 package hu.bme.sch.bss.webcentral.videoportal.service;
 
 import hu.bme.sch.bss.webcentral.videoportal.dao.VideoTypeDao;
-
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTypeRequest;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
-import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.springframework.stereotype.Component;
+
 @Component
+@SuppressWarnings("designforextension")
 public class VideoTypeService {
     private static final String VIDEO_TYPE_CREATE_STARTED = "Video type creation started. {}";
     private static final String VIDEO_TYPE_CREATE_SUCCEED = "Video type creation succeed. Created {}";
@@ -18,7 +19,7 @@ public class VideoTypeService {
     private final VideoTypeDao videoTypeDao;
     private final Logger logger;
 
-    public VideoTypeService(VideoTypeDao videoTypeDao, Logger logger) {
+    public VideoTypeService(final VideoTypeDao videoTypeDao, final Logger logger) {
         this.videoTypeDao = videoTypeDao;
         this.logger = logger;
     }
@@ -35,7 +36,7 @@ public class VideoTypeService {
         return videoType;
     }
 
-    public VideoType findByCanonicalName(final String canonicalName){
+    public VideoType findByCanonicalName(final String canonicalName) {
         Optional<VideoType> videoType = videoTypeDao.findByCanonicalName(canonicalName);
         if (videoType.isEmpty()) {
             logger.warn("Video type not found with canonical name {}", canonicalName);

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class VideoRequestTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-            .getValidator();
+        .getValidator();
 
     private static final String LONG_NAME = "long name";
     private static final String CANONICAL_NAME = "canonical-name";
@@ -24,16 +24,17 @@ class VideoRequestTest {
     private static final Boolean VISIBILITY = true;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
+    public static final String VIDEO_TYPE_NAME = "type-name";
 
     private VideoRequest underTest;
 
     @Test
-    void testConstructorAndGetters(){
+    void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
         underTest = getDefaultValuesBuilder()
-                .build();
+            .build();
 
         // THEN
         assertEquals(LONG_NAME, underTest.getLongName());
@@ -49,8 +50,8 @@ class VideoRequestTest {
     void testValidationShouldFailForMissingLongName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withLongName(null)
-                .build();
+            .withLongName(null)
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -63,8 +64,8 @@ class VideoRequestTest {
     void testValidationShouldFailForEmptyLongName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withLongName("")
-                .build();
+            .withLongName("")
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -77,8 +78,8 @@ class VideoRequestTest {
     void testValidationShouldFailForMissingCanonicalName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withCanonicalName(null)
-                .build();
+            .withCanonicalName(null)
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -91,8 +92,8 @@ class VideoRequestTest {
     void testValidationShouldFailForEmptyCanonicalName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withCanonicalName("")
-                .build();
+            .withCanonicalName("")
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -105,8 +106,8 @@ class VideoRequestTest {
     void testValidationShouldFailForMissingProjectName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withProjectName(null)
-                .build();
+            .withProjectName(null)
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -119,8 +120,8 @@ class VideoRequestTest {
     void testValidationShouldFailForEmptyProjectName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withProjectName("")
-                .build();
+            .withProjectName("")
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -133,8 +134,8 @@ class VideoRequestTest {
     void testValidationShouldFailForMissingDescription() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withDescription(null)
-                .build();
+            .withDescription(null)
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -147,8 +148,8 @@ class VideoRequestTest {
     void testValidationShouldFailForEmptyDescription() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withDescription("")
-                .build();
+            .withDescription("")
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -161,8 +162,8 @@ class VideoRequestTest {
     void testValidationShouldFailForMissingVisibility() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withVisible(null)
-                .build();
+            .withVisible(null)
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -175,8 +176,8 @@ class VideoRequestTest {
     void testValidationShouldFailForMissingVideoLocation() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withVideoLocation(null)
-                .build();
+            .withVideoLocation(null)
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -189,8 +190,8 @@ class VideoRequestTest {
     void testValidationShouldFailForEmptyVideoLocation() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withVideoLocation("")
-                .build();
+            .withVideoLocation("")
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -203,8 +204,8 @@ class VideoRequestTest {
     void testValidationShouldFailForMissingImageLocation() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withImageLocation(null)
-                .build();
+            .withImageLocation(null)
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -217,8 +218,8 @@ class VideoRequestTest {
     void testValidationShouldFailForEmptyImageLocation() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
-                .withImageLocation("")
-                .build();
+            .withImageLocation("")
+            .build();
 
         // WHEN
         Set<ConstraintViolation<VideoRequest>> violations = VALIDATOR.validate(underTest);
@@ -229,13 +230,14 @@ class VideoRequestTest {
 
     private VideoRequest.Builder getDefaultValuesBuilder() {
         return VideoRequest.builder()
-                .withLongName(LONG_NAME)
-                .withCanonicalName(CANONICAL_NAME)
-                .withDescription(DESCRIPTION)
-                .withProjectName(PROJECT_NAME)
-                .withVisible(VISIBILITY)
-                .withVideoLocation(VIDEO_LOCATION)
-                .withImageLocation(IMAGE_LOCATION);
+            .withLongName(LONG_NAME)
+            .withCanonicalName(CANONICAL_NAME)
+            .withDescription(DESCRIPTION)
+            .withProjectName(PROJECT_NAME)
+            .withVideoType(VIDEO_TYPE_NAME)
+            .withVisible(VISIBILITY)
+            .withVideoLocation(VIDEO_LOCATION)
+            .withImageLocation(IMAGE_LOCATION);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<VideoRequest>> violations,

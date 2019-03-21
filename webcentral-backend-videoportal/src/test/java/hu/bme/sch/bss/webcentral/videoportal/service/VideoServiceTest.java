@@ -32,14 +32,6 @@ class VideoServiceTest {
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
 
-    private static final String OTHER_LONG_NAME = "other long name";
-    private static final String OTHER_CANONICAL_NAME = "other-canonical-name";
-    private static final String OTHER_PROJECT_NAME = "otherProjectName";
-    private static final String OTHER_DESCRIPTION = "otherDescription";
-    private static final boolean OTHER_VISIBILITY = false;
-    private static final String OTHER_IMAGE_LOCATION = "other/image/location";
-    private static final String OTHER_VIDEO_LOCATION = "other/video/location";
-
     @Mock
     private VideoRequest mockVideoRequest;
     @Mock
@@ -58,19 +50,20 @@ class VideoServiceTest {
         initMocks(this);
         underTest = new VideoService(mockVideoDao, mockLogger);
 
-        given(mockVideoRequest.getLongName()).willReturn(OTHER_LONG_NAME);
-        given(mockVideoRequest.getCanonicalName()).willReturn(OTHER_CANONICAL_NAME);
-        given(mockVideoRequest.getProjectName()).willReturn(OTHER_PROJECT_NAME);
-        given(mockVideoRequest.getDescription()).willReturn(OTHER_DESCRIPTION);
-        given(mockVideoRequest.getVisible()).willReturn(OTHER_VISIBILITY);
-        given(mockVideoRequest.getVideoLocation()).willReturn(OTHER_VIDEO_LOCATION);
-        given(mockVideoRequest.getImageLocation()).willReturn(OTHER_IMAGE_LOCATION);
+        given(mockVideoRequest.getLongName()).willReturn(LONG_NAME);
+        given(mockVideoRequest.getCanonicalName()).willReturn(CANONICAL_NAME);
+        given(mockVideoRequest.getProjectName()).willReturn(PROJECT_NAME);
+        given(mockVideoRequest.getDescription()).willReturn(DESCRIPTION);
+        given(mockVideoRequest.getVisible()).willReturn(VISIBILITY);
+        given(mockVideoRequest.getVideoLocation()).willReturn(VIDEO_LOCATION);
+        given(mockVideoRequest.getImageLocation()).willReturn(IMAGE_LOCATION);
 
         video = Video.builder()
             .withLongName(LONG_NAME)
             .withCanonicalName(CANONICAL_NAME)
             .withDescription(DESCRIPTION)
             .withProjectName(PROJECT_NAME)
+            .withVideoType(mockVideoType)
             .withVisible(VISIBILITY)
             .withVideoLocation(VIDEO_LOCATION)
             .withImageLocation(IMAGE_LOCATION)
@@ -96,13 +89,13 @@ class VideoServiceTest {
         then(mockVideoRequest).should().getImageLocation();
 
         assertAll(
-            () -> assertEquals(OTHER_LONG_NAME, result.getLongName()),
-            () -> assertEquals(OTHER_CANONICAL_NAME, result.getCanonicalName()),
-            () -> assertEquals(OTHER_PROJECT_NAME, result.getProjectName()),
-            () -> assertEquals(OTHER_DESCRIPTION, result.getDescription()),
-            () -> assertEquals(OTHER_VISIBILITY, result.getVisible()),
-            () -> assertEquals(OTHER_VIDEO_LOCATION, result.getVideoLocation()),
-            () -> assertEquals(OTHER_IMAGE_LOCATION, result.getImageLocation()),
+            () -> assertEquals(LONG_NAME, result.getLongName()),
+            () -> assertEquals(CANONICAL_NAME, result.getCanonicalName()),
+            () -> assertEquals(PROJECT_NAME, result.getProjectName()),
+            () -> assertEquals(DESCRIPTION, result.getDescription()),
+            () -> assertEquals(VISIBILITY, result.getVisible()),
+            () -> assertEquals(VIDEO_LOCATION, result.getVideoLocation()),
+            () -> assertEquals(IMAGE_LOCATION, result.getImageLocation()),
             () -> assertEquals(mockVideoType, result.getVideoType())
         );
     }
@@ -251,13 +244,13 @@ class VideoServiceTest {
         then(mockVideoRequest).should().getImageLocation();
 
         assertAll(
-            () -> assertEquals(OTHER_LONG_NAME, video.getLongName()),
-            () -> assertEquals(OTHER_CANONICAL_NAME, video.getCanonicalName()),
-            () -> assertEquals(OTHER_PROJECT_NAME, video.getProjectName()),
-            () -> assertEquals(OTHER_DESCRIPTION, video.getDescription()),
-            () -> assertEquals(OTHER_VISIBILITY, video.getVisible()),
-            () -> assertEquals(OTHER_VIDEO_LOCATION, video.getVideoLocation()),
-            () -> assertEquals(OTHER_IMAGE_LOCATION, video.getImageLocation())
+            () -> assertEquals(LONG_NAME, video.getLongName()),
+            () -> assertEquals(CANONICAL_NAME, video.getCanonicalName()),
+            () -> assertEquals(PROJECT_NAME, video.getProjectName()),
+            () -> assertEquals(DESCRIPTION, video.getDescription()),
+            () -> assertEquals(VISIBILITY, video.getVisible()),
+            () -> assertEquals(VIDEO_LOCATION, video.getVideoLocation()),
+            () -> assertEquals(IMAGE_LOCATION, video.getImageLocation())
         );
 
         then(mockVideoDao).should().save(video);
@@ -287,7 +280,6 @@ class VideoServiceTest {
         // THEN
         assertFalse(video.getVisible());
         then(mockVideoDao).should().save(video);
-
     }
 
 }

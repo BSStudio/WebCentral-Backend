@@ -8,14 +8,14 @@ import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonTypeName("videoType")
-public class VideoTypeResponse {
+public final class VideoTypeResponse {
     private final Long id;
     private final String longName;
     private final String canonicalName;
     private final String description;
     private final Boolean archived;
 
-    public VideoTypeResponse(VideoType videoType) {
+    public VideoTypeResponse(final VideoType videoType) {
         this.id = videoType.getId();
         this.longName = videoType.getLongName();
         this.canonicalName = videoType.getCanonicalName();

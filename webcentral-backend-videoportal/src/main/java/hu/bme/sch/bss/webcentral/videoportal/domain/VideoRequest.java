@@ -1,18 +1,17 @@
 package hu.bme.sch.bss.webcentral.videoportal.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = VideoRequest.Builder.class)
 @JsonRootName("video")
 public class VideoRequest {
-
     @NotBlank
     private final String longName;
 
@@ -88,20 +87,20 @@ public class VideoRequest {
 
     @Override
     public String toString() {
-        return "VideoRequest{" +
-            "longName='" + longName + '\'' +
-            ", canonicalName='" + canonicalName + '\'' +
-            ", projectName='" + projectName + '\'' +
-            ", description='" + description + '\'' +
-            ", videoType='" + videoType + '\'' +
-            ", visible=" + visible +
-            ", videoLocation='" + videoLocation + '\'' +
-            ", imageLocation='" + imageLocation + '\'' +
-            '}';
+        return "VideoRequest{"
+            + "longName='" + longName + '\''
+            + ", canonicalName='" + canonicalName + '\''
+            + ", projectName='" + projectName + '\''
+            + ", description='" + description + '\''
+            + ", videoType='" + videoType + '\''
+            + ", visible=" + visible
+            + ", videoLocation='" + videoLocation + '\''
+            + ", imageLocation='" + imageLocation + '\''
+            + '}';
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -158,7 +157,7 @@ public class VideoRequest {
             return this;
         }
 
-        public Builder withVideoType(String videoType) {
+        public Builder withVideoType(final String videoType) {
             this.videoType = videoType;
             return this;
         }

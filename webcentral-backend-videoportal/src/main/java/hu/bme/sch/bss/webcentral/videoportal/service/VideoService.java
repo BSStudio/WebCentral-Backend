@@ -3,12 +3,12 @@ package hu.bme.sch.bss.webcentral.videoportal.service;
 import hu.bme.sch.bss.webcentral.videoportal.dao.VideoDao;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 

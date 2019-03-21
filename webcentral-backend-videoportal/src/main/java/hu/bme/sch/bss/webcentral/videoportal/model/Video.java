@@ -26,11 +26,13 @@ public final class Video extends DomainAuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
     @ManyToOne
     @JoinColumn
+    @Column(name = "video_type_id", nullable = false)
     private VideoType videoType;
 
     @NotBlank
@@ -42,21 +44,27 @@ public final class Video extends DomainAuditModel {
     private String canonicalName;
 
     @NotBlank
+    @Column(name = "project_name", nullable = false)
     private String projectName;
 
     @NotBlank
+    @Column(nullable = false)
     private String description;
 
     @NotNull
+    @Column(nullable = false)
     private Boolean visible;
 
     @NotNull
+    @Column(nullable = false)
     private Boolean archived;
 
     @NotBlank
+    @Column(name = "video_location", nullable = false)
     private String videoLocation;
 
     @NotBlank
+    @Column(name = "image_location", nullable = false)
     private String imageLocation;
 
     public Video() {
@@ -171,7 +179,7 @@ public final class Video extends DomainAuditModel {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

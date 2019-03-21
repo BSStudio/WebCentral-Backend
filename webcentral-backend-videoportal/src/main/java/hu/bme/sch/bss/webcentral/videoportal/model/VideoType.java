@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.DomainAuditModel;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,13 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
+@SuppressWarnings({"finalclass", "designforextension"})
 @JsonSerialize
 @JsonDeserialize(builder = VideoType.Builder.class)
 @Entity
 @Table(name = "video_types")
-public final class VideoType extends DomainAuditModel {
+public class VideoType extends DomainAuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +44,7 @@ public final class VideoType extends DomainAuditModel {
         // No-arg constructor for hibernate
     }
 
-    private VideoType(Builder builder) {
+    private VideoType(final Builder builder) {
         this.longName = builder.longName;
         this.canonicalName = builder.canonicalName;
         this.description = builder.description;
@@ -69,7 +71,7 @@ public final class VideoType extends DomainAuditModel {
         return archived;
     }
 
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -87,7 +89,7 @@ public final class VideoType extends DomainAuditModel {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -109,6 +111,7 @@ public final class VideoType extends DomainAuditModel {
 
     // Generated code ends here
 
+    @SuppressWarnings("hiddenfield")
     public static final class Builder {
         private String longName;
         private String canonicalName;
