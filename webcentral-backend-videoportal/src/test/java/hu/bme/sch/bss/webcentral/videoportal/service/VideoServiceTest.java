@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -46,6 +46,8 @@ class VideoServiceTest {
     private Logger mockLogger;
     @Mock
     private VideoDao mockVideoDao;
+    @Mock
+    private VideoType mockVideoType;
 
     private Video video;
     private VideoService underTest;
@@ -54,7 +56,7 @@ class VideoServiceTest {
     @BeforeEach
     void init() {
         initMocks(this);
-        underTest = spy(new VideoService(mockVideoDao, mockLogger));
+        underTest = new VideoService(mockVideoDao, mockLogger);
 
         given(mockVideoRequest.getLongName()).willReturn(OTHER_LONG_NAME);
         given(mockVideoRequest.getCanonicalName()).willReturn(OTHER_CANONICAL_NAME);
@@ -78,26 +80,13 @@ class VideoServiceTest {
     @Test
     void testCreateVideo() {
         // GIVEN
-        doReturn(video).when(underTest).createVideoWithRequestData(any());
 
         // WHEN
-        Video result = underTest.create(mockVideoRequest);
+        Video result = underTest.create(mockVideoRequest, mockVideoType);
 
         // THEN
-        then(underTest).should().createVideoWithRequestData(mockVideoRequest);
         then(mockVideoDao).should().save(video);
 
-        assertEquals(video, result);
-    }
-
-    @Test
-    void testCreateVideoWithRequestData() {
-        // GIVEN setup
-
-        // WHEN
-        Video result = underTest.createVideoWithRequestData(mockVideoRequest);
-
-        // THEN
         then(mockVideoRequest).should().getLongName();
         then(mockVideoRequest).should().getCanonicalName();
         then(mockVideoRequest).should().getProjectName();
@@ -113,7 +102,8 @@ class VideoServiceTest {
             () -> assertEquals(OTHER_DESCRIPTION, result.getDescription()),
             () -> assertEquals(OTHER_VISIBILITY, result.getVisible()),
             () -> assertEquals(OTHER_VIDEO_LOCATION, result.getVideoLocation()),
-            () -> assertEquals(OTHER_IMAGE_LOCATION, result.getImageLocation())
+            () -> assertEquals(OTHER_IMAGE_LOCATION, result.getImageLocation()),
+            () -> assertEquals(mockVideoType, result.getVideoType())
         );
     }
 
@@ -272,7 +262,7 @@ class VideoServiceTest {
 
         then(mockVideoDao).should().save(video);
     }
-    
+
     @Test
     void testPublish() {
         // GIVEN

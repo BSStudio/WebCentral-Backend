@@ -14,6 +14,7 @@ public final class VideoResponse {
     private final String canonicalName;
     private final String projectName;
     private final String description;
+    private final String videoType;
     private final Boolean visible;
     private final Boolean archived;
     private final String videoLocation;
@@ -25,6 +26,7 @@ public final class VideoResponse {
         this.canonicalName = video.getCanonicalName();
         this.projectName = video.getProjectName();
         this.description = video.getDescription();
+        this.videoType = video.getVideoType().getCanonicalName();
         this.visible = video.getVisible();
         this.archived = video.getArchived();
         this.videoLocation = video.getVideoLocation();
@@ -49,6 +51,10 @@ public final class VideoResponse {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getVideoType() {
+        return videoType;
     }
 
     public Boolean getVisible() {

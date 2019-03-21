@@ -1,10 +1,12 @@
 package hu.bme.sch.bss.webcentral.videoportal.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = VideoRequest.Builder.class)
@@ -23,6 +25,9 @@ public class VideoRequest {
     @NotBlank
     private final String description;
 
+    @NotBlank
+    private final String videoType;
+
     @NotNull
     private final Boolean visible;
 
@@ -37,6 +42,7 @@ public class VideoRequest {
         this.canonicalName = builder.canonicalName;
         this.projectName = builder.projectName;
         this.description = builder.description;
+        this.videoType = builder.videoType;
         this.visible = builder.visible;
         this.videoLocation = builder.videoLocation;
         this.imageLocation = builder.imageLocation;
@@ -58,6 +64,10 @@ public class VideoRequest {
         return description;
     }
 
+    public String getVideoType() {
+        return videoType;
+    }
+
     public Boolean getVisible() {
         return visible;
     }
@@ -74,26 +84,55 @@ public class VideoRequest {
         return new Builder();
     }
 
+    // Generated code begins here
+
     @Override
     public String toString() {
-        return "VideoRequest{"
-            + "longName='" + longName + "'"
-            + ", canonicalName='" + canonicalName + "'"
-            + ", projectName='" + projectName + "'"
-            + ", description='" + description + "'"
-            + ", visible=" + visible
-            + ", videoLocation='" + videoLocation + "'"
-            + ", imageLocation='" + imageLocation + "'"
-            + '}';
+        return "VideoRequest{" +
+            "longName='" + longName + '\'' +
+            ", canonicalName='" + canonicalName + '\'' +
+            ", projectName='" + projectName + '\'' +
+            ", description='" + description + '\'' +
+            ", videoType='" + videoType + '\'' +
+            ", visible=" + visible +
+            ", videoLocation='" + videoLocation + '\'' +
+            ", imageLocation='" + imageLocation + '\'' +
+            '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        VideoRequest request = (VideoRequest) o;
+        return Objects.equals(longName, request.longName)
+            && Objects.equals(canonicalName, request.canonicalName)
+            && Objects.equals(projectName, request.projectName)
+            && Objects.equals(description, request.description)
+            && Objects.equals(videoType, request.videoType)
+            && Objects.equals(visible, request.visible)
+            && Objects.equals(videoLocation, request.videoLocation)
+            && Objects.equals(imageLocation, request.imageLocation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(longName, canonicalName, projectName, description, videoType, visible, videoLocation, imageLocation);
+    }
+
+    // Generated code ends here
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
-
         private String longName;
         private String canonicalName;
         private String projectName;
         private String description;
+        private String videoType;
         private Boolean visible;
         private String videoLocation;
         private String imageLocation;
@@ -116,6 +155,11 @@ public class VideoRequest {
 
         public Builder withDescription(final String description) {
             this.description = description;
+            return this;
+        }
+
+        public Builder withVideoType(String videoType) {
+            this.videoType = videoType;
             return this;
         }
 

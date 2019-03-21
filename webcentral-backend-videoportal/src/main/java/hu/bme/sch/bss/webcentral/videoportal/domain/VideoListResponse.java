@@ -3,18 +3,19 @@ package hu.bme.sch.bss.webcentral.videoportal.domain;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonSerialize
 public final class VideoListResponse {
 
-    private final Video[] videos;
+    private final VideoResponse[] videos;
 
     public VideoListResponse(final Builder builder) {
         this.videos = builder.videos;
     }
 
-    public Video[] getVideos() {
+    public VideoResponse[] getVideos() {
         return videos;
     }
 
@@ -25,16 +26,15 @@ public final class VideoListResponse {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-        private Video[] videos;
-
-        public Builder withVideos(final Video[] videos) {
-            this.videos = videos;
-            return this;
-        }
+        private VideoResponse[] videos;
 
         public Builder withVideos(final List<Video> videos) {
-            this.videos = new Video[videos.size()];
-            this.videos = videos.toArray(this.videos);
+            ArrayList<VideoResponse> videoList = new ArrayList<>();
+            for (Video video: videos){
+                videoList.add(new VideoResponse(video));
+            }
+            this.videos = new VideoResponse[videoList.size()];
+            this.videos = videoList.toArray(this.videos);
             return this;
         }
 

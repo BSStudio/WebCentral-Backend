@@ -45,7 +45,7 @@ class VideoListResponseTest {
 
         // WHEN
         VideoListResponse result = VideoListResponse.builder()
-                .withVideos(videos)
+                .withVideos(Arrays.asList(videos))
                 .build();
 
         // THEN

@@ -12,22 +12,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
 
 @JsonSerialize
 @JsonDeserialize(builder = Video.Builder.class)
 @Entity
 @Table(name = "videos")
-@Validated
 public final class Video extends DomainAuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn
+    private VideoType videoType;
 
     @NotBlank
     @Column(name = "long_name", nullable = false)
@@ -67,6 +71,7 @@ public final class Video extends DomainAuditModel {
         this.visible = builder.visible;
         this.videoLocation = builder.videoLocation;
         this.imageLocation = builder.imageLocation;
+        this.videoType = builder.videoType;
         this.archived = false;
     }
 
@@ -122,6 +127,10 @@ public final class Video extends DomainAuditModel {
         this.archived = archived;
     }
 
+    public VideoType getVideoType() {
+        return videoType;
+    }
+
     public String getVideoLocation() {
         return videoLocation;
     }
@@ -148,20 +157,21 @@ public final class Video extends DomainAuditModel {
     @Override
     public String toString() {
         return "Video{"
-                + "id=" + id
-                + ", longName='" + longName
-                + ", canonicalName='" + canonicalName
-                + ", projectName='" + projectName
-                + ", description='" + description
-                + ", visible=" + visible
-                + ", archived=" + archived
-                + ", videoLocation='" + videoLocation
-                + ", imageLocation='" + imageLocation
-                + '}';
+            + "id=" + id
+            + ", videoType=" + videoType
+            + ", longName='" + longName + '\''
+            + ", canonicalName='" + canonicalName + '\''
+            + ", projectName='" + projectName + '\''
+            + ", description='" + description + '\''
+            + ", visible=" + visible
+            + ", archived=" + archived
+            + ", videoLocation='" + videoLocation + '\''
+            + ", imageLocation='" + imageLocation + '\''
+            + '}';
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -170,18 +180,20 @@ public final class Video extends DomainAuditModel {
         }
         Video video = (Video) o;
         return Objects.equals(id, video.id)
-                && Objects.equals(longName, video.longName)
-                && Objects.equals(canonicalName, video.canonicalName)
-                && Objects.equals(projectName, video.projectName)
-                && Objects.equals(description, video.description)
-                && Objects.equals(visible, video.visible)
-                && Objects.equals(videoLocation, video.videoLocation)
-                && Objects.equals(imageLocation, video.imageLocation);
+            && Objects.equals(videoType, video.videoType)
+            && Objects.equals(longName, video.longName)
+            && Objects.equals(canonicalName, video.canonicalName)
+            && Objects.equals(projectName, video.projectName)
+            && Objects.equals(description, video.description)
+            && Objects.equals(visible, video.visible)
+            && Objects.equals(archived, video.archived)
+            && Objects.equals(videoLocation, video.videoLocation)
+            && Objects.equals(imageLocation, video.imageLocation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, longName, canonicalName, projectName, description, visible, videoLocation, imageLocation);
+        return Objects.hash(id, videoType, longName, canonicalName, projectName, description, visible, archived, videoLocation, imageLocation);
     }
 
     // Generated code ends here
@@ -194,6 +206,7 @@ public final class Video extends DomainAuditModel {
         private String projectName;
         private String description;
         private Boolean visible;
+        private VideoType videoType;
         private String videoLocation;
         private String imageLocation;
 
@@ -220,6 +233,11 @@ public final class Video extends DomainAuditModel {
 
         public Builder withVisible(final Boolean visible) {
             this.visible = visible;
+            return this;
+        }
+
+        public Builder withVideoType(final VideoType videoType) {
+            this.videoType = videoType;
             return this;
         }
 

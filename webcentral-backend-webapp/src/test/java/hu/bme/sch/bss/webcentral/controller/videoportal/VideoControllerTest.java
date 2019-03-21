@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 import hu.bme.sch.bss.webcentral.videoportal.service.VideoService;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
@@ -12,14 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import hu.bme.sch.bss.webcentral.videoportal.service.VideoTypeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +38,7 @@ class VideoControllerTest {
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
     private static final long VIDEO_ID = 16L;
+    public static final String VIDEO_TYPE_CANONICAL_NAME = "video-type";
 
     private VideoController underTest;
     private Video video;
@@ -43,36 +46,42 @@ class VideoControllerTest {
     @Mock
     private VideoService mockVideoService;
     @Mock
+    private VideoTypeService mockVideoTypeService;
+    @Mock
     private Logger mockLogger;
 
     @BeforeEach
     void init() {
         initMocks(this);
-        underTest = new VideoController(mockVideoService, mockLogger);
+        underTest = new VideoController(mockVideoService, mockVideoTypeService, mockLogger);
         video = Video.builder()
-                .withLongName(LONG_NAME)
-                .withCanonicalName(CANONICAL_NAME)
-                .withDescription(DESCRIPTION)
-                .withProjectName(PROJECT_NAME)
-                .withVisible(VISIBLE)
-                .withVideoLocation(VIDEO_LOCATION)
-                .withImageLocation(IMAGE_LOCATION)
-                .build();
+            .withLongName(LONG_NAME)
+            .withCanonicalName(CANONICAL_NAME)
+            .withDescription(DESCRIPTION)
+            .withProjectName(PROJECT_NAME)
+            .withVisible(VISIBLE)
+            .withVideoLocation(VIDEO_LOCATION)
+            .withImageLocation(IMAGE_LOCATION)
+            .build();
     }
 
     @Test
     void testCreateVideo() {
         // GIVEN
         VideoRequest request = VideoRequest.builder()
-                .withLongName(LONG_NAME)
-                .withCanonicalName(CANONICAL_NAME)
-                .withDescription(DESCRIPTION)
-                .withProjectName(PROJECT_NAME)
-                .withVisible(VISIBLE)
-                .withVideoLocation(VIDEO_LOCATION)
-                .withImageLocation(IMAGE_LOCATION)
-                .build();
-        given(mockVideoService.create(request)).willReturn(video);
+            .withLongName(LONG_NAME)
+            .withCanonicalName(CANONICAL_NAME)
+            .withDescription(DESCRIPTION)
+            .withProjectName(PROJECT_NAME)
+            .withVisible(VISIBLE)
+            .withVideoLocation(VIDEO_LOCATION)
+            .withImageLocation(IMAGE_LOCATION)
+            .withVideoType(VIDEO_TYPE_CANONICAL_NAME)
+            .build();
+        VideoType mockVideoType = mock(VideoType.class);
+        given(mockVideoType.getCanonicalName()).willReturn(VIDEO_TYPE_CANONICAL_NAME);
+        given(mockVideoTypeService.findByCanonicalName(VIDEO_TYPE_CANONICAL_NAME)).willReturn(mockVideoType);
+        given(mockVideoService.create(request, mockVideoType)).willReturn(video);
 
         // WHEN
         VideoResponse response = underTest.createVideo(request);
@@ -85,7 +94,8 @@ class VideoControllerTest {
             () -> assertEquals(request.getDescription(), response.getDescription()),
             () -> assertEquals(request.getVisible(), response.getVisible()),
             () -> assertEquals(request.getImageLocation(), response.getImageLocation()),
-            () -> assertEquals(request.getVideoLocation(), response.getVideoLocation())
+            () -> assertEquals(request.getVideoLocation(), response.getVideoLocation()),
+            () -> assertEquals(VIDEO_TYPE_CANONICAL_NAME, response.getVideoType())
         );
     }
 
@@ -95,7 +105,7 @@ class VideoControllerTest {
         List<Video> videoList = new ArrayList<>();
 
         Video video2 = Video.builder()
-                .build();
+            .build();
 
         videoList.add(video);
         videoList.add(video2);
@@ -165,7 +175,7 @@ class VideoControllerTest {
         List<Video> videoList = new ArrayList<>();
 
         Video video2 = Video.builder()
-                .build();
+            .build();
 
         videoList.add(video);
         videoList.add(video2);
@@ -185,7 +195,7 @@ class VideoControllerTest {
         List<Video> archivedList = new ArrayList<>();
 
         Video video2 = Video.builder()
-                .build();
+            .build();
 
         archivedList.add(video);
         archivedList.add(video2);
