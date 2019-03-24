@@ -10,6 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+/**
+ * @author Péter Veress
+ */
+
 class VideoResponseTest {
     private static final String LONG_NAME = "long name";
     private static final String CANONICAL_NAME = "canonical-name";
@@ -18,10 +22,10 @@ class VideoResponseTest {
     private static final Boolean VISIBLE = true;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
-    public static final String VIDEO_TYPE_NAME = "type-name";
+    private static final String VIDEO_TYPE_NAME = "type-name";
 
     @Test
-    void testConstructor() {
+    void testConstructorAndBuilder() {
         // GIVEN
         VideoType mockType = mock(VideoType.class);
         given(mockType.getCanonicalName()).willReturn(VIDEO_TYPE_NAME);

@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * @author Péter Veress
+ */
+
 class VideoServiceTest {
     private static final long VIDEO_ID = 16L;
 
@@ -31,6 +35,14 @@ class VideoServiceTest {
     private static final boolean VISIBILITY = true;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
+
+    private static final String OTHER_LONG_NAME = "other long name";
+    private static final String OTHER_CANONICAL_NAME = "other-canonical-name";
+    private static final String OTHER_PROJECT_NAME = "otherProjectName";
+    private static final String OTHER_DESCRIPTION = "other description";
+    private static final boolean OTHER_VISIBILITY = false;
+    private static final String OTHER_IMAGE_LOCATION = "other/image/location";
+    private static final String OTHER_VIDEO_LOCATION = "other/video/location";
 
     @Mock
     private VideoRequest mockVideoRequest;
@@ -156,6 +168,28 @@ class VideoServiceTest {
     }
 
     @Test
+    void testFindByIdShouldThrowExceptionIfEntityNotFound() {
+        // GIVEN setup
+        Video video = Video.builder()
+            .build();
+
+        given(mockVideoDao.findById(VIDEO_ID)).willReturn(Optional.empty());
+
+        Exception exception = null;
+
+        // WHEN
+        try {
+            underTest.findById(VIDEO_ID);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
+        assertTrue(exception instanceof NoSuchElementException);
+    }
+
+    @Test
     void testFindByIdShouldThrowNoSuchElementExceptionWhenWrongId() {
         // GIVEN setup
         given(mockVideoDao.findById(any())).willReturn(Optional.empty());
@@ -207,6 +241,7 @@ class VideoServiceTest {
     @Test
     void testRestore() {
         // GIVEN setup
+        video.setArchived(true);
 
         // WHEN
         underTest.restore(video);
@@ -230,6 +265,13 @@ class VideoServiceTest {
     @Test
     void testUpdate() {
         // GIVEN
+        given(mockVideoRequest.getLongName()).willReturn(OTHER_LONG_NAME);
+        given(mockVideoRequest.getCanonicalName()).willReturn(OTHER_CANONICAL_NAME);
+        given(mockVideoRequest.getProjectName()).willReturn(OTHER_PROJECT_NAME);
+        given(mockVideoRequest.getDescription()).willReturn(OTHER_DESCRIPTION);
+        given(mockVideoRequest.getVisible()).willReturn(OTHER_VISIBILITY);
+        given(mockVideoRequest.getVideoLocation()).willReturn(OTHER_VIDEO_LOCATION);
+        given(mockVideoRequest.getImageLocation()).willReturn(OTHER_IMAGE_LOCATION);
 
         // WHEN
         underTest.update(mockVideoRequest, video);
@@ -244,13 +286,13 @@ class VideoServiceTest {
         then(mockVideoRequest).should().getImageLocation();
 
         assertAll(
-            () -> assertEquals(LONG_NAME, video.getLongName()),
-            () -> assertEquals(CANONICAL_NAME, video.getCanonicalName()),
-            () -> assertEquals(PROJECT_NAME, video.getProjectName()),
-            () -> assertEquals(DESCRIPTION, video.getDescription()),
-            () -> assertEquals(VISIBILITY, video.getVisible()),
-            () -> assertEquals(VIDEO_LOCATION, video.getVideoLocation()),
-            () -> assertEquals(IMAGE_LOCATION, video.getImageLocation())
+            () -> assertEquals(OTHER_LONG_NAME, video.getLongName()),
+            () -> assertEquals(OTHER_CANONICAL_NAME, video.getCanonicalName()),
+            () -> assertEquals(OTHER_PROJECT_NAME, video.getProjectName()),
+            () -> assertEquals(OTHER_DESCRIPTION, video.getDescription()),
+            () -> assertEquals(OTHER_VISIBILITY, video.getVisible()),
+            () -> assertEquals(OTHER_VIDEO_LOCATION, video.getVideoLocation()),
+            () -> assertEquals(OTHER_IMAGE_LOCATION, video.getImageLocation())
         );
 
         then(mockVideoDao).should().save(video);

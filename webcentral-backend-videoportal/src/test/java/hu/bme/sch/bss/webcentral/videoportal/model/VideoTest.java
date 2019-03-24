@@ -15,6 +15,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+/**
+ * @author Péter Veress
+ */
+
 class VideoTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
@@ -292,8 +296,7 @@ class VideoTest {
             .withImageLocation(IMAGE_LOCATION);
     }
 
-    private void thenValidationFails(Set<ConstraintViolation<Video>> violations,
-                                     String expectedMessage, String expectedProperty) {
+    private void thenValidationFails(Set<ConstraintViolation<Video>> violations, String expectedMessage, String expectedProperty) {
         assertThat(violations.size(), is(1));
         ConstraintViolation<Video> violation = violations.stream().findFirst().get();
         assertThat(violation.getMessage(), is(expectedMessage));

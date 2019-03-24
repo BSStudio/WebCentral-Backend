@@ -12,9 +12,14 @@ import javax.validation.Validator;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author Péter Veress
+ */
+
 class VideoRequestTest {
 
-    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
+    private static final Validator VALIDATOR = Validation
+        .buildDefaultValidatorFactory()
         .getValidator();
 
     private static final String LONG_NAME = "long name";
@@ -24,7 +29,7 @@ class VideoRequestTest {
     private static final Boolean VISIBILITY = true;
     private static final String IMAGE_LOCATION = "image/location";
     private static final String VIDEO_LOCATION = "video/location";
-    public static final String VIDEO_TYPE_NAME = "type-name";
+    private static final String VIDEO_TYPE_NAME = "type-name";
 
     private VideoRequest underTest;
 
@@ -240,8 +245,7 @@ class VideoRequestTest {
             .withImageLocation(IMAGE_LOCATION);
     }
 
-    private void thenValidationFails(Set<ConstraintViolation<VideoRequest>> violations,
-                                     String expectedMessage, String expectedProperty) {
+    private void thenValidationFails(Set<ConstraintViolation<VideoRequest>> violations, String expectedMessage, String expectedProperty) {
         assertThat(violations.size(), is(1));
         ConstraintViolation<VideoRequest> violation = violations.stream().findFirst().get();
         assertThat(violation.getMessage(), is(expectedMessage));
