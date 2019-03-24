@@ -7,14 +7,21 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * @author Péter Veress
+ */
+
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = VideoTypeRequest.Builder.class)
 @JsonRootName("videoType")
-public final class VideoTypeRequest {
+public class VideoTypeRequest {
+
     @NotBlank
     private final String longName;
+
     @NotBlank
     private final String canonicalName;
+
     @NotBlank
     private final String description;
 
@@ -67,6 +74,10 @@ public final class VideoTypeRequest {
     }
 
     // Generated code ends here
+
+    public static Builder builder() {
+        return new Builder();
+    }
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {

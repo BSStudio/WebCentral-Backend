@@ -6,11 +6,11 @@ import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 import hu.bme.sch.bss.webcentral.videoportal.service.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.service.VideoTypeService;
 
 import java.util.ArrayList;
 import javax.validation.Valid;
 
-import hu.bme.sch.bss.webcentral.videoportal.service.VideoTypeService;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @author Péter Veress
+ */
 
 @RestController
 @RequestMapping(value = "/api/video", produces = "application/json")
@@ -42,7 +46,7 @@ public class VideoController {
     private final VideoTypeService videoTypeService;
     private final Logger logger;
 
-    public VideoController(VideoService videoService, VideoTypeService videoTypeService, Logger logger) {
+    public VideoController(final VideoService videoService, final VideoTypeService videoTypeService, final Logger logger) {
         this.videoService = videoService;
         this.videoTypeService = videoTypeService;
         this.logger = logger;
