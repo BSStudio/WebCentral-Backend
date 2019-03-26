@@ -2,21 +2,13 @@ package hu.bme.sch.bss.webcentral.videoportal.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
+import org.springframework.validation.annotation.Validated;
 
-import hu.bme.sch.bss.webcentral.DomainAuditModel;
-
-import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
+import java.util.Objects;
 
 @JsonSerialize
 @JsonDeserialize(builder = Video.Builder.class)
