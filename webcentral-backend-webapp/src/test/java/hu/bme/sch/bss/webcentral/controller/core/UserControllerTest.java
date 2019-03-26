@@ -1,4 +1,4 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
-public class CoreControllerTest {
+public class UserControllerTest {
 }

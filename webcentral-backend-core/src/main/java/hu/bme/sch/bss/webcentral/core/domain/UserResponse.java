@@ -27,4 +27,32 @@ public class UserResponse {
         this.description = user.getDescription();
         this.imageURI = user.getImageURI();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageURI() {
+        return imageURI;
+    }
 }

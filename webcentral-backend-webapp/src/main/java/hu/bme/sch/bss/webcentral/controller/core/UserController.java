@@ -12,13 +12,13 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/core", produces = "application/json")
-public class CoreController {
+public class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
     private final UserService userService;
     private final Logger logger;
 
-    public CoreController(final UserService userService, final Logger logger) {
+    public UserController(final UserService userService, final Logger logger) {
         this.userService = userService;
         this.logger = logger;
     }

@@ -49,16 +49,16 @@ public class UserTest {
         User.Builder builder = getDefaultValuesBuilder();
 
         // WHEN
-        User user1 = builder.build();
-        User user2 = builder.build();
-        User user3 = builder
+        User validUser1 = builder.build();
+        User validUser2 = builder.build();
+        User invalidUser = builder
             .withNickname("something else")
             .build();
 
         // THEN
-        assertEquals(user1, user2);
-        assertNotEquals(user1, user3);
-        assertNotEquals(user2, user3);
+        assertEquals(validUser1, validUser2);
+        assertNotEquals(validUser1, invalidUser);
+        assertNotEquals(validUser2, invalidUser);
     }
 
     @Test
@@ -106,9 +106,10 @@ public class UserTest {
     @Test
     public void testValidationShouldFailForMissingEmail() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
+        User user1 = getDefaultValuesBuilder()
             .withEmail("")
             .build();
+
 
         // WHEN
         Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
