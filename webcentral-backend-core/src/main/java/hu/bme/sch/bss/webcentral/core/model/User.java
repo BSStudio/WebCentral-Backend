@@ -29,6 +29,7 @@ public final class User extends DomainAuditModel {
     private String familyName;
 
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank
