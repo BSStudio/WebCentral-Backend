@@ -6,13 +6,18 @@ import hu.bme.sch.bss.webcentral.core.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Component
 public final class UserService {
 
 
     private static final String USER_CREATE_STARTED = "User creation started. {}";
     private static final String USER_CREATE_SUCCEED = "User creation succeed. {}";
-
+    private static final String USER_SEARCH_STARTED = "User search started. {}";
+    private static final String USER_SEARCH_SUCCEED = "User search succeed. {}";
+    private static final String USER_NOT_FOUND = "User not found with id {}";
 
     private final UserDao userDao;
     private final Logger logger;
@@ -29,6 +34,17 @@ public final class UserService {
         userDao.save(user);
         logger.info(USER_CREATE_SUCCEED, user);
         return user;
+    }
+
+    public User findById(final Long id) {
+        logger.info(USER_SEARCH_STARTED, id);
+        Optional<User> user = userDao.findById(id);
+        if (user.isEmpty()) {
+            logger.warn(USER_NOT_FOUND, id);
+            throw new NoSuchElementException("User Not Found.");
+        }
+        logger.info(USER_SEARCH_SUCCEED, id);
+        return user.get();
     }
 
     private User createUserWithRequestData(final UserRequest request) {

@@ -9,11 +9,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -21,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
+    private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
     private final UserService userService;
     private final Logger logger;
 
@@ -34,6 +31,14 @@ public class UserController {
     public final UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
         User result = userService.create(request);
+        return new UserResponse(result);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public final UserResponse getUser(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_USER_SEARCH, id);
+        User result = userService.findById(id);
         return new UserResponse(result);
     }
 
