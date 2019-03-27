@@ -112,7 +112,7 @@ public class UserTest {
 
 
         // WHEN
-        Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
+        //Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         //TODO

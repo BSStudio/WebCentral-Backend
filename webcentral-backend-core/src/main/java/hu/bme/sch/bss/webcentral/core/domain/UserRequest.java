@@ -8,24 +8,25 @@ import javax.validation.constraints.NotBlank;
 
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
-public class UserRequest {
+public final class UserRequest {
 
     @NotBlank
-    private String nickname;
+    private final String nickname;
 
     @NotBlank
-    private String givenName;
+    private final String givenName;
 
     @NotBlank
-    private String familyName;
+    private final String familyName;
 
     @Email
-    private String email;
+    private final String email;
 
     @NotBlank
-    private String description;
+    private final String description;
 
-    private String imageURI;
+    @NotBlank
+    private final String imageUri;
 
     public UserRequest(final Builder builder) {
         this.nickname = builder.nickname;
@@ -33,7 +34,7 @@ public class UserRequest {
         this.familyName = builder.familyName;
         this.email = builder.email;
         this.description = builder.description;
-        this.imageURI = builder.imageURI;
+        this.imageUri = builder.imageURI;
     }
 
     public static Builder builder() {
@@ -60,45 +61,46 @@ public class UserRequest {
         return description;
     }
 
-    public String getImageURI() {
-        return imageURI;
+    public String getImageUri() {
+        return imageUri;
     }
 
+    @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-        private @NotBlank String nickname;
-        private @NotBlank String givenName;
-        private @NotBlank String familyName;
-        private @Email String email;
-        private @NotBlank String description;
+        private String nickname;
+        private String givenName;
+        private String familyName;
+        private String email;
+        private String description;
         private String imageURI;
 
-        public Builder withNickname(@NotBlank String nickname) {
+        public Builder withNickname(final String nickname) {
             this.nickname = nickname;
             return this;
         }
 
-        public Builder withGivenName(@NotBlank String givenName) {
+        public Builder withGivenName(final String givenName) {
             this.givenName = givenName;
             return this;
         }
 
-        public Builder withFamilyName(@NotBlank String familyName) {
+        public Builder withFamilyName(final String familyName) {
             this.familyName = familyName;
             return this;
         }
 
-        public Builder withEmail(@Email String email) {
+        public Builder withEmail(final String email) {
             this.email = email;
             return this;
         }
 
-        public Builder withDescription(@NotBlank String description) {
+        public Builder withDescription(final String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withImageURI(String imageURI) {
+        public Builder withImageURI(final String imageURI) {
             this.imageURI = imageURI;
             return this;
         }

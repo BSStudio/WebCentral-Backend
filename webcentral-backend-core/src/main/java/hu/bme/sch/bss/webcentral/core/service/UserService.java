@@ -37,7 +37,7 @@ public class UserService {
             .withEmail(request.getEmail())
             .withFamilyName(request.getFamilyName())
             .withGivenName(request.getGivenName())
-            .withImageURI(request.getImageURI())
+            .withImageURI(request.getImageUri())
             .withNickname(request.getNickname())
             .build();
     }
