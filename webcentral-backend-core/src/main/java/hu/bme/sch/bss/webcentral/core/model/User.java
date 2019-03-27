@@ -4,15 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import java.util.Objects;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @JsonSerialize
 @JsonDeserialize(builder = User.Builder.class)
@@ -168,7 +163,7 @@ public final class User extends DomainAuditModel {
         }
 
         public User build() {
-            return new User(this);
+	        return new UserBuilder().setBuilder(this).createUser();
         }
     }
 }
