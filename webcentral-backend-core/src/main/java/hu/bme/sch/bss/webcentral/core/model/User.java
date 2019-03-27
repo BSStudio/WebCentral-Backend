@@ -4,10 +4,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import javax.persistence.*;
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Objects;
 
 @JsonSerialize
 @JsonDeserialize(builder = User.Builder.class)
@@ -47,7 +52,7 @@ public final class User extends DomainAuditModel {
         this.familyName = builder.familyName;
         this.email = builder.email;
         this.description = builder.description;
-        this.imageUri = builder.imageURI;
+        this.imageUri = builder.imageUri;
     }
 
     public Long getId() {
@@ -98,7 +103,7 @@ public final class User extends DomainAuditModel {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -130,35 +135,35 @@ public final class User extends DomainAuditModel {
         private String familyName;
         private String email;
         private String description;
-        private String imageURI;
+        private String imageUri;
 
-        public Builder withNickname(String nickname) {
+        public Builder withNickname(final String nickname) {
             this.nickname = nickname;
             return this;
         }
 
-        public Builder withGivenName(String givenName) {
+        public Builder withGivenName(final String givenName) {
             this.givenName = givenName;
             return this;
         }
 
-        public Builder withFamilyName(String familyName) {
+        public Builder withFamilyName(final String familyName) {
             this.familyName = familyName;
             return this;
         }
 
-        public Builder withEmail(String email) {
+        public Builder withEmail(final String email) {
             this.email = email;
             return this;
         }
 
-        public Builder withDescription(String description) {
+        public Builder withDescription(final String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withImageURI(String imageURI) {
-            this.imageURI = imageURI;
+        public Builder withImageUri(final String imageUri) {
+            this.imageUri = imageUri;
             return this;
         }
 

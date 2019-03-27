@@ -139,7 +139,7 @@ public class UserTest {
             .withFamilyName(FAMILY_NAME)
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
-            .withImageURI(IMAGE_URI);
+            .withImageUri(IMAGE_URI);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<User>> violations,

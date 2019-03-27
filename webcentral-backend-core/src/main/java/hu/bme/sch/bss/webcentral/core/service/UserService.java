@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserService {
+public final class UserService {
 
 
     private static final String USER_CREATE_STARTED = "User creation started. {}";
@@ -31,13 +31,13 @@ public class UserService {
         return user;
     }
 
-    private User createUserWithRequestData(UserRequest request) {
+    private User createUserWithRequestData(final UserRequest request) {
         return User.builder()
             .withDescription(request.getDescription())
             .withEmail(request.getEmail())
             .withFamilyName(request.getFamilyName())
             .withGivenName(request.getGivenName())
-            .withImageURI(request.getImageUri())
+            .withImageUri(request.getImageUri())
             .withNickname(request.getNickname())
             .build();
     }

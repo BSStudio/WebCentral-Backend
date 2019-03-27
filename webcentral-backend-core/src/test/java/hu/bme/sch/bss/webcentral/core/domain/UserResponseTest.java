@@ -25,7 +25,7 @@ class UserResponseTest {
             .withFamilyName(FAMILY_NAME)
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
-            .withImageURI(IMAGE_URI)
+            .withImageUri(IMAGE_URI)
             .build();
 
         // WHEN

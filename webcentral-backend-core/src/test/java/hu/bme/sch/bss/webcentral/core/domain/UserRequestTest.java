@@ -104,22 +104,6 @@ class UserRequestTest {
     }
 
     @Test
-    void testValidationShouldFailForInvalidEmail() {
-        //GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withEmail("asd@asd")
-            .build();
-
-        // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
-
-        // THEN
-        //TODO
-        thenValidationFails(violations, "?????", "email");
-
-    }
-
-    @Test
     void testValidationShouldFailForEmptyDescription() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
