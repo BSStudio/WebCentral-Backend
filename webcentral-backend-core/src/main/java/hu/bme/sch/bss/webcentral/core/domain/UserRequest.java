@@ -20,6 +20,7 @@ public class UserRequest {
     private String familyName;
 
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank
@@ -27,7 +28,7 @@ public class UserRequest {
 
     private String imageURI;
 
-    public UserRequest(final Builder builder) {
+    private UserRequest(final Builder builder) {
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
