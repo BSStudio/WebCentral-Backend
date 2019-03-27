@@ -39,7 +39,7 @@ class UserResponseTest {
             () -> assertEquals(actual.getFamilyName(), response.getFamilyName()),
             () -> assertEquals(actual.getEmail(), response.getEmail()),
             () -> assertEquals(actual.getDescription(), response.getDescription()),
-            () -> assertEquals(actual.getImageURI(), response.getImageURI())
+            () -> assertEquals(actual.getImageUri(), response.getImageUri())
         );
     }
 }

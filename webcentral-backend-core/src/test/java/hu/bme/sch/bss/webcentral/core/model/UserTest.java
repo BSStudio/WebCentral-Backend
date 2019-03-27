@@ -40,7 +40,7 @@ public class UserTest {
         assertEquals(FAMILY_NAME, underTest.getFamilyName());
         assertEquals(EMAIL, underTest.getEmail());
         assertEquals(DESCRIPTION, underTest.getDescription());
-        assertEquals(IMAGE_URI, underTest.getImageURI());
+        assertEquals(IMAGE_URI, underTest.getImageUri());
     }
 
     @Test

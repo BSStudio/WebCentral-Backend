@@ -35,7 +35,7 @@ public final class User extends DomainAuditModel {
     @NotBlank
     private String description;
 
-    private String imageURI;
+    private String imageUri;
 
     public User() {
         // No-arg constructor for hibernate
@@ -47,7 +47,7 @@ public final class User extends DomainAuditModel {
         this.familyName = builder.familyName;
         this.email = builder.email;
         this.description = builder.description;
-        this.imageURI = builder.imageURI;
+        this.imageUri = builder.imageURI;
     }
 
     public Long getId() {
@@ -74,8 +74,8 @@ public final class User extends DomainAuditModel {
         return description;
     }
 
-    public String getImageURI() {
-        return imageURI;
+    public String getImageUri() {
+        return imageUri;
     }
 
     public static Builder builder() {
@@ -93,7 +93,7 @@ public final class User extends DomainAuditModel {
             + ", familyName='" + familyName + '\''
             + ", email='" + email + '\''
             + ", description='" + description + '\''
-            + ", imageURI='" + imageURI + '\''
+            + ", imageUri='" + imageUri + '\''
             + '}';
     }
 
@@ -112,16 +112,17 @@ public final class User extends DomainAuditModel {
             && Objects.equals(familyName, user.familyName)
             && Objects.equals(email, user.email)
             && Objects.equals(description, user.description)
-            && Objects.equals(imageURI, user.imageURI);
+            && Objects.equals(imageUri, user.imageUri);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nickname, givenName, familyName, email, description, imageURI);
+        return Objects.hash(id, nickname, givenName, familyName, email, description, imageUri);
     }
 
     // Generated code ends here
 
+    @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
         private String nickname;

@@ -35,7 +35,7 @@ public final class UserRequest {
         this.familyName = builder.familyName;
         this.email = builder.email;
         this.description = builder.description;
-        this.imageUri = builder.imageURI;
+        this.imageUri = builder.imageUri;
     }
 
     public static Builder builder() {
@@ -74,7 +74,7 @@ public final class UserRequest {
         private String familyName;
         private String email;
         private String description;
-        private String imageURI;
+        private String imageUri;
 
         public Builder withNickname(final String nickname) {
             this.nickname = nickname;
@@ -101,8 +101,8 @@ public final class UserRequest {
             return this;
         }
 
-        public Builder withImageURI(final String imageURI) {
-            this.imageURI = imageURI;
+        public Builder withImageUri(final String imageUri) {
+            this.imageUri = imageUri;
             return this;
         }
 

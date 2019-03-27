@@ -39,7 +39,7 @@ class UserRequestTest {
         assertEquals(FAMILY_NAME, underTest.getFamilyName());
         assertEquals(EMAIL, underTest.getEmail());
         assertEquals(DESCRIPTION, underTest.getDescription());
-        assertEquals(IMAGE_URI, underTest.getImageURI());
+        assertEquals(IMAGE_URI, underTest.getImageUri());
 
     }
 
@@ -142,7 +142,7 @@ class UserRequestTest {
             .withFamilyName(FAMILY_NAME)
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
-            .withImageURI(IMAGE_URI);
+            .withImageUri(IMAGE_URI);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<UserRequest>> violations,
