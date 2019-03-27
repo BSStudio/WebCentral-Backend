@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 public final class UserRequest {
 
     @NotBlank
-    private final String nickname;
+    private String nickname;
 
     @NotBlank
     private final String givenName;
@@ -20,6 +20,7 @@ public final class UserRequest {
     private final String familyName;
 
     @Email
+    @NotBlank
     private final String email;
 
     @NotBlank
@@ -28,7 +29,7 @@ public final class UserRequest {
     @NotBlank
     private final String imageUri;
 
-    public UserRequest(final Builder builder) {
+    private UserRequest(final Builder builder) {
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
