@@ -10,6 +10,10 @@ public class UserListResponse {
 
 	private final User[] users;
 
+	public User[] getUsers() {
+		return users;
+	}
+
 	public UserListResponse(final Builder builder) {
 		this.users = builder.users;
 	}
