@@ -3,12 +3,11 @@ package hu.bme.sch.bss.webcentral.core.domain;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
-@JsonTypeName("video")
+@JsonTypeName("user")
 public final class UserResponse {
     private final Long id;
     private final String nickname;
