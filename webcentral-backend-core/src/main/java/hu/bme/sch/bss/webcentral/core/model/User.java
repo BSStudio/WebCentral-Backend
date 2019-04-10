@@ -41,7 +41,7 @@ public final class User extends DomainAuditModel {
         // No-arg constructor for hibernate
     }
 
-    public User(final Builder builder) {
+	public User(final Builder builder) {
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
@@ -49,6 +49,30 @@ public final class User extends DomainAuditModel {
         this.description = builder.description;
         this.imageUri = builder.imageUri;
     }
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void setGivenName(String givenName) {
+		this.givenName = givenName;
+	}
+
+	public void setFamilyName(String familyName) {
+		this.familyName = familyName;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setImageUri(String imageUri) {
+		this.imageUri = imageUri;
+	}
 
     public Long getId() {
         return id;

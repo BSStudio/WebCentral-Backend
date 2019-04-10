@@ -20,6 +20,7 @@ public class UserController {
 	private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
 	private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
 	private static final String REQUEST_USERS_LIST = "Request to find all users received.";
+	private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
 	private final UserService userService;
 	private final Logger logger;
 
@@ -42,6 +43,15 @@ public class UserController {
 		logger.info(REQUEST_USER_SEARCH, id);
 		User result = userService.findById(id);
 		return new UserResponse(result);
+	}
+
+	@PutMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public final UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
+		logger.info(REQUEST_USER_UPDATE, id);
+		User user = userService.findById(id);
+		userService.update(request, user);
+		return new UserResponse(user);
 	}
 
 	@GetMapping("/all")
