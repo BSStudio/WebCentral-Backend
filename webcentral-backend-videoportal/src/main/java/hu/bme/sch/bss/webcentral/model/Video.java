@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.DomainAuditModel;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @JsonSerialize
+@JsonDeserialize(builder = Video.Builder.class)
 @Entity
 @Table(name = "videos")
 public final class Video extends DomainAuditModel {
@@ -30,7 +32,7 @@ public final class Video extends DomainAuditModel {
     private String canonicalName;
 
     @NotBlank
-    private final String projectName;
+    private String projectName;
 
     @NotBlank
     private String description;
@@ -44,6 +46,10 @@ public final class Video extends DomainAuditModel {
     @NotBlank
     private String imageLocation;
 
+    // No-arg constructor for hibernate
+    public Video() {
+    }
+
     private Video(final Builder builder) {
         this.longName = builder.longName;
         this.canonicalName = builder.canonicalName;
@@ -55,7 +61,6 @@ public final class Video extends DomainAuditModel {
     }
 
     public Long getId() {
-
         return id;
     }
 
@@ -92,7 +97,6 @@ public final class Video extends DomainAuditModel {
     }
 
     // Generated code begins here
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

@@ -2,6 +2,7 @@ package hu.bme.sch.bss.webcentral.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
 
@@ -9,10 +10,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class VideoTest {
+class VideoTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
             .getValidator();
@@ -27,15 +27,45 @@ public class VideoTest {
 
     private Video underTest;
 
-    @BeforeEach
-    public void init() {
+    @Test
+    void testConstructorAndGetters(){
+        // GIVEN
 
+        // WHEN
+        underTest = getDefaultValuesBuilder()
+                .build();
+
+        // THEN
+        assertEquals(LONG_NAME, underTest.getLongName());
+        assertEquals(CANONICAL_NAME, underTest.getCanonicalName());
+        assertEquals(PROJECT_NAME, underTest.getProjectName());
+        assertEquals(DESCRIPTION, underTest.getDescription());
+        assertEquals(VISIBILITY, underTest.getVisible());
+        assertEquals(IMAGE_LOCATION, underTest.getImageLocation());
+        assertEquals(VIDEO_LOCATION, underTest.getVideoLocation());
     }
 
     @Test
-    public void testValidationShouldFailForMissingLongName() {
+    void testEquals(){
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        Video.Builder builder = getDefaultValuesBuilder();
+
+        // WHEN
+        Video video1 = builder.build();
+        Video video2 = builder.build();
+        Video video3 = builder
+                .withCanonicalName("más")
+                .build();
+
+        // THEN
+        assertTrue(video1.equals(video2));
+        assertFalse(video1.equals(video3));
+    }
+
+    @Test
+    void testValidationShouldFailForMissingLongName() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
                 .withLongName(null)
                 .build();
 
@@ -47,9 +77,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForEmptyLongName() {
+    void testValidationShouldFailForEmptyLongName() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withLongName("")
                 .build();
 
@@ -61,9 +91,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingCanonicalName() {
+    void testValidationShouldFailForMissingCanonicalName() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withCanonicalName(null)
                 .build();
 
@@ -75,9 +105,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForEmptyCanonicalName() {
+    void testValidationShouldFailForEmptyCanonicalName() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withCanonicalName("")
                 .build();
 
@@ -89,9 +119,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingProjectName() {
+    void testValidationShouldFailForMissingProjectName() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withProjectName(null)
                 .build();
 
@@ -103,9 +133,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForEmptyProjectName() {
+    void testValidationShouldFailForEmptyProjectName() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withProjectName("")
                 .build();
 
@@ -117,9 +147,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingDescription() {
+    void testValidationShouldFailForMissingDescription() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withDescription(null)
                 .build();
 
@@ -131,9 +161,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForEmptyDescription() {
+    void testValidationShouldFailForEmptyDescription() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withDescription("")
                 .build();
 
@@ -145,9 +175,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingVisibility() {
+    void testValidationShouldFailForMissingVisibility() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withVisible(null)
                 .build();
 
@@ -159,9 +189,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingVideoLocation() {
+    void testValidationShouldFailForMissingVideoLocation() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withVideoLocation(null)
                 .build();
 
@@ -173,9 +203,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForEmptyVideoLocation() {
+    void testValidationShouldFailForEmptyVideoLocation() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withVideoLocation("")
                 .build();
 
@@ -187,9 +217,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingImageLocation() {
+    void testValidationShouldFailForMissingImageLocation() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withImageLocation(null)
                 .build();
 
@@ -201,9 +231,9 @@ public class VideoTest {
     }
 
     @Test
-    public void testValidationShouldFailForEmptyImageLocation() {
+    void testValidationShouldFailForEmptyImageLocation() {
         // GIVEN
-        underTest = getBuilderWithDefaultValues()
+        underTest = getDefaultValuesBuilder()
                 .withImageLocation("")
                 .build();
 
@@ -214,7 +244,7 @@ public class VideoTest {
         thenValidationFails(violations, "must not be blank", "imageLocation");
     }
 
-    private Video.Builder getBuilderWithDefaultValues() {
+    private Video.Builder getDefaultValuesBuilder() {
         return Video.builder()
                 .withLongName(LONG_NAME)
                 .withCanonicalName(CANONICAL_NAME)
