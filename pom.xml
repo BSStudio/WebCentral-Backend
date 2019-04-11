@@ -109,6 +109,7 @@
         <version>${webcentral-backend-webapp.version}</version>
         <scope>compile</scope>
       </dependency>
+
       <!-- Spring -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -133,15 +134,11 @@
         <version>2.2.11</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        <version>${spring-cloud.hystrix.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.netflix.feign</groupId>
         <artifactId>feign-slf4j</artifactId>
         <version>8.18.0</version>
       </dependency>
+
       <!-- Test -->
       <dependency>
         <groupId>org.junit.jupiter</groupId>
@@ -177,6 +174,7 @@
   </dependencyManagement>
 
   <dependencies>
+    <!-- Spring -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
@@ -208,18 +206,17 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.session</groupId>
       <artifactId>spring-session-core</artifactId>
     </dependency>
 
+    <!-- Database -->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
+
+    <!-- Test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -238,34 +235,7 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-        <excludes>
-          <exclude>**/application.properties</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>false</filtering>
-        <includes>
-          <include>**/application.properties</include>
-        </includes>
-      </resource>
-    </resources>
     <plugins>
-      <!-- Setup maven resources plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <escapeString>\</escapeString>
-          <delimiters>
-            <delimiter>${}</delimiter>
-          </delimiters>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
@@ -284,6 +254,7 @@
           </execution>
         </executions>
       </plugin>
+
       <!-- Setup failsafe plugin for integration tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -303,6 +274,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${org.apache.maven.plugins.maven-surfire-plugin.version}</version>
       </plugin>
+
       <!-- Setup maven checkstyle plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -336,6 +308,7 @@
           </execution>
         </executions>
       </plugin>
+
       <!-- Jacoco for code coverage -->
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -421,6 +394,7 @@
           </execution>
         </executions>
       </plugin>
+
       <!-- PIT mutation testing metric -->
       <plugin>
         <groupId>org.pitest</groupId>

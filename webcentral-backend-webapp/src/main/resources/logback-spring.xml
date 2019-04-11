@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="10000" packagingData="true">
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
   <springProperty name="canonical.name" source="canonical.name" defaultValue="${canonical_name}" />
 
@@ -11,7 +12,7 @@
       <append>true</append>
       <encoder>
         <charset>UTF-8</charset>
-        <pattern>${GENERIC_MESSAGE_PATTERN}</pattern>
+        <pattern>${CONSOLE_LOG_PATTERN}</pattern>
       </encoder>
       <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
         <fileNamePattern>logs/${canonical.name}.%d{yyyy-MM-dd}.log</fileNamePattern>
@@ -24,7 +25,7 @@
       <appender class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
           <charset>UTF-8</charset>
-          <pattern>${GENERIC_MESSAGE_PATTERN}</pattern>
+          <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
       </appender>
     </appender>
