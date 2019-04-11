@@ -26,6 +26,12 @@ Install PostgreSQL and
 * set password to "admin"
 * create database with the name `webcentral`.
 
+### Simple database with docker
+
+```
+docker run -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=webcentral -p 5432:5432 -d postgres:alpine
+```
+
 ### Checkstyle configuration
 
 Intsall Checkstyle plugin in the IDE and at `File > Setting > Editor > Code Style > Java`,
