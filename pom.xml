@@ -30,14 +30,36 @@
     <java.version>11</java.version>
     <!-- Skip mvn goal -->
     <skipCheckstyle>false</skipCheckstyle>
-    <!-- Plugins -->
-    <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+    <skipJacoco>false</skipJacoco>
+    <skipPit>false</skipPit>
+    <skipPmd>false</skipPmd>
+    <!-- Siblings -->
+    <webcentral-backend-core.version>0.0.1-SNAPSHOT</webcentral-backend-core.version>
+    <webcentral-backend-videoportal.version>0.0.1-SNAPSHOT</webcentral-backend-videoportal.version>
+    <webcentral-backend-broadcastmanager.version>0.0.1-SNAPSHOT</webcentral-backend-broadcastmanager.version>
+    <webcentral-backend-productionmanager.version>0.0.1-SNAPSHOT</webcentral-backend-productionmanager.version>
+    <webcentral-backend-webapp.version>0.0.1-SNAPSHOT</webcentral-backend-webapp.version>
+    <!-- Dependencies -->
+    <org.springframework.version>5.1.2.RELEASE</org.springframework.version>
+    <spring-boot-starter.version>2.1.1.RELEASE</spring-boot-starter.version>
+    <spring.cloud.release.train.version>Greenwich.RELEASE</spring.cloud.release.train.version>
     <spring-cloud.hystrix.version>2.0.2.RELEASE</spring-cloud.hystrix.version>
-    <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
-    <maven.sevntu.checkstyle.plugin.version>1.32.0</maven.sevntu.checkstyle.plugin.version>
-    <maven.sevntu-checkstyle-check.checkstyle.version>
-      8.12
+    <maven.sevntu-checkstyle-check.checkstyle.version>8.12
     </maven.sevntu-checkstyle-check.checkstyle.version>
+    <!-- Testing -->
+    <junit.jupiter.version>5.3.1</junit.jupiter.version>
+    <junit.platform.version>1.3.1</junit.platform.version>
+    <!-- Plugins -->
+    <org.apache.maven.plugins.maven-failsafe-plugin.version>2.22.0
+    </org.apache.maven.plugins.maven-failsafe-plugin.version>
+    <org.apache.maven.plugins.maven-surfire-plugin.version>2.22.0
+    </org.apache.maven.plugins.maven-surfire-plugin.version>
+    <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
+    <org.jacoco.version>0.8.3</org.jacoco.version>
+    <org.apache.maven.plugins.pmd.version>3.11.0</org.apache.maven.plugins.pmd.version>
+    <maven.sevntu.checkstyle.plugin.version>1.32.0</maven.sevntu.checkstyle.plugin.version>
+    <org.codehaus.mojo-properties-maven-plugin.version>1.0.0
+    </org.codehaus.mojo-properties-maven-plugin.version>
     <!-- Checkstyle -->
     <checkstyle.basedir>${session.executionRootDirectory}/build/rules</checkstyle.basedir>
     <checkstyle.config.location>${checkstyle.basedir}/checkstyle_rules.xml
@@ -46,10 +68,109 @@
     <checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
     <checkstyle.suppressions.location>${checkstyle.basedir}/checkstyle_suppressions.xml
     </checkstyle.suppressions.location>
+    <!-- Jacoco -->
+    <jacoco.branchRatio>0.75</jacoco.branchRatio>
+    <jacoco.lineRatio>0.80</jacoco.lineRatio>
+    <!-- PMD -->
+    <pmd.basedir>${session.executionRootDirectory}/build/rules</pmd.basedir>
+    <pmd.config.location>${pmd.basedir}/pmd_rules.xml</pmd.config.location>
+    <pmd.skipEmptyReport>true</pmd.skipEmptyReport>
+    <!-- PIT -->
+    <org.pitest.pitest.maven.version>1.4.3</org.pitest.pitest.maven.version>
+    <pitest-junit5-plugin.version>0.7</pitest-junit5-plugin.version>
   </properties>
 
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Sibling modules -->
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-core</artifactId>
+        <version>${webcentral-backend-core.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-videoportal</artifactId>
+        <version>${webcentral-backend-videoportal.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-broadcastmanager</artifactId>
+        <version>${webcentral-backend-broadcastmanager.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-productionmanager</artifactId>
+        <version>${webcentral-backend-productionmanager.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>hu.bme.sch.bss</groupId>
+        <artifactId>webcentral-backend-webapp</artifactId>
+        <version>${webcentral-backend-webapp.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <!-- Spring -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <version>${spring-boot-starter.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <version>${spring-boot-starter.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.2.11</version>
+      </dependency>
+      <!-- Test -->
+      <dependency>
+        <groupId>io.zonky.test</groupId>
+        <artifactId>embedded-database-spring-test</artifactId>
+        <version>1.3.4</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>${junit.jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-launcher</artifactId>
+        <version>${junit.platform.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
-    <!-- Spring -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
@@ -93,7 +214,6 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -108,39 +228,73 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <excludes>
+          <exclude>**/application.properties</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <includes>
+          <include>**/application.properties</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
+      <!-- Setup maven resources plugin -->
       <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <version>3.1.0</version>
-      </plugin>
-      <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
-      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.2</version>
+        <configuration>
+          <escapeString>\</escapeString>
+          <delimiters>
+            <delimiter>${}</delimiter>
+          </delimiters>
+        </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>${org.codehaus.mojo-properties-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+            <configuration>
+              <files>
+                <file>${session.executionRootDirectory}/default.properties</file>
+              </files>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Setup failsafe plugin for integration tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${org.apache.maven.plugins.maven-failsafe-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.1</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.6</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-install-plugin</artifactId>
-        <version>2.5.2</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>${org.apache.maven.plugins.maven-surfire-plugin.version}</version>
       </plugin>
       <!-- Setup maven checkstyle plugin -->
       <plugin>
-
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven.checkstyle.plugin.version}</version>
@@ -171,6 +325,141 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <!-- Jacoco for code coverage -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${org.jacoco.version}</version>
+        <configuration>
+          <skip>${skipJacoco}</skip>
+          <excludes>
+            <!-- For equals, hash (etc...) functions -->
+            <exclude>**/Application.class</exclude>
+            <exclude>**/*Configuration.class</exclude>
+            <exclude>**/domain/**/*.class</exclude>
+            <exclude>**/*Request.class</exclude>
+            <exclude>**/dto/*.class</exclude>
+            <exclude>**/dao/*.class</exclude>
+            <exclude>**/model/*.class</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>jacoco-initialize</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.branchRatio}</minimum>
+                    </limit>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.lineRatio}</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- PMD for static code analysis -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${org.apache.maven.plugins.pmd.version}</version>
+        <inherited>true</inherited>
+        <configuration>
+          <printFailingErrors>true</printFailingErrors>
+          <skip>${skipPmd}</skip>
+          <aggregate>true</aggregate>
+          <skipEmptyReport>${pmd.skipEmptyReport}</skipEmptyReport>
+          <rulesets>
+            <ruleset>${pmd.config.location}</ruleset>
+          </rulesets>
+          <typeResolution>false</typeResolution>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- PIT mutation testing metric -->
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>${org.pitest.pitest.maven.version}</version>
+        <configuration>
+          <mutationThreshold>90</mutationThreshold>
+          <skip>${skipPit}</skip>
+          <targetClasses>
+            <param>hu.bme.sch.bss**.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>hu.bme.sch.bss**.*Test</param>
+          </targetTests>
+          <excludedClasses>
+            <excludedClass>hu.bme.sch.bss.**.configuration.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.domain.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.controller.test.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.dto.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.exception.*</excludedClass>
+            <excludedClass>hu.bme.sch.bss.**.model.*</excludedClass>
+          </excludedClasses>
+          <mutators>
+            <mutator>CONSTRUCTOR_CALLS</mutator>
+            <mutator>VOID_METHOD_CALLS</mutator>
+            <mutator>RETURN_VALS</mutator>
+            <mutator>NON_VOID_METHOD_CALLS</mutator>
+            <mutator>REMOVE_CONDITIONALS</mutator>
+            <mutator>INCREMENTS</mutator>
+            <mutator>MATH</mutator>
+            <mutator>NEGATE_CONDITIONALS</mutator>
+            <mutator>INVERT_NEGS</mutator>
+            <mutator>CONDITIONALS_BOUNDARY</mutator>
+          </mutators>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>mutationCoverage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>${pitest-junit5-plugin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

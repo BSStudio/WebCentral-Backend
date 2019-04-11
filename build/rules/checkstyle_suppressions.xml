@@ -4,4 +4,7 @@
   "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
   <suppress checks="HideUtilityClassConstructor" files="Application.java"/>
+
+  <!-- relax rules in tests -->
+  <suppress checks="HiddenField" files=".*Mock.*java|.*Test\.java|.*IT\.java"/>
 </suppressions>

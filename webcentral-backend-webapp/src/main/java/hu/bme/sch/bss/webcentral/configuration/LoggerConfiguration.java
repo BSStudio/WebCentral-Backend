@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral;
+package hu.bme.sch.bss.webcentral.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoggerConfig {
+public final class LoggerConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Logger logger(InjectionPoint ip) {
+    public Logger logger(final InjectionPoint ip) {
         return LoggerFactory.getLogger(ip.getMember().getDeclaringClass());
     }
 

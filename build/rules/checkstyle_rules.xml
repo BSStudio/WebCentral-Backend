@@ -72,20 +72,20 @@
   <!--   <property name="fileExtensions" value="java"/> -->
   <!-- </module> -->
 
-  <module name="SuppressWarningsFilter"/>
+    <module name="SuppressWarningsFilter"/>
 
-  <module name="TreeWalker">
+    <module name="TreeWalker">
 
-      <module name="SuppressWarningsHolder"/>
+        <module name="SuppressWarningsHolder"/>
 
-    <!-- Checks for Javadoc comments.                     -->
-    <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-    <!-- We don't write Javadoc, don't need that.
-    <module name="JavadocMethod"/>
-    <module name="JavadocType"/>
-    <module name="JavadocVariable"/>
-    <module name="JavadocStyle"/>
-    -->
+        <!-- Checks for Javadoc comments.                     -->
+        <!-- See http://checkstyle.sf.net/config_javadoc.html -->
+        <!-- We don't write Javadoc, don't need that.
+        <module name="JavadocMethod"/>
+        <module name="JavadocType"/>
+        <module name="JavadocVariable"/>
+        <module name="JavadocStyle"/>
+        -->
 
     <!-- Checks for Naming Conventions.                  -->
     <!-- See http://checkstyle.sf.net/config_naming.html -->

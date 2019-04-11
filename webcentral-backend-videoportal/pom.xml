@@ -4,6 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>webcentral-backend-videoportal</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <name>webcentral-backend-videoportal</name>
   <description>BSS WebCentral Video Portal</description>
   <packaging>jar</packaging>
@@ -15,23 +16,37 @@
   </parent>
 
   <dependencies>
+    <!-- Siblings -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <groupId>hu.bme.sch.bss</groupId>
+      <artifactId>webcentral-backend-core</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <!-- Test -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>hu.bme.sch.bss</groupId>
-      <artifactId>webcentral-backend-core</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>compile</scope>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>hu.bme.sch.bss</groupId>
-      <artifactId>webcentral-backend-core</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>compile</scope>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

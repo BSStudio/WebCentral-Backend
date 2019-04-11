@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral;
+package hu.bme.sch.bss.webcentral.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-public class MvcConfig extends WebSecurityConfigurerAdapter {
+public class MvcConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected final void configure(final HttpSecurity http) throws Exception {
