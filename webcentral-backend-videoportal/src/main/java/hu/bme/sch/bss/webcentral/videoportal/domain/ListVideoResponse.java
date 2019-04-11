@@ -1,16 +1,16 @@
-package hu.bme.sch.bss.webcentral.domain;
+package hu.bme.sch.bss.webcentral.videoportal.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import hu.bme.sch.bss.webcentral.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 import java.util.List;
 
 @JsonSerialize
-public final class VideoListResponse {
+public final class ListVideoResponse {
 
     private final Video[] videos;
 
-    public VideoListResponse(final Builder builder) {
+    public ListVideoResponse(final Builder builder) {
         this.videos = builder.videos;
     }
 
@@ -38,8 +38,8 @@ public final class VideoListResponse {
             return this;
         }
 
-        public VideoListResponse build() {
-            return new VideoListResponse(this);
+        public ListVideoResponse build() {
+            return new ListVideoResponse(this);
         }
     }
 }

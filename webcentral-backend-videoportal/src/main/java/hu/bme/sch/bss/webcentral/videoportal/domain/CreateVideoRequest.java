@@ -1,44 +1,28 @@
-package hu.bme.sch.bss.webcentral.model;
+package hu.bme.sch.bss.webcentral.videoportal.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import hu.bme.sch.bss.webcentral.DomainAuditModel;
-
-import java.util.Objects;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@JsonSerialize
-@JsonDeserialize(builder = Video.Builder.class)
-@Entity
-@Table(name = "videos")
-public final class Video extends DomainAuditModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@SuppressWarnings("finalclass")
+@JsonDeserialize(builder = CreateVideoRequest.Builder.class)
+public class CreateVideoRequest {
 
     @NotBlank
-    private String longName;
+    private final String longName;
 
     @NotBlank
-    private String canonicalName;
+    private final String canonicalName;
 
     @NotBlank
-    private String projectName;
+    private final String projectName;
 
     @NotBlank
-    private String description;
+    private final String description;
 
     @NotNull
-    private Boolean visible;
+    private final Boolean visible;
 
     @NotBlank
     private String videoLocation;
@@ -46,11 +30,7 @@ public final class Video extends DomainAuditModel {
     @NotBlank
     private String imageLocation;
 
-    // No-arg constructor for hibernate
-    public Video() {
-    }
-
-    private Video(final Builder builder) {
+    private CreateVideoRequest(final Builder builder) {
         this.longName = builder.longName;
         this.canonicalName = builder.canonicalName;
         this.projectName = builder.projectName;
@@ -58,10 +38,6 @@ public final class Video extends DomainAuditModel {
         this.visible = builder.visible;
         this.videoLocation = builder.videoLocation;
         this.imageLocation = builder.imageLocation;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getLongName() {
@@ -95,42 +71,6 @@ public final class Video extends DomainAuditModel {
     public static Builder builder() {
         return new Builder();
     }
-
-    // Generated code begins here
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Video video = (Video) o;
-        return Objects.equals(id, video.id)
-                && Objects.equals(longName, video.longName)
-                && Objects.equals(canonicalName, video.canonicalName)
-                && Objects.equals(projectName, video.projectName)
-                && Objects.equals(description, video.description)
-                && Objects.equals(visible, video.visible)
-                && Objects.equals(videoLocation, video.videoLocation)
-                && Objects.equals(imageLocation, video.imageLocation);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                id,
-                longName,
-                canonicalName,
-                projectName,
-                description,
-                visible,
-                videoLocation,
-                imageLocation
-        );
-    }
-
-    // Generated code ends here
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
@@ -179,8 +119,8 @@ public final class Video extends DomainAuditModel {
             return this;
         }
 
-        public Video build() {
-            return new Video(this);
+        public CreateVideoRequest build() {
+            return new CreateVideoRequest(this);
         }
     }
 }

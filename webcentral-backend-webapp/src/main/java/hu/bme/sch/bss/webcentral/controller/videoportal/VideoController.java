@@ -1,18 +1,21 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
-import hu.bme.sch.bss.webcentral.VideoService;
-import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
-import hu.bme.sch.bss.webcentral.domain.VideoListResponse;
-import hu.bme.sch.bss.webcentral.domain.VideoResponse;
+import hu.bme.sch.bss.webcentral.videoportal.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
+import hu.bme.sch.bss.webcentral.videoportal.domain.ListVideoResponse;
+import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,24 +37,33 @@ public class VideoController {
     public final VideoResponse createVideo(
             @Valid @RequestBody final CreateVideoRequest request
     ) {
+        Video result = videoService.create(request);
         return VideoResponse.builder()
-                .withVideo(videoService.create(request))
+                .withVideo(result)
                 .build();
     }
 
     @GetMapping(value = "/published")
     @ResponseStatus(HttpStatus.OK)
-    public final VideoListResponse listPublicVideos() {
-        return VideoListResponse.builder()
+    public final ListVideoResponse listPublicVideos() {
+        return ListVideoResponse.builder()
                 .withVideos(videoService.findPublished())
                 .build();
     }
 
     @GetMapping(value = "/all")
     @ResponseStatus(HttpStatus.OK)
-    public final VideoListResponse listAllVideos() {
-        return VideoListResponse.builder()
+    public final ListVideoResponse listAllVideos() {
+        return ListVideoResponse.builder()
                 .withVideos(new ArrayList<>(videoService.findAll()))
+                .build();
+    }
+
+    @GetMapping(value = "/archived")
+    @ResponseStatus(HttpStatus.OK)
+    public final ListVideoResponse listAllArchived() {
+        return ListVideoResponse.builder()
+                .withVideos(new ArrayList<>(videoService.findArchived()))
                 .build();
     }
 
@@ -65,6 +77,27 @@ public class VideoController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Video Not Found", e);
         }
         return responseBuilder.build();
+    }
+
+    @PutMapping(value = "/{id}/archive")
+    @ResponseStatus(HttpStatus.OK)
+    public final void archiveVideo(@PathVariable("id") final Long id) {
+        Video video = videoService.findById(id);
+        videoService.archive(video);
+    }
+
+    @PutMapping(value = "/{id}/restore")
+    @ResponseStatus(HttpStatus.OK)
+    public final void restoreVideo(@PathVariable("id") final Long id) {
+        Video video = videoService.findById(id);
+        videoService.restore(video);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public final void deleteVideo(@PathVariable("id") final Long id) {
+        Video video = videoService.findById(id);
+        videoService.delete(video);
     }
 
 }

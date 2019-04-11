@@ -1,8 +1,9 @@
-package hu.bme.sch.bss.webcentral;
+package hu.bme.sch.bss.webcentral.videoportal;
 
-import hu.bme.sch.bss.webcentral.dao.VideoDao;
-import hu.bme.sch.bss.webcentral.domain.CreateVideoRequest;
-import hu.bme.sch.bss.webcentral.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.dao.VideoDao;
+import hu.bme.sch.bss.webcentral.videoportal.domain.CreateVideoRequest;
+import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -178,5 +179,60 @@ class VideoServiceTest {
 
         // THEN
         assertNotNull(exception);
+    }
+
+    @Test
+    void testFindArchived() {
+        // GIVEN setup
+        List<Video> archivedList = new ArrayList<>();
+
+        Video video2 = Video.builder()
+                .build();
+
+        archivedList.add(video);
+        archivedList.add(video2);
+
+        given(mockVideoDao.findAllArchived()).willReturn(archivedList);
+
+        // WHEN
+        List<Video> result = underTest.findArchived();
+
+        // THEN
+        assertEquals(archivedList, result);
+    }
+
+    @Test
+    void testArchiving() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.archive(video);
+
+        // THEN
+        assertTrue(video.getArchived());
+        then(mockVideoDao).should().save(video);
+    }
+
+    @Test
+    void testRestore() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.restore(video);
+
+        // THEN
+        assertFalse(video.getArchived());
+        then(mockVideoDao).should().save(video);
+    }
+
+    @Test
+    void testDelete() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.delete(video);
+
+        // THEN
+        then(mockVideoDao).should().delete(video);
     }
 }
