@@ -30,6 +30,8 @@ public class VideoController {
     private static final String REQUEST_VIDEO_UPDATE = "Request to update video received for id {}";
     private static final String REQUEST_VIDEO_ARCHIVE = "Request to archive video received for id {}";
     private static final String REQUEST_VIDEO_RESTORE = "Request to restore video received for id {}";
+    private static final String REQUEST_VIDEO_PUBLISH = "Request to publish video received for id {}";
+    private static final String REQUEST_VIDEO_HIDE = "Request to hide video received for id {}";
     private static final String REQUEST_VIDEO_DELETE = "Request to delete video received for id {}";
     private static final String REQUEST_VIDEOS_LIST_ALL = "Request to list all video received.";
     private static final String REQUEST_VIDEOS_LIST_PUBLISHED = "Request to list published videos received.";
@@ -73,6 +75,22 @@ public class VideoController {
         logger.info(REQUEST_VIDEO_ARCHIVE, id);
         Video video = videoService.findById(id);
         videoService.archive(video);
+    }
+
+    @PutMapping("/{id}/publish")
+    @ResponseStatus(HttpStatus.OK)
+    public final void publishVideo(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_VIDEO_PUBLISH, id);
+        Video video = videoService.findById(id);
+        videoService.publish(video);
+    }
+
+    @PutMapping("/{id}/hide")
+    @ResponseStatus(HttpStatus.OK)
+    public final void hideVideo(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_VIDEO_HIDE, id);
+        Video video = videoService.findById(id);
+        videoService.hide(video);
     }
 
     @PutMapping("/{id}/restore")
