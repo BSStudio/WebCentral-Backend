@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ListVideoResponseTest {
+class VideoListResponseTest {
 
     @Test
     void testBuilderWithList(){
@@ -23,7 +23,7 @@ class ListVideoResponseTest {
         videoList.add(video2);
 
         // WHEN
-        ListVideoResponse result = ListVideoResponse.builder()
+        VideoListResponse result = VideoListResponse.builder()
                 .withVideos(videoList)
                 .build();
 
@@ -44,7 +44,7 @@ class ListVideoResponseTest {
         videos[1] = video2;
 
         // WHEN
-        ListVideoResponse result = ListVideoResponse.builder()
+        VideoListResponse result = VideoListResponse.builder()
                 .withVideos(videos)
                 .build();
 

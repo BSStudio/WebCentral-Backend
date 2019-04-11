@@ -16,10 +16,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.validation.annotation.Validated;
+
 @JsonSerialize
 @JsonDeserialize(builder = Video.Builder.class)
 @Entity
 @Table(name = "videos")
+@Validated
 public final class Video extends DomainAuditModel {
 
     @Id
@@ -52,10 +55,8 @@ public final class Video extends DomainAuditModel {
     @NotBlank
     private String imageLocation;
 
-    /**
-     * No-arg constructor for hibernate
-     */
     public Video() {
+        // No-arg constructor for hibernate
     }
 
     private Video(final Builder builder) {
@@ -77,44 +78,72 @@ public final class Video extends DomainAuditModel {
         return longName;
     }
 
+    public void setLongName(@NotNull final String longName) {
+        this.longName = longName;
+    }
+
     public String getCanonicalName() {
         return canonicalName;
+    }
+
+    public void setCanonicalName(final String canonicalName) {
+        this.canonicalName = canonicalName;
     }
 
     public String getProjectName() {
         return projectName;
     }
 
+    public void setProjectName(final String projectName) {
+        this.projectName = projectName;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
     }
 
     public Boolean getVisible() {
         return visible;
     }
 
+    public void setVisible(final Boolean visible) {
+        this.visible = visible;
+    }
+
     public Boolean getArchived() {
         return archived;
+    }
+
+    public void setArchived(final Boolean archived) {
+        this.archived = archived;
     }
 
     public String getVideoLocation() {
         return videoLocation;
     }
 
+    public void setVideoLocation(final String videoLocation) {
+        this.videoLocation = videoLocation;
+    }
+
     public String getImageLocation() {
         return imageLocation;
     }
 
-    public void setArchived(@NotNull final Boolean archived) {
-        this.archived = archived;
+    public void setImageLocation(final String imageLocation) {
+        this.imageLocation = imageLocation;
     }
+
 
     public static Builder builder() {
         return new Builder();
     }
 
     // Generated code begins here
-
 
     @Override
     public String toString() {
@@ -152,16 +181,7 @@ public final class Video extends DomainAuditModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                id,
-                longName,
-                canonicalName,
-                projectName,
-                description,
-                visible,
-                videoLocation,
-                imageLocation
-        );
+        return Objects.hash(id, longName, canonicalName, projectName, description, visible, videoLocation, imageLocation);
     }
 
     // Generated code ends here
