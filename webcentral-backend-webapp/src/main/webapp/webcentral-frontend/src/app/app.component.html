@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 shadow">
+  <a class="navbar-brand p-0"><img src="/wc/assets/img/bss_logo.jpg"></a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item bg-danger">
+      <a class="nav-link text-white" routerLink="live">Élő</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="video/all">Videók</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="course/all">Tanfolyam</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="user/all">Tagok</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="about">Rólunk</a>
+    </li>
+  </ul>
+
+  <form class="form-inline">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Keresés</button>
+  </form>
+</nav>
+
+<router-outlet></router-outlet>
