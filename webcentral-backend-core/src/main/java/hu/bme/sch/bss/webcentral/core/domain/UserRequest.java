@@ -5,10 +5,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
 public final class UserRequest {
+
+	@NotNull
+	private Boolean archived;
 
     @NotBlank
     private String nickname;
@@ -30,6 +34,7 @@ public final class UserRequest {
     private final String imageUri;
 
     private UserRequest(final Builder builder) {
+	    this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
@@ -42,7 +47,11 @@ public final class UserRequest {
         return new Builder();
     }
 
-    public String getNickname() {
+	public Boolean getArchived() {
+		return archived;
+	}
+
+	public String getNickname() {
         return nickname;
     }
 
@@ -69,12 +78,18 @@ public final class UserRequest {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-        private String nickname;
+	    private Boolean archived;
+	    private String nickname;
         private String givenName;
         private String familyName;
         private String email;
         private String description;
         private String imageUri;
+
+	    public Builder withArchived(final Boolean archived) {
+		    this.archived = archived;
+		    return this;
+	    }
 
         public Builder withNickname(final String nickname) {
             this.nickname = nickname;

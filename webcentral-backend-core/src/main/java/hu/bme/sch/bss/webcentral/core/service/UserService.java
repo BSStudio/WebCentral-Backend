@@ -22,6 +22,10 @@ public final class UserService {
 	private static final String USERS_ALL_SEARCH_STARTED = "Search for all users started";
 	private static final String USER_UPDATE_STARTED = "User update started. {}";
 	private static final String USER_UPDATE_SUCCEED = "User update succeed. {}";
+	private static final String USER_ARCHIVE_STARTED = "User archive started. {}";
+	private static final String USER_ARCHIVE_SUCCEED = "User archive succeed. {}";
+	private static final String USER_RESTORE_STARTED = "User restore started. {}";
+	private static final String USER_RESTORE_SUCCEED = "User restore succeed. {}";
 
 	private final UserDao userDao;
 	private final Logger logger;
@@ -57,17 +61,6 @@ public final class UserService {
 		return userList;
 	}
 
-	private User createUserWithRequestData(final UserRequest request) {
-		return User.builder()
-				.withDescription(request.getDescription())
-				.withEmail(request.getEmail())
-				.withFamilyName(request.getFamilyName())
-				.withGivenName(request.getGivenName())
-				.withImageUri(request.getImageUri())
-				.withNickname(request.getNickname())
-				.build();
-	}
-
 	public void update(final UserRequest request, final User user) {
 		logger.info(USER_UPDATE_STARTED, user);
 		user.setNickname(request.getNickname());
@@ -78,5 +71,31 @@ public final class UserService {
 		user.setImageUri(request.getImageUri());
 		userDao.save(user);
 		logger.info(USER_UPDATE_SUCCEED, user);
+	}
+
+	public void archive(final User user) {
+		logger.info(USER_ARCHIVE_STARTED, user);
+		user.setArchived(true);
+		userDao.save(user);
+		logger.info(USER_ARCHIVE_SUCCEED, user);
+	}
+
+	public void restore(final User user) {
+		logger.info(USER_RESTORE_STARTED, user);
+		user.setArchived(false);
+		userDao.save(user);
+		logger.info(USER_RESTORE_SUCCEED, user);
+	}
+
+	private User createUserWithRequestData(final UserRequest request) {
+		return User.builder()
+				.withArchived(request.getArchived())
+				.withDescription(request.getDescription())
+				.withEmail(request.getEmail())
+				.withFamilyName(request.getFamilyName())
+				.withGivenName(request.getGivenName())
+				.withImageUri(request.getImageUri())
+				.withNickname(request.getNickname())
+				.build();
 	}
 }

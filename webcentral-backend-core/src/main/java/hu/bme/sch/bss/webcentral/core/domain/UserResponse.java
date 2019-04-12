@@ -10,6 +10,7 @@ import hu.bme.sch.bss.webcentral.core.model.User;
 @JsonTypeName("user")
 public final class UserResponse {
     private final Long id;
+	private final Boolean archived;
     private final String nickname;
     private final String givenName;
     private final String familyName;
@@ -19,6 +20,7 @@ public final class UserResponse {
 
     public UserResponse(final User user) {
         this.id = user.getId();
+	    this.archived = user.getArchived();
         this.nickname = user.getNickname();
         this.givenName = user.getGivenName();
         this.familyName = user.getFamilyName();
@@ -31,7 +33,11 @@ public final class UserResponse {
         return id;
     }
 
-    public String getNickname() {
+	public Boolean getArchived() {
+		return archived;
+	}
+
+	public String getNickname() {
         return nickname;
     }
 
