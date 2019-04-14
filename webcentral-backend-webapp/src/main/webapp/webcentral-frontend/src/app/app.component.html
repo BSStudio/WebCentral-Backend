@@ -1,9 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 shadow">
-  <a class="navbar-brand p-0"><img src="/wc/assets/img/bss_logo.jpg"></a>
+  <a class="navbar-brand p-0 m-0"><img src="/wc/assets/img/bss_logo.jpg"></a>
   <ul class="navbar-nav mr-auto">
-    <li class="nav-item bg-danger">
-      <a class="nav-link text-white" routerLink="live">Élő</a>
-    </li>
+    <div *ngIf="true; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+      <div class="arrow-right-white bg-danger"></div>
+      <li class="nav-item bg-danger">
+        <a class="nav-link text-white" routerLink="live">Élő</a>
+      </li>
+      <div class="arrow-right-danger"></div>
+    </ng-template>
+    <ng-template #elseBlock>
+        <div class="arrow-right-white"></div>
+    </ng-template>
     <li class="nav-item">
       <a class="nav-link" routerLink="video/all">Videók</a>
     </li>
