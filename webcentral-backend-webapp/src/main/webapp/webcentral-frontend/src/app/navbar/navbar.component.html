@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0">
+    <a class="navbar-brand image m-0 px-1 py-0 d-none d-lg-block" href="#"><img src="/wc/assets/img/bss_logo.png"></a>
+    <a class="navbar-brand ml-1 d-md-block d-lg-none" href="#">Budavári Schönherz Stúdió</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>  
+    
+    <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <!-- Switch depending on available broadcast -->
+        <div *ngIf="true; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+          <li class="live d-none d-lg-block">
+            <svg class="triangle gray">
+                <polygon points="0,0 20,20 0,40" fill="currentColor" />
+            </svg>
+          </li>
+          <li class="nav-item live">
+            <a class="nav-link text-white px-2" routerLink="live">● Élő</a>
+          </li>
+          <svg class="triangle live  d-none d-lg-block mr-2">
+              <polygon points="0,0 20,20 0,40" fill="currentColor" />
+          </svg>
+        </ng-template>
+        <ng-template #elseBlock>
+            <svg class="triangle gray d-none d-md-block mr-2">
+                <polygon points="0,0 20,20 0,40" fill="currentColor" />
+            </svg>
+        </ng-template>
+        <li class="nav-item dropdown">
+          <div class="btn-group">
+            <a class="nav-link text-white pr-1" routerLink="video/all">Videók</a>
+            <!-- Switch depending on user permission -->
+            <div *ngIf="true">
+              <a class="nav-link dropdown-toggle pl-0" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+              </a>
+              <div class="dropdown-menu dropdown-menu-center" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" routerLink="video/add">Létrehozás</a>
+                <a class="dropdown-item" routerLink="video/archived/all">Archívum</a>
+                <a class="dropdown-item" routerLink="video/hidden/all">Zárlatok</a>
+                <a class="dropdown-item" routerLink="video/draft/all">Sablonok</a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="course/all">Tanfolyamok</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="user/all">Tagok</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="about">Rólunk</a>
+        </li>
+        <li class="d-md-block d-lg-none">
+          <a class="nav-link text-white" routerLink="report">Hibabejelentés</a>
+        </li>
+        <li class="d-md-block d-lg-none">
+          <a class="nav-link text-white" routerLink="login">Bejelentkezés</a>
+        </li>
+      </ul>
+  
+      <form class="form-inline mb-1 d-flex justify-content-end">
+        <input type="search" placeholder="Gyorskeresés" aria-label="Search">
+        <button class="btn btn-link icon m-0 p-0" type="submit">
+            <span class="oi oi-magnifying-glass icon" data-toggle="tooltip" data-placement="bottom"  title="keresés"></span>
+        </button>
+        <a class="ml-3 mr-3 d-none d-lg-block" routerLink="login">
+          <span class="oi oi-person icon" data-toggle="tooltip" data-placement="bottom"  title="bejelentkezés"></span>
+        </a>
+        <a class="mr-3 d-none d-lg-block" routerLink="report/add">
+          <span class="oi oi-chat icon" data-toggle="tooltip" data-placement="bottom"  title="hiba bejelentés"></span>
+        </a>
+      </form>
+    </div>
+  </nav>
