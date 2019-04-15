@@ -32,13 +32,47 @@
             <a class="nav-link text-white pr-1" routerLink="video/all">Videók</a>
             <!-- Switch depending on user permission -->
             <div *ngIf="true">
-              <a class="nav-link dropdown-toggle pl-0" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+              <a class="nav-link dropdown-toggle pl-0" href="#" id="videoOptionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
               </a>
-              <div class="dropdown-menu dropdown-menu-center" aria-labelledby="navbarDropdown">
+              <div class="dropdown-menu dropdown-menu-center" aria-labelledby="videoOptionsDropdown">
                 <a class="dropdown-item" routerLink="video/add">Létrehozás</a>
                 <a class="dropdown-item" routerLink="video/archived/all">Archívum</a>
-                <a class="dropdown-item" routerLink="video/hidden/all">Zárlatok</a>
+                <a class="dropdown-item" routerLink="video/hidden/all">Zároltak</a>
                 <a class="dropdown-item" routerLink="video/draft/all">Sablonok</a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- Switch depending on user permission -->
+        <li class="nav-item" *ngIf="true">
+          <div class="btn-group">
+            <a class="nav-link text-white" routerLink="broadcast/all">Adások</a>
+            <!-- Switch depending on user permission -->
+            <div *ngIf="true">
+              <a class="nav-link dropdown-toggle pl-0" href="#" id="broadcastOptionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+              </a>
+              <div class="dropdown-menu dropdown-menu-center" aria-labelledby="broadcastOptionsDropdown">
+                <a class="dropdown-item" routerLink="broadcast/add" data-toggle="tooltip" data-placement="bottom"  title="később majd projektként hozható létre, mint adás altípus">Létrehozás</a>
+                <a class="dropdown-item" routerLink="broadcast/archived/all">Archívum</a>
+                <a class="dropdown-item" routerLink="broadcast/hidden/all">Zároltak</a>
+                <a class="dropdown-item" routerLink="broadcast/draft/all">Sablonok</a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- Switch depending on user permission -->
+        <li class="nav-item" *ngIf="true">
+          <div class="btn-group">
+            <a class="nav-link text-white" routerLink="projects/all">Projektek</a>
+            <!-- Switch depending on user permission -->
+            <div *ngIf="true">
+              <a class="nav-link dropdown-toggle pl-0" href="#" id="broadcastOptionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+              </a>
+              <div class="dropdown-menu dropdown-menu-center" aria-labelledby="broadcastOptionsDropdown">
+                <a class="dropdown-item" routerLink="projects/add">Létrehozás</a>
+                <a class="dropdown-item" routerLink="projects/archived/all">Archívum</a>
+                <a class="dropdown-item" routerLink="projects/hidden/all">Zároltak</a>
+                <a class="dropdown-item" routerLink="projects/draft/all">Sablonok</a>
               </div>
             </div>
           </div>
@@ -47,13 +81,26 @@
           <a class="nav-link text-white" routerLink="course/all">Tanfolyamok</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="user/all">Tagok</a>
+          <div class="btn-group">
+            <a class="nav-link text-white" routerLink="user/all">Tagok</a>
+            <!-- Switch depending on user permission -->
+            <div *ngIf="true">
+              <a class="nav-link dropdown-toggle pl-0" href="#" id="broadcastOptionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+              </a>
+              <div class="dropdown-menu dropdown-menu-center" aria-labelledby="broadcastOptionsDropdown">
+                <a class="dropdown-item" routerLink="user/add">Létrehozás</a>
+                <a class="dropdown-item" routerLink="user/archived/all">Archívum</a>
+                <a class="dropdown-item" routerLink="user/hidden/all">Zároltak</a>
+                <a class="dropdown-item" routerLink="user/permission/all">Jogosultságok</a>
+              </div>
+            </div>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white" routerLink="about">Rólunk</a>
         </li>
         <li class="d-md-block d-lg-none">
-          <a class="nav-link text-white" routerLink="report">Hibabejelentés</a>
+          <a class="nav-link text-white" routerLink="report">Hibabejelentés és kapcsolatfelvétel</a>
         </li>
         <li class="d-md-block d-lg-none">
           <a class="nav-link text-white" routerLink="login">Bejelentkezés</a>
@@ -65,11 +112,11 @@
         <button class="btn btn-link icon m-0 p-0" type="submit">
             <span class="oi oi-magnifying-glass icon" data-toggle="tooltip" data-placement="bottom"  title="keresés"></span>
         </button>
-        <a class="ml-3 mr-3 d-none d-lg-block" routerLink="login">
-          <span class="oi oi-person icon" data-toggle="tooltip" data-placement="bottom"  title="bejelentkezés"></span>
+        <a class="ml-2 mr-3 d-none d-lg-block" routerLink="login">
+          <span class="oi oi-account-login icon" data-toggle="tooltip" data-placement="bottom"  title="bejelentkezés"></span>
         </a>
         <a class="mr-3 d-none d-lg-block" routerLink="report/add">
-          <span class="oi oi-chat icon" data-toggle="tooltip" data-placement="bottom"  title="hiba bejelentés"></span>
+          <span class="oi oi-chat icon" data-toggle="tooltip" data-placement="bottom"  title="hibabejelentés és kapcsolatfelvétel"></span>
         </a>
       </form>
     </div>

@@ -39,7 +39,7 @@ nav input {
     border: none;
     background-color: transparent;
     color: white;
-    border-bottom: 2px solid white;
+    border-bottom: 1px solid white;
 }
 
 nav input::placeholder {

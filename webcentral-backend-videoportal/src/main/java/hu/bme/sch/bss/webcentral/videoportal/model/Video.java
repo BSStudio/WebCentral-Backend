@@ -137,7 +137,6 @@ public final class Video extends DomainAuditModel {
         this.imageLocation = imageLocation;
     }
 
-
     public static Builder builder() {
         return new Builder();
     }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ViewController {
 
-    @RequestMapping({"/all"})
+    @RequestMapping({"video/all"})
     public final String index() {
         return "forward:/index.html";
     }

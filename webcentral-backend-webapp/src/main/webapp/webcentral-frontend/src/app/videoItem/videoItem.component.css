@@ -1,0 +1,12 @@
+img.card-img-top {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+div.card {
+    border-width: 0px;
+}
+
+div.card-body {
+    padding: 1em;
+}
