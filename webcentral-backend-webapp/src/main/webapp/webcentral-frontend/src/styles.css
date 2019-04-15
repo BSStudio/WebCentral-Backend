@@ -3,3 +3,7 @@
 mat-icon{
     font-family: 'Material Icons' !important;
 }
+
+nav.bg-primary{
+    background-color: #005BAA!important;
+}
