@@ -1,19 +1,5 @@
-div.arrow-right-white {
-    width: 0; 
-    height: 0; 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-
-    border-left: 15px solid white;
-}
-
-div.arrow-right-danger {
-    width: 0; 
-    height: 0; 
-
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-
-    border-left: 15px solid #dc3545;
+mat-icon{
+    font-family: 'Material Icons' !important;
 }
