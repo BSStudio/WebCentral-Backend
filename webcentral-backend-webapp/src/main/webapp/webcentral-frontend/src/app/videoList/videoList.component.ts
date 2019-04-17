@@ -1,4 +1,4 @@
-import { VideoItem } from './../videoItem/videoItem.service';
+import { VideoListItem } from './../videoListItem/videoListItem.service';
 import { Component, OnInit, Injectable } from '@angular/core';
 import { VideoList, VideoListService } from './videoList.service';
 
@@ -12,7 +12,7 @@ import { VideoList, VideoListService } from './videoList.service';
 export class VideoListComponent implements OnInit {
 
   private videoListService: VideoListService;
-  videos: VideoItem[];
+  videos: VideoListItem[];
 
   constructor(videoListService: VideoListService) {
     this.videoListService = videoListService;

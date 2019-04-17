@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class VideoItemService {
+export class VideoListItemService {
 
 constructor() { }
 
 }
 
-export interface VideoItem {
+export interface VideoListItem {
   id: number;
   createdAt: string;
   longName: string;

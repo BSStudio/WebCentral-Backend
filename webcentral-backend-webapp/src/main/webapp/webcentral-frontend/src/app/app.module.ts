@@ -1,4 +1,4 @@
-import { VideoItemComponent } from './videoItem/videoItem.component';
+import { VideoListItemComponent } from './videoListItem/videoListItem.component';
 import { VideoListComponent } from './videoList/videoList.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -18,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
       AppComponent,
       NavbarComponent,
       VideoListComponent,
-      VideoItemComponent
+      VideoListItemComponent
    ],
    imports: [
       BrowserModule,

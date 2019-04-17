@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { VideoItem } from '../videoItem/videoItem.service';
+import { VideoListItem } from '../videoListItem/videoListItem.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +22,5 @@ export class VideoListService {
 }
 
 export interface VideoList {
-  videos: VideoItem[];
+  videos: VideoListItem[];
 }

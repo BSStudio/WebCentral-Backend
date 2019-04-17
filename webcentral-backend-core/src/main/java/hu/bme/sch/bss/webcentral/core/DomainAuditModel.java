@@ -33,11 +33,11 @@ public abstract class DomainAuditModel implements Serializable {
     @JsonIgnore
     private Date updatedAt;
 
-    public final Date getCreatedAt() {
+    protected final Date getCreated() {
         return createdAt;
     }
 
-    public final Date getUpdatedAt() {
+    protected final Date getUpdatedAt() {
         return updatedAt;
     }
 }
