@@ -32,7 +32,7 @@ public class UserService {
         return user;
     }
 
-	User createUserWithRequestData(final UserRequest request) {
+    User createUserWithRequestData(final UserRequest request) {
         return User.builder()
             .withDescription(request.getDescription())
             .withEmail(request.getEmail())
