@@ -6,108 +6,104 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+@SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
-public final class UserRequest {
+public class UserRequest {
 
-    @NotBlank
-    private String nickname;
+	@NotBlank
+	private final String givenName;
+	@NotBlank
+	private final String familyName;
+	@Email
+	@NotBlank
+	private final String email;
+	@NotBlank
+	private final String description;
+	@NotBlank
+	private final String imageUri;
+	@NotBlank
+	private String nickname;
 
-    @NotBlank
-    private final String givenName;
+	private UserRequest(final Builder builder) {
+		this.nickname = builder.nickname;
+		this.givenName = builder.givenName;
+		this.familyName = builder.familyName;
+		this.email = builder.email;
+		this.description = builder.description;
+		this.imageUri = builder.imageUri;
+	}
 
-    @NotBlank
-    private final String familyName;
+	public static Builder builder() {
+		return new Builder();
+	}
 
-    @Email
-    @NotBlank
-    private final String email;
+	public String getNickname() {
+		return nickname;
+	}
 
-    @NotBlank
-    private final String description;
+	public String getGivenName() {
+		return givenName;
+	}
 
-    @NotBlank
-    private final String imageUri;
+	public String getFamilyName() {
+		return familyName;
+	}
 
-    private UserRequest(final Builder builder) {
-        this.nickname = builder.nickname;
-        this.givenName = builder.givenName;
-        this.familyName = builder.familyName;
-        this.email = builder.email;
-        this.description = builder.description;
-        this.imageUri = builder.imageUri;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public static Builder builder() {
-        return new Builder();
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getNickname() {
-        return nickname;
-    }
+	public String getImageUri() {
+		return imageUri;
+	}
 
-    public String getGivenName() {
-        return givenName;
-    }
+	@SuppressWarnings("hiddenfield")
+	public static final class Builder {
 
-    public String getFamilyName() {
-        return familyName;
-    }
+		private String nickname;
+		private String givenName;
+		private String familyName;
+		private String email;
+		private String description;
+		private String imageUri;
 
-    public String getEmail() {
-        return email;
-    }
+		public Builder withNickname(final String nickname) {
+			this.nickname = nickname;
+			return this;
+		}
 
-    public String getDescription() {
-        return description;
-    }
+		public Builder withGivenName(final String givenName) {
+			this.givenName = givenName;
+			return this;
+		}
 
-    public String getImageUri() {
-        return imageUri;
-    }
+		public Builder withFamilyName(final String familyName) {
+			this.familyName = familyName;
+			return this;
+		}
 
-    @SuppressWarnings("hiddenfield")
-    public static final class Builder {
+		public Builder withEmail(final String email) {
+			this.email = email;
+			return this;
+		}
 
-        private String nickname;
-        private String givenName;
-        private String familyName;
-        private String email;
-        private String description;
-        private String imageUri;
+		public Builder withDescription(final String description) {
+			this.description = description;
+			return this;
+		}
 
-        public Builder withNickname(final String nickname) {
-            this.nickname = nickname;
-            return this;
-        }
+		public Builder withImageUri(final String imageUri) {
+			this.imageUri = imageUri;
+			return this;
+		}
 
-        public Builder withGivenName(final String givenName) {
-            this.givenName = givenName;
-            return this;
-        }
-
-        public Builder withFamilyName(final String familyName) {
-            this.familyName = familyName;
-            return this;
-        }
-
-        public Builder withEmail(final String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder withDescription(final String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder withImageUri(final String imageUri) {
-            this.imageUri = imageUri;
-            return this;
-        }
-
-        public UserRequest build() {
-            return new UserRequest(this);
-        }
-    }
+		public UserRequest build() {
+			return new UserRequest(this);
+		}
+	}
 }
