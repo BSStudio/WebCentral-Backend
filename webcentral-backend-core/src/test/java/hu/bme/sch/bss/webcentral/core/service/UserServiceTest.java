@@ -107,5 +107,20 @@ class UserServiceTest {
         );
     }
 
+    @Test
+    void testFindById() {
+
+    }
+
+    @Test
+    void testFindByIdWithNoUser() {
+
+    }
+
+    @Test
+    void testFindAll() {
+
+    }
+
 
 }
