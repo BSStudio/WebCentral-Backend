@@ -325,6 +325,8 @@
             <exclude>**/dto/*.class</exclude>
             <exclude>**/dao/*.class</exclude>
             <exclude>**/model/*.class</exclude>
+            <!-- For front-end -->
+            <exclude>**/webapp/**</exclude>
           </excludes>
         </configuration>
         <executions>

@@ -2,14 +2,14 @@
   <div class="row">
     <main class="col-lg-9 px-md-5 px-0 pt-4 mx-0 row">
       <div class="col-12 mb-4">
-        <video id="player" controls playsinline preload
-          poster="https://coding.sch.bme.hu/bss_vagott_web_16a9_HD/keyframe/20190325_hk_szobakommando_lq.png">
-          <source src="https://coding.sch.bme.hu/bss_vagott_web_16a9_HD/low_quality/20190325_hk_szobakommando_lq.mp4" type="video/mp4" size="720">
+        <video id="player" #player controls playsinline preload autoplay
+          [poster]="video.imageLocation">
+          <source [src]="video.videoLocation" type="video/mp4" size="720">
           Your browser does not support HTML5 video.
         </video>
       </div>
 
-      <h3 class="col-sm-7">Video title long long long long long long</h3>
+      <h3 class="col-sm-7">{{video.longName}}</h3>
         <p class="col-sm-5 text-sm-right mb-4">
           <button class="btn p-0 ml-3" data-toggle="tooltip" data-placement="bottom" title="Tetszett a videó">
             <span class="oi oi-thumb-up text-success"></span>
@@ -24,12 +24,11 @@
             XXXX
           </span>
           <br> 
-          <span class="oi oi-clock pr-1"></span>YYYY.MM.DD.
+          <span class="oi oi-clock pr-1"></span>{{video.createdAt}}
         </p>
 
       <div class="col-12 pb-4 text-justify">
-          Lorem ipsum dolor sit amet, enim probatus mediocritatem cum an, eos ad persius mediocritatem. Has esse legere pericula id, civibus vituperatoribus et pro. Nibh ferri moderatius qui ei, erant utroque adipisci ut mea. Munere scripserit accommodare vel ut.
-          No his nobis legimus. Ad etiam everti efficiendi vel, illud vitae libris ei his, has eu brute accusam incorrupte. Quo viderer alterum deterruisset an, sea te fugit ancillae consequat. No facete delectus dissentiet duo. Amet magna convenire nec in, vix agam minim posidonium eu. Summo ludus est ea, no est dico oblique. Eum eu ceteros comprehensam, vix ignota malorum pertinacia eu, perfecto consetetur vel ad.
+        {{video.description}}
       </div>
       <div class="col-12 pb-4 row justify-content-around">
         <div class="col-12 text-center">

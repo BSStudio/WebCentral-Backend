@@ -63,7 +63,7 @@ public class VideoController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public final VideoResponse getVideo(@PathVariable("id") final Long id) {
         logger.info(REQUEST_VIDEO_SEARCH, id);
         return new VideoResponse(videoService.findById(id));
