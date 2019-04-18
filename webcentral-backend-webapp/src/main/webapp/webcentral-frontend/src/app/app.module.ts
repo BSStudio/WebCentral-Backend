@@ -1,5 +1,3 @@
-import { VideoListItemComponent } from './videoListItem/videoListItem.component';
-import { VideoListComponent } from './videoList/videoList.component';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,8 +10,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { VideoComponent } from './video/video.component';
 import { VideoItemComponent } from './videoItem/videoItem.component';
+import { VideoListItemComponent } from './videoListItem/videoListItem.component';
 import { VideoListComponent } from './videoList/videoList.component';
 
 @NgModule({
@@ -21,8 +19,8 @@ import { VideoListComponent } from './videoList/videoList.component';
       AppComponent,
       NavbarComponent,
       VideoListComponent,
-      VideoListItemComponent
-      VideoComponent
+      VideoListItemComponent,
+      VideoItemComponent
    ],
    imports: [
       BrowserModule,
