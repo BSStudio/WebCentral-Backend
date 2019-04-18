@@ -1,3 +1,5 @@
+import { VideoListItemComponent } from './videoListItem/videoListItem.component';
+import { VideoListComponent } from './videoList/videoList.component';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,7 +21,7 @@ import { VideoListComponent } from './videoList/videoList.component';
       AppComponent,
       NavbarComponent,
       VideoListComponent,
-      VideoItemComponent,
+      VideoListItemComponent
       VideoComponent
    ],
    imports: [

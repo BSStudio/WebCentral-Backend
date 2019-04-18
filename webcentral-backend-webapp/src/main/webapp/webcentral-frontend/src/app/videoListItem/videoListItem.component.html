@@ -1,19 +1,23 @@
 <div class="card">
   <!-- <img class="card-img-top" src="/wc/assets/img/bss_pitypang.jpg" alt="Pitypang"> -->
   <a routerLink="/video/{{video.id}}">
-    <img class="card-img-top" src="https://via.placeholder.com/320x180.jpg" alt="Videó előnézeti kép">
+    <img class="card-img-top" src="{{video.imageLocation}}" alt="Videó előnézeti kép">
   </a>
   <div class="card-body">
-    <h5 class="card-title mb-0">
+    <h6 class="card-title mb-0">
       <a routerLink="/video/{{video.id}}">
         {{video.longName}}
       </a>
-    </h5>
+    </h6>
     <p class="card-text">
       <small>
           <span class="oi oi-clock"></span>
           {{video.createdAt}}
       </small>
+      <span class="oi oi-eye">
+        10000
+      </span>
     </p>
+
   </div>
 </div>

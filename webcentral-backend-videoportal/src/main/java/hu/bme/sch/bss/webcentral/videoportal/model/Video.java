@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.videoportal.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -40,6 +42,7 @@ public final class Video extends DomainAuditModel {
     private String projectName;
 
     @NotBlank
+    @Lob
     private String description;
 
     @NotNull
@@ -135,6 +138,11 @@ public final class Video extends DomainAuditModel {
 
     public void setImageLocation(final String imageLocation) {
         this.imageLocation = imageLocation;
+    }
+
+    @JsonGetter("createdAt")
+    public String getCreatedAt() {
+        return String.format("%1$tY-%1$tm-%1$td", super.getCreated());
     }
 
     public static Builder builder() {
