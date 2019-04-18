@@ -6,28 +6,24 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+@SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
-public final class UserRequest {
-
-    @NotBlank
-    private String nickname;
+public class UserRequest {
 
     @NotBlank
     private final String givenName;
-
     @NotBlank
     private final String familyName;
-
     @Email
     @NotBlank
     private final String email;
-
     @NotBlank
     private final String description;
-
     @NotBlank
     private final String imageUri;
+    @NotBlank
+    private String nickname;
 
     private UserRequest(final Builder builder) {
         this.nickname = builder.nickname;
