@@ -176,6 +176,31 @@ class UserControllerTest {
             () -> assertEquals(request.getDescription(), response.getDescription()),
             () -> assertEquals(request.getImageUri(), response.getImageUri())
         );
+    }
 
+    @Test
+    void testArchiveVideo() {
+        // GIVEN
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+
+        // WHEN
+        underTest.archiveUser(USER_ID);
+
+        // THEN
+        then(mockUserService).should().findById(USER_ID);
+        then(mockUserService).should().archive(user);
+    }
+
+    @Test
+    void testRestoreUser() {
+        // GIVEN
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+
+        // WHEN
+        underTest.restoreUser(USER_ID);
+
+        // THEN
+        then(mockUserService).should().findById(USER_ID);
+        then(mockUserService).should().restore(user);
     }
 }

@@ -69,8 +69,6 @@ class UserServiceTest {
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
             .build();
-
-
     }
 
     @Test
@@ -188,6 +186,30 @@ class UserServiceTest {
             () -> assertEquals(OTHER_DESCRIPTION, user.getDescription()),
             () -> assertEquals(OTHER_IMAGE_URI, user.getImageUri())
         );
+        then(mockUserDao).should().save(user);
+    }
+
+    @Test
+    void testArchive() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.archive(user);
+
+        // THEN
+        assertTrue(user.getArchived());
+        then(mockUserDao).should().save(user);
+    }
+
+    @Test
+    void testRestore() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.restore(user);
+
+        // THEN
+        assertFalse(user.getArchived());
         then(mockUserDao).should().save(user);
     }
 

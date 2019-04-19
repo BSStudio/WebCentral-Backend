@@ -16,6 +16,7 @@ class UserRequestTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();
+    private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "givenName";
     private static final String FAMILY_NAME = "familyName";
@@ -34,6 +35,7 @@ class UserRequestTest {
             .build();
 
         // THEN
+        assertEquals(ARCHIVED, underTest.getArchived());
         assertEquals(NICKNAME, underTest.getNickname());
         assertEquals(GIVEN_NAME, underTest.getGivenName());
         assertEquals(FAMILY_NAME, underTest.getFamilyName());
@@ -41,6 +43,20 @@ class UserRequestTest {
         assertEquals(DESCRIPTION, underTest.getDescription());
         assertEquals(IMAGE_URI, underTest.getImageUri());
 
+    }
+
+    @Test
+    void testValidationShouldFailForNullArchived() {
+        //GIVEN
+        underTest = getDefaultValuesBuilder()
+            .withArchived(null)
+            .build();
+
+        // WHEN
+        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+
+        // THEN
+        thenValidationFails(violations, "must not be null", "archived");
     }
 
     @Test
@@ -121,7 +137,7 @@ class UserRequestTest {
 
     private UserRequest.Builder getDefaultValuesBuilder() {
         return UserRequest.builder()
-            .withArchived(false)
+            .withArchived(ARCHIVED)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)

@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserResponseTest {
 
+    private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "given name";
     private static final String FAMILY_NAME = "family name";
@@ -20,6 +21,7 @@ class UserResponseTest {
     void testConstructorAndGetters() {
         // GIVEN
         User actual = User.builder()
+            .withArchived(ARCHIVED)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)
@@ -34,6 +36,7 @@ class UserResponseTest {
         // THEN
         assertAll(
             () -> assertEquals(actual.getId(), response.getId()),
+            () -> assertEquals(actual.getArchived(), response.getArchived()),
             () -> assertEquals(actual.getNickname(), response.getNickname()),
             () -> assertEquals(actual.getGivenName(), response.getGivenName()),
             () -> assertEquals(actual.getFamilyName(), response.getFamilyName()),
