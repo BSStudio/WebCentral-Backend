@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -18,6 +22,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class UserServiceTest {
+
+    private static final Long USER_ID = 16L;
 
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "Given_name";
@@ -108,17 +114,55 @@ class UserServiceTest {
     }
 
     @Test
-    void testFindById() {
-
-    }
-
-    @Test
-    void testFindByIdWithNoUser() {
-
-    }
-
-    @Test
     void testFindAll() {
+        // GIVEN setup
+        List<User> userList = new ArrayList<>();
+
+        User user2 = User.builder()
+            .build();
+
+        userList.add(user);
+        userList.add(user2);
+
+        given(mockUserDao.findAll()).willReturn(userList);
+
+        // WHEN
+        List<User> result = underTest.findAll();
+
+        // THEN
+        assertEquals(userList, result);
+    }
+
+    @Test
+    void testFindById() {
+        // GIVEN setup
+        User user = User.builder()
+            .build();
+
+        given(mockUserDao.findById(USER_ID)).willReturn(Optional.of(user));
+
+        // WHEN
+        User result = underTest.findById(USER_ID);
+
+        // THEN
+        assertEquals(user, result);
+    }
+
+    @Test
+    void testFindByIdShouldThrowNoSuchElementExceptionWhenWrongID() {
+        // GIVEN setup
+        given(mockUserDao.findById(any())).willReturn(Optional.empty());
+
+        // WHEN
+        NoSuchElementException exception = null;
+        try {
+            underTest.findById(USER_ID);
+        } catch (NoSuchElementException e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
 
     }
 

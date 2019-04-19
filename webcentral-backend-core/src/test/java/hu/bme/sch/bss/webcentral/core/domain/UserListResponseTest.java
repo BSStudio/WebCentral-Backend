@@ -48,6 +48,6 @@ class UserListResponseTest {
             .build();
 
         //THEN
-        assertEquals(userList, Arrays.asList(response.getUsers()));
+        assertEquals(userList, response.getUsers());
     }
 }
