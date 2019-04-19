@@ -7,9 +7,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
-public final class UserRequest {
+public class UserRequest {
 
 	@NotNull
 	private Boolean archived;

@@ -4,7 +4,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import javax.persistence.*;
+import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -45,7 +50,7 @@ public final class User extends DomainAuditModel {
 		// No-arg constructor for hibernate
 	}
 
-	public User(final Builder builder) {
+    public User(final Builder builder) {
 		this.archived = builder.archived;
 		this.nickname = builder.nickname;
 		this.givenName = builder.givenName;
@@ -55,33 +60,33 @@ public final class User extends DomainAuditModel {
 		this.imageUri = builder.imageUri;
 	}
 
-	public static Builder builder() {
+    public static Builder builder() {
 		return new Builder();
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+	public void setNickname(final String nickname) {
+        this.nickname = nickname;
+    }
 
-	public void setGivenName(String givenName) {
-		this.givenName = givenName;
-	}
+    public void setGivenName(final String givenName) {
+        this.givenName = givenName;
+    }
 
-	public void setFamilyName(String familyName) {
-		this.familyName = familyName;
-	}
+    public void setFamilyName(final String familyName) {
+        this.familyName = familyName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(final String email) {
+        this.email = email;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 
-	public void setImageUri(String imageUri) {
-		this.imageUri = imageUri;
-	}
+    public void setImageUri(final String imageUri) {
+        this.imageUri = imageUri;
+    }
 
 	public Long getId() {
 		return id;

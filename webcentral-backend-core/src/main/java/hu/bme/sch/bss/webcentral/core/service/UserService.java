@@ -11,8 +11,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
-public final class UserService {
-
+@SuppressWarnings("designforextension")
+public class UserService {
 
 	private static final String USER_CREATE_STARTED = "User creation started. {}";
 	private static final String USER_CREATE_SUCCEED = "User creation succeed. {}";
