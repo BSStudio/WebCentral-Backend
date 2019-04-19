@@ -18,10 +18,11 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class UserControllerTest {
+class UserControllerTest {
 
     private static final Long USER_ID = 16L;
     private static final String NICKNAME = "nickname";
@@ -144,6 +145,37 @@ public class UserControllerTest {
         UserListResponse response = underTest.listAllUsers();
 
         assertEquals(userList, Arrays.asList(response.getUsers()));
+
+    }
+
+    @Test
+    void testUpdateUser() {
+        // GIVEN
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+        UserRequest request = UserRequest.builder()
+            .withNickname(NICKNAME)
+            .withFamilyName(FAMILY_NAME)
+            .withGivenName(GIVEN_NAME)
+            .withEmail(EMAIL)
+            .withDescription(DESCRIPTION)
+            .withImageUri(IMAGE_URI)
+            .build();
+
+        // WHEN
+        UserResponse response = underTest.updateUser(USER_ID, request);
+
+        // THEN
+        then(mockUserService).should().findById(USER_ID);
+        then(mockUserService).should().update(request, user);
+
+        assertAll(
+            () -> assertEquals(request.getNickname(), response.getNickname()),
+            () -> assertEquals(request.getFamilyName(), response.getFamilyName()),
+            () -> assertEquals(request.getGivenName(), response.getGivenName()),
+            () -> assertEquals(request.getEmail(), response.getEmail()),
+            () -> assertEquals(request.getDescription(), response.getDescription()),
+            () -> assertEquals(request.getImageUri(), response.getImageUri())
+        );
 
     }
 }
