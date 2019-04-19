@@ -121,6 +121,7 @@ class UserRequestTest {
 
     private UserRequest.Builder getDefaultValuesBuilder() {
         return UserRequest.builder()
+            .withArchived(false)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)

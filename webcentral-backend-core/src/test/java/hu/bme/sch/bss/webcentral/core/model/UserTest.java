@@ -290,6 +290,7 @@ public class UserTest {
 
     private User.Builder getDefaultValuesBuilder() {
         return User.builder()
+            .withArchived(false)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)
