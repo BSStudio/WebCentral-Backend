@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 @JsonRootName("user")
 public class UserRequest {
 
-	@NotNull
-	private Boolean archived;
+    @NotNull
+    private Boolean archived;
 
     @NotBlank
     private String nickname;
@@ -35,7 +35,7 @@ public class UserRequest {
     private final String imageUri;
 
     private UserRequest(final Builder builder) {
-	    this.archived = builder.archived;
+        this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
@@ -48,11 +48,11 @@ public class UserRequest {
         return new Builder();
     }
 
-	public Boolean getArchived() {
-		return archived;
-	}
+    public Boolean getArchived() {
+        return archived;
+    }
 
-	public String getNickname() {
+    public String getNickname() {
         return nickname;
     }
 
@@ -79,18 +79,18 @@ public class UserRequest {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-	    private Boolean archived;
-	    private String nickname;
+        private Boolean archived;
+        private String nickname;
         private String givenName;
         private String familyName;
         private String email;
         private String description;
         private String imageUri;
 
-	    public Builder withArchived(final Boolean archived) {
-		    this.archived = archived;
-		    return this;
-	    }
+        public Builder withArchived(final Boolean archived) {
+            this.archived = archived;
+            return this;
+        }
 
         public Builder withNickname(final String nickname) {
             this.nickname = nickname;
