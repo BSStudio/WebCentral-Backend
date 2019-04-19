@@ -3,15 +3,17 @@ package hu.bme.sch.bss.webcentral.core.service;
 import hu.bme.sch.bss.webcentral.core.dao.UserDao;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.model.User;
-import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.springframework.stereotype.Component;
+
 @Component
-public final class UserService {
+@SuppressWarnings("designforextension")
+public class UserService {
 
 
 	private static final String USER_CREATE_STARTED = "User creation started. {}";
@@ -57,16 +59,16 @@ public final class UserService {
 		return userList;
 	}
 
-	private User createUserWithRequestData(final UserRequest request) {
-		return User.builder()
-				.withDescription(request.getDescription())
-				.withEmail(request.getEmail())
-				.withFamilyName(request.getFamilyName())
-				.withGivenName(request.getGivenName())
-				.withImageUri(request.getImageUri())
-				.withNickname(request.getNickname())
-				.build();
-	}
+    User createUserWithRequestData(final UserRequest request) {
+        return User.builder()
+            .withDescription(request.getDescription())
+            .withEmail(request.getEmail())
+            .withFamilyName(request.getFamilyName())
+            .withGivenName(request.getGivenName())
+            .withImageUri(request.getImageUri())
+            .withNickname(request.getNickname())
+            .build();
+    }
 
 	public void update(final UserRequest request, final User user) {
 		logger.info(USER_UPDATE_STARTED, user);

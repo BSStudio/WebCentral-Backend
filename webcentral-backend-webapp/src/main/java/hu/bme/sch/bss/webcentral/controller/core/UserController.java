@@ -17,12 +17,12 @@ import java.util.ArrayList;
 @RequestMapping(value = "/api/user", produces = "application/json")
 public class UserController {
 
-	private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
-	private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
-	private static final String REQUEST_USERS_LIST = "Request to find all users received.";
-	private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
+    private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
+    private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
+    private static final String REQUEST_USERS_LIST = "Request to find all users received.";
+    private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
 	private final UserService userService;
-	private final Logger logger;
+    private final Logger logger;
 
 	public UserController(final UserService userService, final Logger logger) {
 		this.userService = userService;
@@ -45,7 +45,7 @@ public class UserController {
 		return new UserResponse(result);
 	}
 
-	@PutMapping("/{id}")
+    @PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public final UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
 		logger.info(REQUEST_USER_UPDATE, id);
@@ -55,13 +55,13 @@ public class UserController {
 	}
 
 	@GetMapping("/all")
-	@ResponseStatus(HttpStatus.FOUND)
-	public final UserListResponse listAllUsers() {
-		logger.info(REQUEST_USERS_LIST);
-		ArrayList<User> users = new ArrayList<>(userService.findAll());
-		return UserListResponse.builder()
-				.withUsers(users)
-				.build();
+    @ResponseStatus(HttpStatus.FOUND)
+    public final UserListResponse listAllUsers() {
+        logger.info(REQUEST_USERS_LIST);
+        ArrayList<User> users = new ArrayList<>(userService.findAll());
+        return UserListResponse.builder()
+            .withUsers(users)
+            .build();
 
 	}
 
