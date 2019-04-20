@@ -1,6 +1,7 @@
 package hu.bme.sch.bss.webcentral.videoportal.domain;
 
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class VideoListResponseTest {
 
@@ -15,9 +17,14 @@ class VideoListResponseTest {
     void testBuilderWithList(){
         // GIVEN
         List<Video> videoList = new ArrayList<>();
+        VideoType mockType = mock(VideoType.class);
 
-        Video video1 = Video.builder().build();
-        Video video2 = Video.builder().build();
+        Video video1 = Video.builder()
+            .withVideoType(mockType)
+            .build();
+        Video video2 = Video.builder()
+            .withVideoType(mockType)
+            .build();
 
         videoList.add(video1);
         videoList.add(video2);
@@ -28,28 +35,8 @@ class VideoListResponseTest {
                 .build();
 
         // THEN
-        assertEquals(videoList, Arrays.asList(result.getVideos()));
-    }
-
-
-    @Test
-    void testBuilderWithArray(){
-        // GIVEN
-        Video[] videos = new Video[2];
-
-        Video video1 = Video.builder().build();
-        Video video2 = Video.builder().build();
-
-        videos[0] = video1;
-        videos[1] = video2;
-
-        // WHEN
-        VideoListResponse result = VideoListResponse.builder()
-                .withVideos(videos)
-                .build();
-
-        // THEN
-        assertEquals(videos, result.getVideos());
+        assertEquals(new VideoResponse(video1), result.getVideos()[0]);
+        assertEquals(new VideoResponse(video2), result.getVideos()[1]);
     }
 
 }
