@@ -31,6 +31,8 @@ public class UserService {
     private static final String USER_ARCHIVE_SUCCEED = "User archive succeed. {}";
     private static final String USER_RESTORE_STARTED = "User restore started. {}";
     private static final String USER_RESTORE_SUCCEED = "User restore succeed. {}";
+    private static final String USER_DELETE_STARTED = "User delete started. {}";
+    private static final String USER_DELETE_SUCCEED = "User delete succeed. {}";
 
     private final UserDao userDao;
     private final Logger logger;
@@ -98,6 +100,12 @@ public class UserService {
         user.setArchived(false);
         userDao.save(user);
         logger.info(USER_RESTORE_SUCCEED, user);
+    }
+
+    public void delete(final User user) {
+        logger.info(USER_DELETE_STARTED, user);
+        userDao.delete(user);
+        logger.info(USER_DELETE_SUCCEED, user);
     }
 
     User createUserWithRequestData(final UserRequest request) {

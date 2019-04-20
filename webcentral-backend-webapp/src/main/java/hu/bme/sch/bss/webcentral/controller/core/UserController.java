@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,10 +32,11 @@ public class UserController {
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
     private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
     private static final String REQUEST_USERS_LIST = "Request to find all non-archived users received.";
+    private static final String REQUEST_ARCHIVED_USERS_LIST = "Request to find all archived users received.";
     private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
     private static final String REQUEST_USER_RESTORE = "Request to restore user received for id: {}";
     private static final String REQUEST_USER_ARCHIVE = "Request to archive user received for id: {}";
-    private static final String REQUEST_ARCHIVED_USERS_LIST = "Request to find all archived users received.";
+    private static final String REQUEST_USER_DELETE = "Request to delete user reveived for id: {}";
     private final UserService userService;
     private final Logger logger;
 
@@ -82,6 +84,14 @@ public class UserController {
         logger.info(REQUEST_USER_RESTORE, id);
         User user = userService.findById(id);
         userService.restore(user);
+    }
+
+    @DeleteMapping("/id/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public final void deleteUser(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_USER_DELETE, id);
+        User user = userService.findById(id);
+        userService.delete(user);
     }
 
     @GetMapping("/all")
