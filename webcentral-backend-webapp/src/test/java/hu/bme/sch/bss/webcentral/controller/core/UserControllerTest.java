@@ -145,7 +145,26 @@ class UserControllerTest {
         UserListResponse response = underTest.listAllUsers();
 
         assertEquals(userList, Arrays.asList(response.getUsers()));
+    }
 
+    @Test
+    void testListArchivedUsers() {
+        // GIVEN
+        List<User> archivedList = new ArrayList<>();
+
+        User user2 = User.builder()
+            .build();
+
+        archivedList.add(user);
+        archivedList.add(user2);
+
+        given(mockUserService.findArchived()).willReturn(archivedList);
+
+        // WHEN
+        UserListResponse response = underTest.listAllArchived();
+
+        // THEN
+        assertEquals(archivedList, Arrays.asList(response.getUsers()));
     }
 
     @Test
@@ -179,7 +198,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testArchiveVideo() {
+    void testArchiveUser() {
         // GIVEN
         given(mockUserService.findById(USER_ID)).willReturn(user);
 

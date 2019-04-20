@@ -96,7 +96,8 @@ public class UserTest {
         // THEN
         assertEquals(validUser1, validUser2);
         assertNotEquals(validUser1, invalidUser);
-        assertNotEquals(null, validUser1);
+        assertNotEquals(validUser1, null);
+        assertNotEquals(validUser1, new Object());
         assertNotEquals(validUser2, invalidUser);
         assertEquals(validUser1.hashCode(), validUser2.hashCode());
     }
