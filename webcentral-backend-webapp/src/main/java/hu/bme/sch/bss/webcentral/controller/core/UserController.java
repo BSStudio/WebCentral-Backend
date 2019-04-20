@@ -30,10 +30,11 @@ public class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
     private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
-    private static final String REQUEST_USERS_LIST = "Request to find all users received.";
+    private static final String REQUEST_USERS_LIST = "Request to find all non-archived users received.";
     private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
     private static final String REQUEST_USER_RESTORE = "Request to restore user received for id: {}";
     private static final String REQUEST_USER_ARCHIVE = "Request to archive user received for id: {}";
+    private static final String REQUEST_ARCHIVED_USERS_LIST = "Request to find all archived users received.";
     private final UserService userService;
     private final Logger logger;
 
@@ -88,6 +89,16 @@ public class UserController {
     public final UserListResponse listAllUsers() {
         logger.info(REQUEST_USERS_LIST);
         ArrayList<User> users = new ArrayList<>(userService.findAll());
+        return UserListResponse.builder()
+            .withUsers(users)
+            .build();
+    }
+
+    @GetMapping("/archived")
+    @ResponseStatus(HttpStatus.FOUND)
+    public final UserListResponse listAllArchived() {
+        logger.info(REQUEST_ARCHIVED_USERS_LIST);
+        ArrayList<User> users = new ArrayList<>(userService.findArchived());
         return UserListResponse.builder()
             .withUsers(users)
             .build();

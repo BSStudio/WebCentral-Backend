@@ -23,6 +23,8 @@ public class UserService {
     private static final String USER_NOT_FOUND = "User not found with id {}";
     private static final String USERS_ALL_SEARCH_STARTED = "Search for all users started";
     private static final String USERS_ALL_SEARCH_SUCCEED = "Search for all users succeed";
+    private static final String USERS_ARCHIVED_SEARCH_STARTED = "Search for all archived user started";
+    private static final String USERS_ARCHIVED_SEARCH_SUCCEED = "Search for all archived user succeed";
     private static final String USER_UPDATE_STARTED = "User update started. {}";
     private static final String USER_UPDATE_SUCCEED = "User update succeed. {}";
     private static final String USER_ARCHIVE_STARTED = "User archive started. {}";
@@ -63,6 +65,13 @@ public class UserService {
         List<User> userList = userDao.findAll();
         logger.info(USERS_ALL_SEARCH_SUCCEED);
         return userList;
+    }
+
+    public List<User> findArchived() {
+        logger.info(USERS_ARCHIVED_SEARCH_STARTED);
+        List<User> archivedUserList = userDao.findAllArchived();
+        logger.info(USERS_ARCHIVED_SEARCH_SUCCEED);
+        return archivedUserList;
     }
 
     public void update(final UserRequest request, final User user) {
