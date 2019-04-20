@@ -4,7 +4,9 @@ import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 import hu.bme.sch.bss.webcentral.videoportal.service.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.service.VideoTypeService;
 
 import java.util.ArrayList;
 import javax.validation.Valid;
@@ -21,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author Péter Veress
+ */
+
 @RestController
 @RequestMapping(value = "/api/video", produces = "application/json")
 public class VideoController {
-
     private static final String REQUEST_VIDEO_CREATE = "Request for video creation received. {}";
     private static final String REQUEST_VIDEO_SEARCH = "Request to find video received for id {}";
     private static final String REQUEST_VIDEO_UPDATE = "Request to update video received for id {}";
@@ -38,10 +43,12 @@ public class VideoController {
     private static final String REQUEST_VIDEOS_LIST_ARCHIVED = "Request to list archived videos received.";
 
     private final VideoService videoService;
+    private final VideoTypeService videoTypeService;
     private final Logger logger;
 
-    public VideoController(final VideoService videoService, final Logger logger) {
+    public VideoController(final VideoService videoService, final VideoTypeService videoTypeService, final Logger logger) {
         this.videoService = videoService;
+        this.videoTypeService = videoTypeService;
         this.logger = logger;
     }
 
@@ -49,13 +56,14 @@ public class VideoController {
     @ResponseStatus(HttpStatus.CREATED)
     public final VideoResponse createVideo(@Valid @RequestBody final VideoRequest request) {
         logger.info(REQUEST_VIDEO_CREATE, request);
-        Video result = videoService.create(request);
+        VideoType videoType = videoTypeService.findByCanonicalName(request.getVideoType());
+        Video result = videoService.create(request, videoType);
         return new VideoResponse(result);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public final VideoResponse updateVideo(@PathVariable("id") final Long id, @RequestBody final VideoRequest request) {
+    public final VideoResponse updateVideo(@PathVariable("id") final Long id, @RequestBody @Valid final VideoRequest request) {
         logger.info(REQUEST_VIDEO_UPDATE, id);
         Video video = videoService.findById(id);
         videoService.update(request, video);
