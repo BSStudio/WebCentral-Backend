@@ -2,7 +2,6 @@ package hu.bme.sch.bss.webcentral.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import javax.persistence.Entity;
@@ -10,7 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @JsonSerialize
 @JsonDeserialize(builder = Position.Builder.class)
@@ -22,11 +22,19 @@ public final class Position extends DomainAuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     private String name;
 
     public Position() {
         // No-arg constructor for hibernate
+    }
+
+    public Position(final Builder builder) {
+        this.name = builder.name;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public Long getId() {
@@ -37,13 +45,36 @@ public final class Position extends DomainAuditModel {
         return name;
     }
 
-    public Position(final Builder builder) {
-        this.name = builder.name;
+    //Generated code begins here
+
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Position position = (Position) o;
+        return Objects.equals(id, position.id)
+            && Objects.equals(name, position.name);
     }
 
-    public static Builder builder() {
-        return new Builder();
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
+
+    @Override
+    public String toString() {
+        return "Position{"
+            + "id=" + id
+            + ", name='" + name + '\''
+            + '}';
+    }
+
+    // Generated code ends here
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
