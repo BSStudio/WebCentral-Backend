@@ -3,6 +3,7 @@ package hu.bme.sch.bss.webcentral.videoportal.service;
 import hu.bme.sch.bss.webcentral.videoportal.dao.VideoDao;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 @SuppressWarnings("designforextension")
 public class VideoService {
-
     private static final String VIDEO_CREATE_STARTED = "Video creation started. {}";
     private static final String VIDEO_CREATE_SUCCEED = "Video creation succeed. Created {}";
     private static final String VIDEO_ARCHIVE_STARTED = "Video archive started. {}";
@@ -47,9 +47,18 @@ public class VideoService {
         this.logger = logger;
     }
 
-    public Video create(final VideoRequest request) {
+    public Video create(final VideoRequest request, final VideoType videoType) {
         logger.info(VIDEO_CREATE_STARTED, request);
-        Video video = createVideoWithRequestData(request);
+        Video video = Video.builder()
+            .withLongName(request.getLongName())
+            .withCanonicalName(request.getCanonicalName())
+            .withProjectName(request.getProjectName())
+            .withDescription(request.getDescription())
+            .withVisible(request.getVisible())
+            .withVideoType(videoType)
+            .withVideoLocation(request.getVideoLocation())
+            .withImageLocation(request.getImageLocation())
+            .build();
         videoDao.save(video);
         logger.info(VIDEO_CREATE_SUCCEED, video);
         return video;
@@ -132,17 +141,5 @@ public class VideoService {
         List<Video> archivedList = videoDao.findAllArchived();
         logger.info(VIDEOS_ARCHIVED_SEARCH_SUCCEED, archivedList);
         return archivedList;
-    }
-
-    Video createVideoWithRequestData(final VideoRequest request) {
-        return Video.builder()
-            .withLongName(request.getLongName())
-            .withCanonicalName(request.getCanonicalName())
-            .withProjectName(request.getProjectName())
-            .withDescription(request.getDescription())
-            .withVisible(request.getVisible())
-            .withVideoLocation(request.getVideoLocation())
-            .withImageLocation(request.getImageLocation())
-            .build();
     }
 }
