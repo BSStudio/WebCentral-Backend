@@ -13,10 +13,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @JsonSerialize
-@JsonDeserialize(builder = UserPost.Builder.class)
+@JsonDeserialize(builder = Position.Builder.class)
 @Entity
-@Table(name = "user-posts")
-public final class UserPost extends DomainAuditModel {
+@Table(name = "position")
+public final class Position extends DomainAuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,15 @@ public final class UserPost extends DomainAuditModel {
     @NotNull
     private String name;
 
-    public UserPost(final Builder builder) {
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Position(final Builder builder) {
         this.name = builder.name;
     }
 
@@ -43,8 +51,8 @@ public final class UserPost extends DomainAuditModel {
             return this;
         }
 
-        public UserPost build() {
-            return new UserPost(this);
+        public Position build() {
+            return new Position(this);
         }
     }
 }

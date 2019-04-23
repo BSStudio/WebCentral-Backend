@@ -8,12 +8,12 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user-post")
-public final class UserPostRequest {
+public final class PositionRequest {
 
     @NotNull
     private String name;
 
-    public UserPostRequest(final Builder builder) {
+    public PositionRequest(final Builder builder) {
         this.name = builder.name;
     }
 
@@ -35,8 +35,8 @@ public final class UserPostRequest {
             return this;
         }
 
-        public UserPostRequest build() {
-            return new UserPostRequest(this);
+        public PositionRequest build() {
+            return new PositionRequest(this);
         }
     }
 }
