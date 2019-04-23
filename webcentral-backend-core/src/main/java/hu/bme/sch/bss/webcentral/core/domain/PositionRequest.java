@@ -3,26 +3,26 @@ package hu.bme.sch.bss.webcentral.core.domain;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
-@JsonRootName("user-post")
+@JsonRootName("position")
 public final class PositionRequest {
 
-    @NotNull
+    @NotBlank
     private String name;
 
     public PositionRequest(final Builder builder) {
         this.name = builder.name;
     }
 
-    public String getName() {
-        return name;
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public String getName() {
+        return name;
     }
 
     @SuppressWarnings("hiddenfield")

@@ -13,7 +13,6 @@ public class PositionService {
     private static final String USER_POST_CREATE_STARTED = "User creation started. {}";
     private static final String USER_POST_CREATE_SUCCEED = "User creation succeed. {}";
 
-
     private final PositionDao positionDao;
     private  final Logger logger;
 
