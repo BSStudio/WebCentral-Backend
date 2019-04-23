@@ -25,6 +25,10 @@ public final class Position extends DomainAuditModel {
     @NotNull
     private String name;
 
+    public Position() {
+        // No-arg constructor for hibernate
+    }
+
     public Long getId() {
         return id;
     }
