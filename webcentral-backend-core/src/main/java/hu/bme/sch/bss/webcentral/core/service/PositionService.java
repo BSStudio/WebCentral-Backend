@@ -23,13 +23,13 @@ public class PositionService {
 
     public Position create(final PositionRequest request) {
         logger.info(USER_POST_CREATE_STARTED, request);
-        Position position = createUserPostWithRequestData(request);
+        Position position = createPositionWithRequestData(request);
         positionDao.save(position);
         logger.info(USER_POST_CREATE_SUCCEED, request);
         return position;
     }
 
-    private Position createUserPostWithRequestData(final PositionRequest request) {
+    Position createPositionWithRequestData(final PositionRequest request) {
         return Position.builder()
             .withName(request.getName())
             .build();
