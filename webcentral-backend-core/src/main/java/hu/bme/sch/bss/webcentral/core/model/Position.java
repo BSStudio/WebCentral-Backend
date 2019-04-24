@@ -3,6 +3,7 @@ package hu.bme.sch.bss.webcentral.core.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
+import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,10 @@ public final class Position extends DomainAuditModel {
 
     public Position(final Builder builder) {
         this.name = builder.name;
+    }
+
+    public Position(final PositionRequest request) {
+        this.name = request.getName();
     }
 
     public static Builder builder() {

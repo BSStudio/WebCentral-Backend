@@ -58,4 +58,17 @@ public class PositionServiceTest {
 
         assertEquals(position, result);
     }
+    
+    @Test
+    void testCreatePositionWithRequestData() {
+        // GIVEN setup
+        
+        // WHEN
+        Position result = underTest.createPositionWithRequestData(mockPositionRequest);
+    
+        // THEN
+        then(mockPositionRequest).should().getName();
+
+        assertEquals(OTHER_NAME, result.getName());
+    }
 }

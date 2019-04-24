@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("position")
-public final class PositionRequest {
+public class PositionRequest {
 
     @NotBlank
     private String name;
