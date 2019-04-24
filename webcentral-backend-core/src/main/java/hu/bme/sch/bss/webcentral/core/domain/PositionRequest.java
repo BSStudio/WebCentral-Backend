@@ -6,14 +6,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.validation.constraints.NotBlank;
 
 @SuppressWarnings("finalclass")
-@JsonDeserialize(builder = UserRequest.Builder.class)
+@JsonDeserialize(builder = PositionRequest.Builder.class)
 @JsonRootName("position")
 public class PositionRequest {
 
     @NotBlank
     private String name;
 
-    public PositionRequest(final Builder builder) {
+    private PositionRequest(final Builder builder) {
         this.name = builder.name;
     }
 
