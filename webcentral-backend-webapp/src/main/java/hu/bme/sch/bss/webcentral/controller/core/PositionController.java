@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
 @RequestMapping(value = "/api/user/position", produces = "application/json")
 public class PositionController {
@@ -27,6 +27,7 @@ public class PositionController {
 
     private static final String REQUEST_POSITION_CREATE = "Request for position creation received. {}";
     private static final String REQUEST_POSITION_SEARCH = "Request for position search received with id of: {}";
+    private static final String REQUEST_POSITION_DELETE = "Request to delete position received for id: {}";
     private final PositionService positionService;
     private final Logger logger;
 
@@ -49,5 +50,13 @@ public class PositionController {
         logger.info(REQUEST_POSITION_SEARCH, id);
         Position result = positionService.findById(id);
         return new PositionResponse(result);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public final void removePosition(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_POSITION_DELETE, id);
+        Position position = positionService.findById(id);
+        positionService.delete(position);
     }
 }
