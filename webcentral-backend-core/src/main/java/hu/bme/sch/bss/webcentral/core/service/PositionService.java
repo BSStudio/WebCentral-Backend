@@ -3,11 +3,13 @@ package hu.bme.sch.bss.webcentral.core.service;
 import hu.bme.sch.bss.webcentral.core.dao.PositionDao;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.model.Position;
-import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.springframework.stereotype.Component;
+
 
 @Component
 @SuppressWarnings("designforextension")
@@ -20,7 +22,7 @@ public class PositionService {
     private static final String POSITION_NOT_FOUND = "User not found with id: {}";
 
     private final PositionDao positionDao;
-    private  final Logger logger;
+    private final Logger logger;
 
     public PositionService(final PositionDao positionDao, final Logger logger) {
         this.positionDao = positionDao;
