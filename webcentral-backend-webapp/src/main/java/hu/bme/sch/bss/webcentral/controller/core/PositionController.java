@@ -2,9 +2,7 @@ package hu.bme.sch.bss.webcentral.controller.core;
 
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
-import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
-import hu.bme.sch.bss.webcentral.core.model.User;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
 
 import javax.validation.Valid;
