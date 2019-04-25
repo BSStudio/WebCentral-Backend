@@ -35,10 +35,6 @@ public final class Position extends DomainAuditModel {
         this.name = builder.name;
     }
 
-    public Position(final PositionRequest request) {
-        this.name = request.getName();
-    }
-
     public static Builder builder() {
         return new Builder();
     }
