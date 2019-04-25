@@ -32,7 +32,6 @@ public final class Video extends DomainAuditModel {
     @NotNull
     @ManyToOne
     @JoinColumn
-    @Column(name = "video_type_id", nullable = false)
     private VideoType videoType;
 
     @NotBlank
