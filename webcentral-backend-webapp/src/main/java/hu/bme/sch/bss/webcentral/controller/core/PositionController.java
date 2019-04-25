@@ -54,7 +54,7 @@ public class PositionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public final void removePosition(@PathVariable("id") final Long id) {
+    public final void deletePosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_DELETE, id);
         Position position = positionService.findById(id);
         positionService.delete(position);

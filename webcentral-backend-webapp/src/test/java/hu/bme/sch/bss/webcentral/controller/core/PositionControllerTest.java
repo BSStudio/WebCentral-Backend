@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -91,4 +92,18 @@ public class PositionControllerTest {
         assertNull(response);
         verify(mockPositionService).findById(POSITION_ID);
     }
+
+    @Test
+    void testDeleteUser() {
+        // GIVEN
+        given(mockPositionService.findById(POSITION_ID)).willReturn(position);
+
+        // WHEN
+        underTest.deletePosition(POSITION_ID);
+
+        // THEN
+        then(mockPositionService).should().findById(POSITION_ID);
+        then(mockPositionService).should().delete(position);
+    }
+
 }
