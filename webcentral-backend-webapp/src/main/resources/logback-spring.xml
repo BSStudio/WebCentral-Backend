@@ -3,7 +3,7 @@
 
   <springProperty name="canonical.name" source="canonical.name" defaultValue="${canonical_name}" />
 
-  <property name="GENERIC_MESSAGE_PATTERN" value="%-5p %c %d{ISO8601} [build=${BUILD_LABEL}] [%thread] - %msg%n" />
+  <property name="GENERIC_MESSAGE_PATTERN" value="%-5p %d{ISO8601} %c [build=${BUILD_LABEL}] [%thread] - %msg%n" />
 
   <appender name="FILE_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
     <appender class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -19,10 +19,6 @@
     </appender>
   </appender>
 
-  <root level="info">
-    <appender-ref ref="FILE_APPENDER" />
-  </root>
-
   <springProfile name="!disableConsoleLog">
     <appender name="STDOUT_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
       <appender class="ch.qos.logback.core.ConsoleAppender">
@@ -35,10 +31,14 @@
 
     <logger name="feign.Logger" level="debug" additivity="false">
       <appender-ref ref="STDOUT_APPENDER" />
+      <appender-ref ref="FILE_APPENDER" />
     </logger>
 
     <root level="info">
       <appender-ref ref="STDOUT_APPENDER" />
+    </root>
+    <root level="info">
+      <appender-ref ref="FILE_APPENDER" />
     </root>
   </springProfile>
 
