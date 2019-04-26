@@ -106,4 +106,22 @@ public class PositionControllerTest {
         then(mockPositionService).should().delete(position);
     }
 
+    @Test
+    void testUpdatePosition() {
+        // GIVEN
+        given(mockPositionService.findById(POSITION_ID)).willReturn(position);
+        PositionRequest request = PositionRequest.builder()
+            .withName(NAME)
+            .build();
+
+        // WHEN
+        PositionResponse response = underTest.updatePosition(POSITION_ID, request);
+
+        // THEN
+        then(mockPositionService).should().findById(POSITION_ID);
+        then(mockPositionService).should().update(request, position);
+
+        assertEquals(request.getName(), response.getName());
+    }
+
 }

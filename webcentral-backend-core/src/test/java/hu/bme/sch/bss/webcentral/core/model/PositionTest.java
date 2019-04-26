@@ -98,7 +98,7 @@ public class PositionTest {
     }
 
     @Test
-    void testSetName() {
+    public void testSetName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();

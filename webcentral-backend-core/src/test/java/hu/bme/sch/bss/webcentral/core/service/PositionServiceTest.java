@@ -18,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PositionServiceTest {
@@ -109,14 +110,15 @@ public class PositionServiceTest {
 
     @Test
     void testUpdate() {
-        // GIVEN
+        // GIVEN setup
 
 
         // WHEN
-
+        underTest.update(mockPositionRequest, position);
 
         // THEN
-
+        then(mockPositionRequest).should().getName();
+        assertEquals(OTHER_NAME, position.getName());
     }
 
     @Test
