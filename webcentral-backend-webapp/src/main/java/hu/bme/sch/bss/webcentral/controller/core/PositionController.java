@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,6 +29,7 @@ public class PositionController {
     private static final String REQUEST_POSITION_CREATE = "Request for position creation received. {}";
     private static final String REQUEST_POSITION_SEARCH = "Request for position search received with id of: {}";
     private static final String REQUEST_POSITION_DELETE = "Request to delete position received for id: {}";
+    private static final String REQUEST_POSITION_EDIT = "Request to update user received for id {}";
     private final PositionService positionService;
     private final Logger logger;
 
@@ -58,5 +60,14 @@ public class PositionController {
         logger.info(REQUEST_POSITION_DELETE, id);
         Position position = positionService.findById(id);
         positionService.delete(position);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public final PositionResponse updatePosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
+        logger.info(REQUEST_POSITION_EDIT, id);
+        Position position = positionService.findById(id);
+        positionService.update(request, position);
+        return new PositionResponse(position);
     }
 }

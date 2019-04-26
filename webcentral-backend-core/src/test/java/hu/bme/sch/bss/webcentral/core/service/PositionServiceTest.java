@@ -108,6 +108,18 @@ public class PositionServiceTest {
     }
 
     @Test
+    void testUpdate() {
+        // GIVEN
+
+
+        // WHEN
+
+
+        // THEN
+
+    }
+
+    @Test
     void testCreatePositionWithRequestData() {
         // GIVEN setup
 

@@ -46,6 +46,10 @@ public final class Position extends DomainAuditModel {
         return name;
     }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
+
     //Generated code begins here
 
 
