@@ -24,15 +24,24 @@
     <module>webcentral-backend-videoportal</module>
     <module>webcentral-backend-broadcastmanager</module>
     <module>webcentral-backend-productionmanager</module>
+    <module>release</module>
   </modules>
 
   <properties>
-    <java.version>11</java.version>
+    <path>${session.executionRootDirectory}</path>
+    <requiredJavaVersion>11</requiredJavaVersion>
+    <requiredMavenVersion>3.3.9</requiredMavenVersion>
+    <!-- Version -->
+    <releaseVersion>dev</releaseVersion>
+    <build.number>0</build.number>
+    <application.version>webcentral.${releaseVersion}.${build.number}</application.version>
+    <timestamp>${maven.build.timestamp}</timestamp>
     <!-- Skip mvn goal -->
     <skipCheckstyle>false</skipCheckstyle>
     <skipJacoco>false</skipJacoco>
     <skipPit>false</skipPit>
     <skipPmd>false</skipPmd>
+    <skipDocker>false</skipDocker>
     <!-- Siblings -->
     <webcentral-backend-core.version>0.0.1-SNAPSHOT</webcentral-backend-core.version>
     <webcentral-backend-videoportal.version>0.0.1-SNAPSHOT</webcentral-backend-videoportal.version>
@@ -73,6 +82,15 @@
     <!-- PIT -->
     <org.pitest.pitest.maven.version>1.4.3</org.pitest.pitest.maven.version>
     <pitest-junit5-plugin.version>0.7</pitest-junit5-plugin.version>
+    <!-- Docker -->
+    <javax.activation.version>1.1.1</javax.activation.version>
+    <docker.image.name>webcentral</docker.image.name>
+    <docker.server.id>docker-hub</docker.server.id>
+    <docker.repository>cloud.docker.com</docker.repository>
+    <docker.organisation>bsstudio</docker.organisation>
+    <!-- Info endpoint -->
+    <branch>master</branch>
+    <build.branch>${branch}</build.branch>
   </properties>
 
 
