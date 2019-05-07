@@ -21,7 +21,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class StatusServiceTest {
-    private static final long POSITION_ID = 8L;
+    private static final long STATUS_ID = 8L;
     private static final String NAME = "name";
 
     private static final String OTHER_NAME = "name";
@@ -69,10 +69,10 @@ public class StatusServiceTest {
         Status status = Status.builder()
             .build();
 
-        given(mockStatusDao.findById(POSITION_ID)).willReturn(Optional.of(status));
+        given(mockStatusDao.findById(STATUS_ID)).willReturn(Optional.of(status));
 
         // WHEN
-        Status result = underTest.findById(POSITION_ID);
+        Status result = underTest.findById(STATUS_ID);
 
         // THEN
         assertEquals(status, result);
@@ -86,7 +86,7 @@ public class StatusServiceTest {
         // WHEN
         NoSuchElementException exception = null;
         try {
-            underTest.findById(POSITION_ID);
+            underTest.findById(STATUS_ID);
         } catch (NoSuchElementException e) {
             exception = e;
         }
