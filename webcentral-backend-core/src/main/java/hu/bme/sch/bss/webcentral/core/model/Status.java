@@ -37,10 +37,6 @@ public final class Status {
         return new Builder();
     }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
     public void setName(final String name) {
         this.name = name;
     }
