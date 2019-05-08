@@ -97,6 +97,17 @@ public class PositionServiceTest {
     }
 
     @Test
+    void testDelete() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.delete(position);
+
+        // THEN
+        then(mockPositionDao).should().delete(position);
+    }
+
+    @Test
     void testCreatePositionWithRequestData() {
         // GIVEN setup
 

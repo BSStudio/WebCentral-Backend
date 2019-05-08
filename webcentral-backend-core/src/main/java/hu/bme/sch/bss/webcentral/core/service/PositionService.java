@@ -15,11 +15,13 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("designforextension")
 public class PositionService {
 
-    private static final String USER_POST_CREATE_STARTED = "User creation started. {}";
-    private static final String USER_POST_CREATE_SUCCEED = "User creation succeed. {}";
+    private static final String POSITION_CREATE_STARTED = "User creation started. {}";
+    private static final String POSITION_CREATE_SUCCEED = "User creation succeed. {}";
     private static final String POSITION_SEARCH_STARTED = "User search started {}";
     private static final String POSITION_SEARCH_SUCCEED = "User search succeed {}";
     private static final String POSITION_NOT_FOUND = "User not found with id: {}";
+    private static final String POSITION_DELETE_STARTED = "User delete started. {}";
+    private static final String POSITION_DELETE_SUCCEED = "User delete succeed. {}";
 
     private final PositionDao positionDao;
     private final Logger logger;
@@ -30,17 +32,11 @@ public class PositionService {
     }
 
     public Position create(final PositionRequest request) {
-        logger.info(USER_POST_CREATE_STARTED, request);
+        logger.info(POSITION_CREATE_STARTED, request);
         Position position = createPositionWithRequestData(request);
         positionDao.save(position);
-        logger.info(USER_POST_CREATE_SUCCEED, request);
+        logger.info(POSITION_CREATE_SUCCEED, request);
         return position;
-    }
-
-    Position createPositionWithRequestData(final PositionRequest request) {
-        return Position.builder()
-            .withName(request.getName())
-            .build();
     }
 
     public Position findById(final Long id) {
@@ -52,5 +48,17 @@ public class PositionService {
         }
         logger.info(POSITION_SEARCH_SUCCEED, id);
         return result.get();
+    }
+
+    public void delete(final Position position) {
+        logger.info(POSITION_DELETE_STARTED, position);
+        positionDao.delete(position);
+        logger.info(POSITION_DELETE_SUCCEED, position);
+    }
+
+    Position createPositionWithRequestData(final PositionRequest request) {
+        return Position.builder()
+            .withName(request.getName())
+            .build();
     }
 }
