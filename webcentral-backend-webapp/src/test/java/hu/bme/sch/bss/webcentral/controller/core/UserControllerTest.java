@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import hu.bme.sch.bss.webcentral.core.domain.UserListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
 import hu.bme.sch.bss.webcentral.core.model.User;
@@ -9,13 +10,20 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
-import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UserControllerTest {
 
+    private static final Long USER_ID = 16L;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "Given_name";
     private static final String FAMILY_NAME = "Family_name";
@@ -70,5 +78,72 @@ public class UserControllerTest {
             () -> assertEquals(request.getDescription(), response.getDescription()),
             () -> assertEquals(request.getImageUri(), response.getImageUri())
         );
+    }
+
+    @Test
+    void testGetUser() {
+        User actual = User.builder()
+            .withNickname(NICKNAME)
+            .withFamilyName(FAMILY_NAME)
+            .withGivenName(GIVEN_NAME)
+            .withEmail(EMAIL)
+            .withDescription(DESCRIPTION)
+            .withImageUri(IMAGE_URI)
+            .build();
+
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+
+        // WHEN
+        UserResponse response = underTest.getUser(USER_ID);
+
+        // THEN
+        assertAll(
+            () -> assertEquals(actual.getNickname(), response.getNickname()),
+            () -> assertEquals(actual.getFamilyName(), response.getFamilyName()),
+            () -> assertEquals(actual.getGivenName(), response.getGivenName()),
+            () -> assertEquals(actual.getEmail(), response.getEmail()),
+            () -> assertEquals(actual.getDescription(), response.getDescription()),
+            () -> assertEquals(actual.getImageUri(), response.getImageUri())
+        );
+    }
+
+    @Test
+    void testGetUserShouldThrowNoSuchElementException() {
+        // GIVEN
+        given(mockUserService.findById(USER_ID)).willThrow(new NoSuchElementException());
+
+        // WHEN
+        Exception exception = null;
+        UserResponse response = null;
+        try {
+            response = underTest.getUser(USER_ID);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
+        assertNull(response);
+        verify(mockUserService).findById(USER_ID);
+    }
+
+    @Test
+    void testListAllUsers() {
+        // GIVEN
+        List<User> userList = new ArrayList<>();
+
+        User user2 = User.builder()
+            .build();
+
+        userList.add(user);
+        userList.add(user2);
+
+        given(mockUserService.findAll()).willReturn(userList);
+
+        // WHEN
+        UserListResponse response = underTest.listAllUsers();
+
+        assertEquals(userList, Arrays.asList(response.getUsers()));
+
     }
 }
