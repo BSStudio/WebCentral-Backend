@@ -9,8 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PositionControllerTest {
@@ -49,5 +54,41 @@ public class PositionControllerTest {
 
         // THEN
         assertEquals(request.getName(), response.getName());
+    }
+
+    @Test
+    void testGetPosition() {
+        // GIVEN
+        Position actual = Position.builder()
+            .withName(NAME)
+            .build();
+
+        given(mockPositionService.findById(POSITION_ID)).willReturn(actual);
+
+        // WHEN
+        PositionResponse response = underTest.getPosition(POSITION_ID);
+
+        // THEN
+        assertEquals(actual.getName(), response.getName());
+    }
+
+    @Test
+    void testGetPositionShouldThrowNoSuchElementException() {
+        // GIVEN
+        given(mockPositionService.findById(POSITION_ID)).willThrow(new NoSuchElementException());
+
+        // WHEN
+        Exception exception = null;
+        PositionResponse response = null;
+        try {
+            response = underTest.getPosition(POSITION_ID);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
+        assertNull(response);
+        verify(mockPositionService).findById(POSITION_ID);
     }
 }
