@@ -41,7 +41,7 @@
     <skipJacoco>false</skipJacoco>
     <skipPit>false</skipPit>
     <skipPmd>false</skipPmd>
-    <skipDocker>false</skipDocker>
+    <skipDocker>true</skipDocker>
     <!-- Siblings -->
     <webcentral-backend-core.version>0.0.1-SNAPSHOT</webcentral-backend-core.version>
     <webcentral-backend-videoportal.version>0.0.1-SNAPSHOT</webcentral-backend-videoportal.version>

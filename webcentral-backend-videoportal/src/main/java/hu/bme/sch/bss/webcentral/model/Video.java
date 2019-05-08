@@ -3,7 +3,7 @@ package hu.bme.sch.bss.webcentral.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import hu.bme.sch.bss.webcentral.DomainAuditModel;
+import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
 
@@ -46,8 +46,9 @@ public final class Video extends DomainAuditModel {
     @NotBlank
     private String imageLocation;
 
-    // No-arg constructor for hibernate
+
     public Video() {
+        // No-arg constructor for hibernate
     }
 
     private Video(final Builder builder) {
@@ -107,26 +108,26 @@ public final class Video extends DomainAuditModel {
         }
         Video video = (Video) o;
         return Objects.equals(id, video.id)
-                && Objects.equals(longName, video.longName)
-                && Objects.equals(canonicalName, video.canonicalName)
-                && Objects.equals(projectName, video.projectName)
-                && Objects.equals(description, video.description)
-                && Objects.equals(visible, video.visible)
-                && Objects.equals(videoLocation, video.videoLocation)
-                && Objects.equals(imageLocation, video.imageLocation);
+            && Objects.equals(longName, video.longName)
+            && Objects.equals(canonicalName, video.canonicalName)
+            && Objects.equals(projectName, video.projectName)
+            && Objects.equals(description, video.description)
+            && Objects.equals(visible, video.visible)
+            && Objects.equals(videoLocation, video.videoLocation)
+            && Objects.equals(imageLocation, video.imageLocation);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                id,
-                longName,
-                canonicalName,
-                projectName,
-                description,
-                visible,
-                videoLocation,
-                imageLocation
+            id,
+            longName,
+            canonicalName,
+            projectName,
+            description,
+            visible,
+            videoLocation,
+            imageLocation
         );
     }
 
