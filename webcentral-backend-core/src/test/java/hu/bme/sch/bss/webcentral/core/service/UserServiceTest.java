@@ -25,6 +25,7 @@ class UserServiceTest {
 
     private static final Long USER_ID = 16L;
 
+    private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "Given_name";
     private static final String FAMILY_NAME = "Family_name";
@@ -32,6 +33,7 @@ class UserServiceTest {
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "/images/profile.png";
 
+    private static final Boolean OTHER_ARCHIVED = false;
     private static final String OTHER_NICKNAME = "other nickname";
     private static final String OTHER_GIVEN_NAME = "other GivenName";
     private static final String OTHER_FAMILY_NAME = "otherFamilyName";
@@ -62,6 +64,7 @@ class UserServiceTest {
         given(mockUserRequest.getImageUri()).willReturn(OTHER_IMAGE_URI);
 
         user = User.builder()
+            .withArchived(ARCHIVED)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)
@@ -69,8 +72,6 @@ class UserServiceTest {
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
             .build();
-
-
     }
 
     @Test
@@ -96,6 +97,7 @@ class UserServiceTest {
         User result = underTest.createUserWithRequestData(mockUserRequest);
 
         // THEN
+        then(mockUserRequest).should().getArchived();
         then(mockUserRequest).should().getNickname();
         then(mockUserRequest).should().getGivenName();
         then(mockUserRequest).should().getFamilyName();
@@ -104,6 +106,7 @@ class UserServiceTest {
         then(mockUserRequest).should().getImageUri();
 
         assertAll(
+            () -> assertEquals(OTHER_ARCHIVED, result.getArchived()),
             () -> assertEquals(OTHER_NICKNAME, result.getNickname()),
             () -> assertEquals(OTHER_GIVEN_NAME, result.getGivenName()),
             () -> assertEquals(OTHER_FAMILY_NAME, result.getFamilyName()),
@@ -131,6 +134,26 @@ class UserServiceTest {
 
         // THEN
         assertEquals(userList, result);
+    }
+
+    @Test
+    void testFindArchived() {
+        // GIVEN setup
+        List<User> archivedList = new ArrayList<>();
+
+        User user2 = User.builder()
+            .build();
+
+        archivedList.add(user);
+        archivedList.add(user2);
+
+        given(mockUserDao.findAllArchived()).willReturn(archivedList);
+
+        // WHEN
+        List<User> result = underTest.findArchived();
+
+        // THEN
+        assertEquals(archivedList, result);
     }
 
     @Test
@@ -191,5 +214,27 @@ class UserServiceTest {
         then(mockUserDao).should().save(user);
     }
 
+    @Test
+    void testArchive() {
+        // GIVEN setup
 
+        // WHEN
+        underTest.archive(user);
+
+        // THEN
+        assertTrue(user.getArchived());
+        then(mockUserDao).should().save(user);
+    }
+
+    @Test
+    void testRestore() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.restore(user);
+
+        // THEN
+        assertFalse(user.getArchived());
+        then(mockUserDao).should().save(user);
+    }
 }

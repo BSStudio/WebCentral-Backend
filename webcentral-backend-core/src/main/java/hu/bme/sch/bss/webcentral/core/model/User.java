@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 @JsonSerialize
 @JsonDeserialize(builder = User.Builder.class)
@@ -22,6 +25,9 @@ public final class User extends DomainAuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    private Boolean archived;
 
     @NotBlank
     private String nickname;
@@ -46,12 +52,17 @@ public final class User extends DomainAuditModel {
     }
 
     public User(final Builder builder) {
+        this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
         this.email = builder.email;
         this.description = builder.description;
         this.imageUri = builder.imageUri;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public void setNickname(final String nickname) {
@@ -82,6 +93,14 @@ public final class User extends DomainAuditModel {
         return id;
     }
 
+    public Boolean getArchived() {
+        return archived;
+    }
+
+    public void setArchived(final Boolean archived) {
+        this.archived = archived;
+    }
+
     public String getNickname() {
         return nickname;
     }
@@ -106,24 +125,7 @@ public final class User extends DomainAuditModel {
         return imageUri;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     //Generated code begins here
-
-    @Override
-    public String toString() {
-        return "User{"
-            + "id=" + id
-            + ", nickname='" + nickname + '\''
-            + ", givenName='" + givenName + '\''
-            + ", familyName='" + familyName + '\''
-            + ", email='" + email + '\''
-            + ", description='" + description + '\''
-            + ", imageUri='" + imageUri + '\''
-            + '}';
-    }
 
     @Override
     public boolean equals(final Object o) {
@@ -135,6 +137,7 @@ public final class User extends DomainAuditModel {
         }
         User user = (User) o;
         return Objects.equals(id, user.id)
+            && Objects.equals(archived, user.archived)
             && Objects.equals(nickname, user.nickname)
             && Objects.equals(givenName, user.givenName)
             && Objects.equals(familyName, user.familyName)
@@ -145,7 +148,21 @@ public final class User extends DomainAuditModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nickname, givenName, familyName, email, description, imageUri);
+        return Objects.hash(id, archived, nickname, givenName, familyName, email, description, imageUri);
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+            + "id=" + id
+            + ", archived=" + archived
+            + ", nickname='" + nickname + '\''
+            + ", givenName='" + givenName + '\''
+            + ", familyName='" + familyName + '\''
+            + ", email='" + email + '\''
+            + ", description='" + description + '\''
+            + ", imageUri='" + imageUri + '\''
+            + '}';
     }
 
     // Generated code ends here
@@ -153,12 +170,18 @@ public final class User extends DomainAuditModel {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
+        private Boolean archived;
         private String nickname;
         private String givenName;
         private String familyName;
         private String email;
         private String description;
         private String imageUri;
+
+        public Builder withArchived(final Boolean archived) {
+            this.archived = archived;
+            return this;
+        }
 
         public Builder withNickname(final String nickname) {
             this.nickname = nickname;

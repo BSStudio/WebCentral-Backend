@@ -19,6 +19,7 @@ public class UserTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();
 
+    private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "given name";
     private static final String FAMILY_NAME = "family name";
@@ -26,12 +27,14 @@ public class UserTest {
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "image/uri.png";
 
+    private static final Boolean OTHER_ARCHIVED = true;
     private static final String OTHER_NICKNAME = "other nickname";
     private static final String OTHER_GIVEN_NAME = "other given name";
     private static final String OTHER_FAMILY_NAME = "other family name";
     private static final String OTHER_EMAIL = "other@address.com";
     private static final String OTHER_DESCRIPTION = "other description";
     private static final String OTHER_IMAGE_URI = "image/other.png";
+    private static final String TOSTRING_RESULT = "User{id=null, archived=false, nickname='nickname', givenName='given name', familyName='family name', email='email@address.com', description='description', imageUri='image/uri.png'}";
 
     private User underTest;
 
@@ -45,6 +48,7 @@ public class UserTest {
 
         // THEN
         assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
             () -> assertEquals(NICKNAME, underTest.getNickname()),
             () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
@@ -64,6 +68,7 @@ public class UserTest {
         // THEN
         assertAll(
             () -> assertNull(underTest.getId()),
+            () -> assertNull(underTest.getArchived()),
             () -> assertNull(underTest.getNickname()),
             () -> assertNull(underTest.getGivenName()),
             () -> assertNull(underTest.getFamilyName()),
@@ -91,10 +96,39 @@ public class UserTest {
         // THEN
         assertEquals(validUser1, validUser2);
         assertNotEquals(validUser1, invalidUser);
-        assertNotEquals(null, validUser1);
+        assertNotEquals(validUser1, null);
+        assertNotEquals(validUser1, new Object());
         assertNotEquals(validUser2, invalidUser);
         assertEquals(validUser1.hashCode(), validUser2.hashCode());
     }
+
+    @Test
+    public void testToString() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
+            .build();
+
+        // WHEN
+
+        // THEN
+        assertEquals(TOSTRING_RESULT, underTest.toString());
+    }
+
+
+    @Test
+    public void testValidationShouldFailForNullArchived() {
+        //GIVEN
+        underTest = getDefaultValuesBuilder()
+            .withArchived(null)
+            .build();
+
+        // WHEN
+        Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
+
+        // THEN
+        thenValidationFails(violations, "must not be null", "archived");
+    }
+
 
     @Test
     public void testValidationShouldFailForMissingNickname() {
@@ -139,18 +173,48 @@ public class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingEmail() {
+    public void testValidationShouldFailForNotWellFormedEmailAddress() {
         // GIVEN
-        User user1 = getDefaultValuesBuilder()
+        underTest = getDefaultValuesBuilder()
+            .withEmail("asd")
+            .build();
+
+
+        // WHEN
+        Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
+
+        // THEN
+        thenValidationFails(violations, "must be a well-formed email address", "email");
+    }
+
+    @Test
+    public void testValidationShouldFailForNullEmail() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
+            .withEmail(null)
+            .build();
+
+
+        // WHEN
+        Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
+
+        // THEN
+        thenValidationFails(violations, "must not be blank", "email");
+    }
+
+    @Test
+    public void testValidationShouldFailForBlankEmail() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
             .withEmail("")
             .build();
 
 
         // WHEN
-        //Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
+        Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
 
         // THEN
-        //TODO
+        thenValidationFails(violations, "must not be blank", "email");
     }
 
     @Test
@@ -167,6 +231,29 @@ public class UserTest {
         thenValidationFails(violations, "must not be blank", "description");
     }
 
+
+    @Test
+    public void testSetArchived() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
+            .build();
+
+        // WHEN
+        underTest.setArchived(OTHER_ARCHIVED);
+
+
+        // THEN
+        assertAll(
+            () -> assertEquals(OTHER_ARCHIVED, underTest.getArchived()),
+            () -> assertEquals(NICKNAME, underTest.getNickname()),
+            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+            () -> assertEquals(EMAIL, underTest.getEmail()),
+            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+        );
+    }
+
     @Test
     public void testSetNickname() {
         // GIVEN
@@ -178,6 +265,7 @@ public class UserTest {
 
         // THEN
         assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
             () -> assertEquals(OTHER_NICKNAME, underTest.getNickname()),
             () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
@@ -198,6 +286,7 @@ public class UserTest {
 
         // THEN
         assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
             () -> assertEquals(NICKNAME, underTest.getNickname()),
             () -> assertEquals(OTHER_GIVEN_NAME, underTest.getGivenName()),
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
@@ -218,6 +307,7 @@ public class UserTest {
 
         // THEN
         assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
             () -> assertEquals(NICKNAME, underTest.getNickname()),
             () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
             () -> assertEquals(OTHER_FAMILY_NAME, underTest.getFamilyName()),
@@ -238,6 +328,7 @@ public class UserTest {
 
         // THEN
         assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
             () -> assertEquals(NICKNAME, underTest.getNickname()),
             () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
@@ -258,6 +349,7 @@ public class UserTest {
 
         // THEN
         assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
             () -> assertEquals(NICKNAME, underTest.getNickname()),
             () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
@@ -278,6 +370,7 @@ public class UserTest {
 
         // THEN
         assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
             () -> assertEquals(NICKNAME, underTest.getNickname()),
             () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
@@ -290,6 +383,7 @@ public class UserTest {
 
     private User.Builder getDefaultValuesBuilder() {
         return User.builder()
+            .withArchived(ARCHIVED)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)

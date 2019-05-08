@@ -30,8 +30,11 @@ public class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
     private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
-    private static final String REQUEST_USERS_LIST = "Request to find all users received.";
+    private static final String REQUEST_USERS_LIST = "Request to find all non-archived users received.";
     private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
+    private static final String REQUEST_USER_RESTORE = "Request to restore user received for id: {}";
+    private static final String REQUEST_USER_ARCHIVE = "Request to archive user received for id: {}";
+    private static final String REQUEST_ARCHIVED_USERS_LIST = "Request to find all archived users received.";
     private final UserService userService;
     private final Logger logger;
 
@@ -65,6 +68,22 @@ public class UserController {
         return new UserResponse(user);
     }
 
+    @PutMapping("/{id}/archive")
+    @ResponseStatus(HttpStatus.OK)
+    public final void archiveUser(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_USER_ARCHIVE, id);
+        User user = userService.findById(id);
+        userService.archive(user);
+    }
+
+    @PutMapping("/{id}/restore")
+    @ResponseStatus(HttpStatus.OK)
+    public final void restoreUser(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_USER_RESTORE, id);
+        User user = userService.findById(id);
+        userService.restore(user);
+    }
+
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.FOUND)
     public final UserListResponse listAllUsers() {
@@ -73,7 +92,16 @@ public class UserController {
         return UserListResponse.builder()
             .withUsers(users)
             .build();
+    }
 
+    @GetMapping("/archived")
+    @ResponseStatus(HttpStatus.FOUND)
+    public final UserListResponse listAllArchived() {
+        logger.info(REQUEST_ARCHIVED_USERS_LIST);
+        ArrayList<User> users = new ArrayList<>(userService.findArchived());
+        return UserListResponse.builder()
+            .withUsers(users)
+            .build();
     }
 
 }

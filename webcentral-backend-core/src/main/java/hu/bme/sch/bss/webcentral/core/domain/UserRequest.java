@@ -5,27 +5,37 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
 public class UserRequest {
 
-    @NotBlank
-    private final String givenName;
-    @NotBlank
-    private final String familyName;
-    @Email
-    @NotBlank
-    private final String email;
-    @NotBlank
-    private final String description;
-    @NotBlank
-    private final String imageUri;
+    @NotNull
+    private Boolean archived;
+
     @NotBlank
     private String nickname;
 
+    @NotBlank
+    private final String givenName;
+
+    @NotBlank
+    private final String familyName;
+
+    @Email
+    @NotBlank
+    private final String email;
+
+    @NotBlank
+    private final String description;
+
+    @NotBlank
+    private final String imageUri;
+
     private UserRequest(final Builder builder) {
+        this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
@@ -36,6 +46,10 @@ public class UserRequest {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public Boolean getArchived() {
+        return archived;
     }
 
     public String getNickname() {
@@ -65,12 +79,18 @@ public class UserRequest {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
+        private Boolean archived;
         private String nickname;
         private String givenName;
         private String familyName;
         private String email;
         private String description;
         private String imageUri;
+
+        public Builder withArchived(final Boolean archived) {
+            this.archived = archived;
+            return this;
+        }
 
         public Builder withNickname(final String nickname) {
             this.nickname = nickname;
