@@ -2,7 +2,6 @@ package hu.bme.sch.bss.webcentral.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
 
@@ -14,10 +13,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @JsonSerialize
-@JsonDeserialize(builder = Position.Builder.class)
+@JsonDeserialize(builder = Status.Builder.class)
 @Entity
-@Table(name = "position")
-public final class Position extends DomainAuditModel {
+@Table(name = "statuses")
+public final class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,16 +25,24 @@ public final class Position extends DomainAuditModel {
     @NotBlank
     private String name;
 
-    public Position() {
+    public Status() {
         // No-arg constructor for hibernate
     }
 
-    public Position(final Builder builder) {
+    public Status(final Builder builder) {
         this.name = builder.name;
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -44,10 +51,6 @@ public final class Position extends DomainAuditModel {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
     }
 
     //Generated code begins here
@@ -61,9 +64,9 @@ public final class Position extends DomainAuditModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Position position = (Position) o;
-        return Objects.equals(id, position.id)
-            && Objects.equals(name, position.name);
+        Status status = (Status) o;
+        return Objects.equals(id, status.id)
+            && Objects.equals(name, status.name);
     }
 
     @Override
@@ -73,7 +76,7 @@ public final class Position extends DomainAuditModel {
 
     @Override
     public String toString() {
-        return "Position{"
+        return "Status{"
             + "id=" + id
             + ", name='" + name + '\''
             + '}';
@@ -83,7 +86,6 @@ public final class Position extends DomainAuditModel {
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
-
         private String name;
 
         public Builder withName(final String name) {
@@ -91,8 +93,8 @@ public final class Position extends DomainAuditModel {
             return this;
         }
 
-        public Position build() {
-            return new Position(this);
+        public Status build() {
+            return new Status(this);
         }
     }
 }

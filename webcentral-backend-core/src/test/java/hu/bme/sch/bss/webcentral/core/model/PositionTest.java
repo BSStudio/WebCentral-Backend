@@ -19,6 +19,9 @@ public class PositionTest {
         .getValidator();
 
     private static final String NAME = "name";
+
+    private static final String OTHER_NAME = "other name";
+
     private static final String TO_STRING_RESULT = "Position{id=null, name='name'}";
 
     private Position underTest;
@@ -92,6 +95,19 @@ public class PositionTest {
 
         // THEN
         thenValidationFails(violations, "must not be blank", "name");
+    }
+
+    @Test
+    public void testSetName() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
+            .build();
+
+        // WHEN
+        underTest.setName(OTHER_NAME);
+
+        // THEN
+        assertEquals(OTHER_NAME, underTest.getName());
     }
 
     private Position.Builder getDefaultValuesBuilder() {

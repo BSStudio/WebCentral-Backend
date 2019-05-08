@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
 @RequestMapping(value = "/api/user", produces = "application/json")
 public class UserController {
@@ -86,7 +85,7 @@ public class UserController {
         userService.restore(user);
     }
 
-    @DeleteMapping("/id/delete")
+    @DeleteMapping("/{id}/delete")
     @ResponseStatus(HttpStatus.OK)
     public final void deleteUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_DELETE, id);

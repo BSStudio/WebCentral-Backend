@@ -15,13 +15,15 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("designforextension")
 public class PositionService {
 
-    private static final String POSITION_CREATE_STARTED = "User creation started. {}";
-    private static final String POSITION_CREATE_SUCCEED = "User creation succeed. {}";
-    private static final String POSITION_SEARCH_STARTED = "User search started {}";
-    private static final String POSITION_SEARCH_SUCCEED = "User search succeed {}";
-    private static final String POSITION_NOT_FOUND = "User not found with id: {}";
-    private static final String POSITION_DELETE_STARTED = "User delete started. {}";
-    private static final String POSITION_DELETE_SUCCEED = "User delete succeed. {}";
+    private static final String POSITION_CREATE_STARTED = "Position creation started. {}";
+    private static final String POSITION_CREATE_SUCCEED = "Position creation succeed. {}";
+    private static final String POSITION_SEARCH_STARTED = "Position search started {}";
+    private static final String POSITION_SEARCH_SUCCEED = "Position search succeed {}";
+    private static final String POSITION_NOT_FOUND = "Position not found with id: {}";
+    private static final String POSITION_DELETE_STARTED = "Position delete started. {}";
+    private static final String POSITION_DELETE_SUCCEED = "Position delete succeed. {}";
+    private static final String POSITION_EDIT_STARTED = "Position edit started. {}";
+    private static final String POSITION_EDIT_SUCCEED = "Position edit succeed. {}";
 
     private final PositionDao positionDao;
     private final Logger logger;
@@ -60,5 +62,11 @@ public class PositionService {
         return Position.builder()
             .withName(request.getName())
             .build();
+    }
+
+    public void update(final PositionRequest request, final Position position) {
+        logger.info(POSITION_EDIT_STARTED, request);
+        position.setName(request.getName());
+        logger.info(POSITION_EDIT_SUCCEED, request);
     }
 }
