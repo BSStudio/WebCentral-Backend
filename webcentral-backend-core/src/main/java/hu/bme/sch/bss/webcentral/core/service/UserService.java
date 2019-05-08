@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("designforextension")
 public class UserService {
 
-
     private static final String USER_CREATE_STARTED = "User creation started. {}";
     private static final String USER_CREATE_SUCCEED = "User creation succeed. {}";
     private static final String USER_SEARCH_STARTED = "User search started. {}";
@@ -23,6 +22,8 @@ public class UserService {
     private static final String USER_NOT_FOUND = "User not found with id {}";
     private static final String USERS_ALL_SEARCH_STARTED = "Search for all users started";
     private static final String USERS_ALL_SEARCH_SUCCEED = "Search for all users succeed";
+    private static final String USER_UPDATE_STARTED = "User update started. {}";
+    private static final String USER_UPDATE_SUCCEED = "User update succeed. {}";
 
     private final UserDao userDao;
     private final Logger logger;
@@ -68,5 +69,17 @@ public class UserService {
             .withImageUri(request.getImageUri())
             .withNickname(request.getNickname())
             .build();
+    }
+
+    public void update(final UserRequest request, final User user) {
+        logger.info(USER_UPDATE_STARTED, user);
+        user.setNickname(request.getNickname());
+        user.setGivenName(request.getGivenName());
+        user.setFamilyName(request.getFamilyName());
+        user.setEmail(request.getEmail());
+        user.setDescription(request.getDescription());
+        user.setImageUri(request.getImageUri());
+        userDao.save(user);
+        logger.info(USER_UPDATE_SUCCEED, user);
     }
 }

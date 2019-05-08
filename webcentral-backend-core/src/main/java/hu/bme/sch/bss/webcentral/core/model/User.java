@@ -54,6 +54,30 @@ public final class User extends DomainAuditModel {
         this.imageUri = builder.imageUri;
     }
 
+    public void setNickname(final String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setGivenName(final String givenName) {
+        this.givenName = givenName;
+    }
+
+    public void setFamilyName(final String familyName) {
+        this.familyName = familyName;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public void setImageUri(final String imageUri) {
+        this.imageUri = imageUri;
+    }
+
     public Long getId() {
         return id;
     }

@@ -163,7 +163,32 @@ class UserServiceTest {
 
         // THEN
         assertNotNull(exception);
+    }
 
+    @Test
+    void testUpdate() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.update(mockUserRequest, user);
+
+        // THEN
+        then(mockUserRequest).should().getNickname();
+        then(mockUserRequest).should().getGivenName();
+        then(mockUserRequest).should().getFamilyName();
+        then(mockUserRequest).should().getEmail();
+        then(mockUserRequest).should().getDescription();
+        then(mockUserRequest).should().getImageUri();
+
+        assertAll(
+            () -> assertEquals(OTHER_NICKNAME, user.getNickname()),
+            () -> assertEquals(OTHER_GIVEN_NAME, user.getGivenName()),
+            () -> assertEquals(OTHER_FAMILY_NAME, user.getFamilyName()),
+            () -> assertEquals(OTHER_EMAIL, user.getEmail()),
+            () -> assertEquals(OTHER_DESCRIPTION, user.getDescription()),
+            () -> assertEquals(OTHER_IMAGE_URI, user.getImageUri())
+        );
+        then(mockUserDao).should().save(user);
     }
 
 
