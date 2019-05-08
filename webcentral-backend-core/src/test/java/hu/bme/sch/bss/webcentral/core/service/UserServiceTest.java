@@ -237,4 +237,15 @@ class UserServiceTest {
         assertFalse(user.getArchived());
         then(mockUserDao).should().save(user);
     }
+
+    @Test
+    void testDelete() {
+        // GIVEN setup
+
+        // WHEN
+        underTest.delete(user);
+
+        // THEN
+        then(mockUserDao).should().delete(user);
+    }
 }

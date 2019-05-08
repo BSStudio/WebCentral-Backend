@@ -222,4 +222,17 @@ class UserControllerTest {
         then(mockUserService).should().findById(USER_ID);
         then(mockUserService).should().restore(user);
     }
+
+    @Test
+    void testDeleteUser() {
+        // GIVEN
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+
+        // WHEN
+        underTest.deleteUser(USER_ID);
+
+        // THEN
+        then(mockUserService).should().findById(USER_ID);
+        then(mockUserService).should().delete(user);
+    }
 }
