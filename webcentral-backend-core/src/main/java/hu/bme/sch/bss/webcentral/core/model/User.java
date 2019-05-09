@@ -71,6 +71,8 @@ public final class User extends DomainAuditModel {
         this.email = builder.email;
         this.description = builder.description;
         this.imageUri = builder.imageUri;
+        this.status = builder.status;
+        this.position = builder.position;
     }
 
     public static Builder builder() {
@@ -135,6 +137,14 @@ public final class User extends DomainAuditModel {
 
     public String getImageUri() {
         return imageUri;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 
     //Generated code begins here
