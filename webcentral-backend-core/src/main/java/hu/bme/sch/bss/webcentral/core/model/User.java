@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -46,6 +48,16 @@ public final class User extends DomainAuditModel {
     private String description;
 
     private String imageUri;
+
+    @NotNull
+    @JoinColumn
+    @ManyToOne
+    private Status status;
+
+    @NotNull
+    @JoinColumn
+    @ManyToOne
+    private Position position;
 
     public User() {
         // No-arg constructor for hibernate
@@ -143,12 +155,14 @@ public final class User extends DomainAuditModel {
             && Objects.equals(familyName, user.familyName)
             && Objects.equals(email, user.email)
             && Objects.equals(description, user.description)
-            && Objects.equals(imageUri, user.imageUri);
+            && Objects.equals(imageUri, user.imageUri)
+            && Objects.equals(status, user.status)
+            && Objects.equals(position, user.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, archived, nickname, givenName, familyName, email, description, imageUri);
+        return Objects.hash(id, archived, nickname, givenName, familyName, email, description, imageUri, status, position);
     }
 
     @Override
@@ -162,6 +176,8 @@ public final class User extends DomainAuditModel {
             + ", email='" + email + '\''
             + ", description='" + description + '\''
             + ", imageUri='" + imageUri + '\''
+            + ", status=" + status
+            + ", position=" + position
             + '}';
     }
 
@@ -177,6 +193,8 @@ public final class User extends DomainAuditModel {
         private String email;
         private String description;
         private String imageUri;
+        private Status status;
+        private Position position;
 
         public Builder withArchived(final Boolean archived) {
             this.archived = archived;
@@ -210,6 +228,16 @@ public final class User extends DomainAuditModel {
 
         public Builder withImageUri(final String imageUri) {
             this.imageUri = imageUri;
+            return this;
+        }
+
+        public Builder withStatus(final Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder withPosition(final Position position) {
+            this.position = position;
             return this;
         }
 
