@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import hu.bme.sch.bss.webcentral.core.domain.PositionListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 
 @RestController
 @RequestMapping(value = "/api/user/position", produces = "application/json")
@@ -30,6 +33,7 @@ public class PositionController {
     private static final String REQUEST_POSITION_SEARCH = "Request for position search received with id of: {}";
     private static final String REQUEST_POSITION_DELETE = "Request to delete position received for id: {}";
     private static final String REQUEST_POSITION_EDIT = "Request to update user received for id {}";
+    private static final String REQUEST_POSITION_LIST = "Request to find all positions received.";
     private final PositionService positionService;
     private final Logger logger;
 
@@ -69,5 +73,15 @@ public class PositionController {
         Position position = positionService.findById(id);
         positionService.update(request, position);
         return new PositionResponse(position);
+    }
+
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.FOUND)
+    public final PositionListResponse listAllPositions() {
+        logger.info(REQUEST_POSITION_LIST);
+        ArrayList<Position> positions = new ArrayList<>(positionService.findAll());
+        return PositionListResponse.builder()
+            .withPositions(positions)
+            .build();
     }
 }
