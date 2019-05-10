@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -132,5 +134,25 @@ public class PositionServiceTest {
         then(mockPositionRequest).should().getName();
 
         assertEquals(OTHER_NAME, result.getName());
+    }
+
+    @Test
+    void testFindAll() {
+        // GIVEN setup
+        List<Position> positionList = new ArrayList<>();
+
+        Position position2 = Position.builder()
+            .build();
+
+        positionList.add(position);
+        positionList.add(position2);
+
+        given(mockPositionDao.findAll()).willReturn(positionList);
+
+        // WHEN
+        List<Position> result = underTest.findAll();
+
+        // THEN
+        assertEquals(positionList, result);
     }
 }

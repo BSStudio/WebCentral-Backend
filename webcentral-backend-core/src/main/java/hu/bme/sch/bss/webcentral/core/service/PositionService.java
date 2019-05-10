@@ -4,6 +4,7 @@ import hu.bme.sch.bss.webcentral.core.dao.PositionDao;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.model.Position;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -24,6 +25,8 @@ public class PositionService {
     private static final String POSITION_DELETE_SUCCEED = "Position delete succeed. {}";
     private static final String POSITION_EDIT_STARTED = "Position edit started. {}";
     private static final String POSITION_EDIT_SUCCEED = "Position edit succeed. {}";
+    private static final String POSITION_ALL_SEARCH_STARTED = "Search for all position started";
+    private static final String POSITION_ALL_SEARCH_SUCCEED = "Search for all position succeed";
 
     private final PositionDao positionDao;
     private final Logger logger;
@@ -68,5 +71,12 @@ public class PositionService {
         logger.info(POSITION_EDIT_STARTED, request);
         position.setName(request.getName());
         logger.info(POSITION_EDIT_SUCCEED, request);
+    }
+
+    public List<Position> findAll() {
+        logger.info(POSITION_ALL_SEARCH_STARTED);
+        List<Position> positionList = positionDao.findAll();
+        logger.info(POSITION_ALL_SEARCH_SUCCEED);
+        return positionList;
     }
 }
