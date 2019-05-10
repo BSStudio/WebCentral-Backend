@@ -2,9 +2,11 @@ package hu.bme.sch.bss.webcentral.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,13 +18,14 @@ import javax.validation.constraints.NotBlank;
 @JsonDeserialize(builder = Status.Builder.class)
 @Entity
 @Table(name = "statuses")
-public final class Status {
+public final class Status extends DomainAuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Status() {

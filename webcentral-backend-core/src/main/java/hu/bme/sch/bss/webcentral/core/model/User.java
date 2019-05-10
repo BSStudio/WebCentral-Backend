@@ -35,7 +35,7 @@ public final class User extends DomainAuditModel {
     private Boolean archived;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @NotBlank
@@ -48,14 +48,14 @@ public final class User extends DomainAuditModel {
 
     @Email
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank
     @Column(nullable = false)
     private String description;
 
-    @Column(name = "image_uri", nullable = false)
+    @Column(name = "image_uri", nullable = false, unique = true)
     private String imageUri;
 
     @JoinColumn

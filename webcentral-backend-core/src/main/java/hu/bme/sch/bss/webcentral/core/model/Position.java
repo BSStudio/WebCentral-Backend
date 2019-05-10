@@ -6,6 +6,7 @@ import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,7 @@ public final class Position extends DomainAuditModel {
     private Long id;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String name;
 
     public Position() {

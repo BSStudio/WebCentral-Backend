@@ -67,6 +67,7 @@ public final class StatusService {
     public void update(final StatusRequest request, final Status status) {
         logger.info(STATUS_EDIT_STARTED, request);
         status.setName(request.getName());
+        statusDao.save(status);
         logger.info(STATUS_EDIT_SUCCEED, request);
     }
 

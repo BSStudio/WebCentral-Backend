@@ -69,6 +69,7 @@ public final class PositionService {
     public void update(final PositionRequest request, final Position position) {
         logger.info(POSITION_EDIT_STARTED, request);
         position.setName(request.getName());
+        positionDao.save(position);
         logger.info(POSITION_EDIT_SUCCEED, request);
     }
 
