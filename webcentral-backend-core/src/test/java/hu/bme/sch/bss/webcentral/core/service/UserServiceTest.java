@@ -5,9 +5,12 @@ import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.mockito.Mock;
+
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -73,6 +76,8 @@ class UserServiceTest {
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
+            .withStatus(mockStatus)
+            .withPosition(mockPosition)
             .build();
     }
 
@@ -86,13 +91,6 @@ class UserServiceTest {
         // THEN
         then(mockUserDao).should().save(user);
 
-        then(mockUserRequest).should().getArchived();
-        then(mockUserRequest).should().getNickname();
-        then(mockUserRequest).should().getGivenName();
-        then(mockUserRequest).should().getFamilyName();
-        then(mockUserRequest).should().getEmail();
-        then(mockUserRequest).should().getDescription();
-        then(mockUserRequest).should().getImageUri();
 
         assertAll(
             () -> assertEquals(NICKNAME, result.getNickname()),
@@ -190,7 +188,7 @@ class UserServiceTest {
 
 
         // WHEN
-        underTest.update(mockUserRequest, user, mockStatus, mockPosition);
+        underTest.update(mockUserRequest, user);
 
         // THEN
         then(mockUserRequest).should().getNickname();
@@ -244,5 +242,29 @@ class UserServiceTest {
 
         // THEN
         then(mockUserDao).should().delete(user);
+    }
+
+    @Test
+    void testUpdateUserStatus() {
+        // GIVEN
+
+        // WHEN
+        underTest.updateUserStatus(user, mockStatus);
+
+        // THEN
+        assertEquals(user.getStatus(), mockStatus);
+        then(mockUserDao).should().save(user);
+    }
+
+    @Test
+    void testUpdateUserPosition() {
+        // GIVEN
+
+        // WHEN
+        underTest.updateUserPosition(user, mockPosition);
+
+        // THEN
+        assertEquals(user.getPosition(), mockPosition);
+        then(mockUserDao).should().save(user);
     }
 }

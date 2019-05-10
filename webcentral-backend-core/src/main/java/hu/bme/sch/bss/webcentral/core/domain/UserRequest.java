@@ -84,11 +84,11 @@ public final class UserRequest {
         return imageUri;
     }
 
-    public String getStatus() {
+    public String getStatusName() {
         return status;
     }
 
-    public String getPosition() {
+    public String getPositionName() {
         return position;
     }
 

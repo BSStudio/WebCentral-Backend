@@ -132,21 +132,6 @@ public class UserTest {
 
 
     @Test
-    public void testValidationShouldFailForNullArchived() {
-        //GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withArchived(null)
-            .build();
-
-        // WHEN
-        Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
-
-        // THEN
-        thenValidationFails(violations, "must not be null", "archived");
-    }
-
-
-    @Test
     public void testValidationShouldFailForMissingNickname() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
@@ -467,7 +452,6 @@ public class UserTest {
 
     private User.Builder getDefaultValuesBuilder() {
         return User.builder()
-            .withArchived(ARCHIVED)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)

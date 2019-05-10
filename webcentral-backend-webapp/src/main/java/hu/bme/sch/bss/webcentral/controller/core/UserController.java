@@ -61,8 +61,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public final UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
-        Status status = statusService.findByName(request.getStatus());
-        Position position = positionService.findByName(request.getPosition());
+        Status status = statusService.findByName(request.getStatusName());
+        Position position = positionService.findByName(request.getPositionName());
         User result = userService.create(request, status, position);
         return new UserResponse(result);
     }

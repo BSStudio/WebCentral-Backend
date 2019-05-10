@@ -155,4 +155,36 @@ public class PositionServiceTest {
         // THEN
         assertEquals(positionList, result);
     }
+    
+    @Test
+    void testFindByName() {
+        // GIVEN
+        Position position = Position.builder()
+            .withName(NAME)
+            .build();
+        given(mockPositionDao.findByName(NAME)).willReturn(Optional.of(position));
+        
+        // WHEN
+        Position result = underTest.findByName(NAME);
+    
+        // THEN
+        assertEquals(position, result);
+    }
+
+    @Test
+    void testFindByNameShouldThrowNoSuchElementException() {
+        // GIVEN
+        given(mockPositionDao.findByName(any())).willReturn(Optional.empty());
+
+        // WHEN
+        NoSuchElementException exception = null;
+        try {
+            underTest.findByName(NAME);
+        } catch (NoSuchElementException e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
+    }
 }

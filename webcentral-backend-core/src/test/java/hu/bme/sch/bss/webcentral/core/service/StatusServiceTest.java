@@ -152,4 +152,36 @@ public class StatusServiceTest {
         // THEN
         assertEquals(statusList, result);
     }
+
+    @Test
+    void testFindByName() {
+        // GIVEN
+        Status status = Status.builder()
+            .withName(NAME)
+            .build();
+        given(mockStatusDao.findByName(NAME)).willReturn(Optional.of(status));
+
+        // WHEN
+        Status result = underTest.findByName(NAME);
+
+        // THEN
+        assertEquals(status, result);
+    }
+
+    @Test
+    void testFindByNameShouldThrowNoSuchElementException() {
+        // GIVEN
+        given(mockStatusDao.findByName(any())).willReturn(Optional.empty());
+
+        // WHEN
+        NoSuchElementException exception = null;
+        try {
+            underTest.findByName(NAME);
+        } catch (NoSuchElementException e) {
+            exception = e;
+        }
+
+        // THEN
+        assertNotNull(exception);
+    }
 }

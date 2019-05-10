@@ -29,7 +29,6 @@ class UserResponseTest {
         Status mockStatus = mock(Status.class);
         Position mockPosition = mock(Position.class);
         User actual = User.builder()
-            .withArchived(ARCHIVED)
             .withNickname(NICKNAME)
             .withGivenName(GIVEN_NAME)
             .withFamilyName(FAMILY_NAME)

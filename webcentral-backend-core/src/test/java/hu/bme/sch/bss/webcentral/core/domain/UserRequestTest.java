@@ -44,8 +44,8 @@ class UserRequestTest {
         assertEquals(EMAIL, underTest.getEmail());
         assertEquals(DESCRIPTION, underTest.getDescription());
         assertEquals(IMAGE_URI, underTest.getImageUri());
-        assertEquals(STATUS, underTest.getStatus());
-        assertEquals(POSITION, underTest.getPosition());
+        assertEquals(STATUS, underTest.getStatusName());
+        assertEquals(POSITION, underTest.getPositionName());
     }
 
     @Test

@@ -6,6 +6,8 @@ import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -20,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-
 
 @RestController
 @RequestMapping(value = "/api/user/position", produces = "application/json")

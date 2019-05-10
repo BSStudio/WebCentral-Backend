@@ -1,5 +1,8 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import hu.bme.sch.bss.webcentral.core.domain.PositionListResponse;
+import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
+import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
@@ -53,6 +56,10 @@ class UserControllerTest {
     private Status mockStatus;
     @Mock
     private Position mockPosition;
+    @Mock
+    private PositionRequest mockPositionRequest;
+    @Mock
+    private StatusRequest mockStatusRequest;
 
     @BeforeEach
     void init() {
@@ -84,6 +91,8 @@ class UserControllerTest {
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
+            .withStatus(STATUS_NAME)
+            .withPosition(POSITION_NAME)
             .build();
         given(mockUserService.create(request, mockStatus, mockPosition)).willReturn(user);
 
@@ -205,7 +214,7 @@ class UserControllerTest {
 
         // THEN
         then(mockUserService).should().findById(USER_ID);
-        then(mockUserService).should().update(request, user, mockStatus, mockPosition);
+        then(mockUserService).should().update(request, user);
 
         assertAll(
             () -> assertEquals(request.getNickname(), response.getNickname()),
@@ -254,5 +263,33 @@ class UserControllerTest {
         // THEN
         then(mockUserService).should().findById(USER_ID);
         then(mockUserService).should().delete(user);
+    }
+
+    @Test
+    void testUpdateUserStatus() {
+        // GIVEN
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+        given(mockStatusRequest.getName()).willReturn(STATUS_NAME);
+        given(mockStatusService.findByName(STATUS_NAME)).willReturn(mockStatus);
+
+        // WHEN
+        UserResponse response = underTest.updateUserStatus(USER_ID, mockStatusRequest);
+
+        // THEN
+        assertEquals(STATUS_NAME, response.getStatus());
+    }
+
+    @Test
+    void testUpdateUserPosition() {
+        // GIVEN
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+        given(mockPositionRequest.getName()).willReturn(POSITION_NAME);
+        given(mockPositionService.findByName(POSITION_NAME)).willReturn(mockPosition);
+
+        // WHEN
+        UserResponse response = underTest.updateUserPosition(USER_ID, mockPositionRequest);
+
+        // THEN
+        assertEquals(POSITION_NAME, response.getPosition());
     }
 }
