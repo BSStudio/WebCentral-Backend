@@ -6,6 +6,7 @@ import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,27 +27,35 @@ public final class User extends DomainAuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @NotNull
+    @Column(nullable = false)
     private Boolean archived;
 
     @NotBlank
+    @Column(nullable = false)
     private String nickname;
 
     @NotBlank
+    @Column(name = "given_name", nullable = false)
     private String givenName;
 
     @NotBlank
+    @Column(name = "family_name", nullable = false)
     private String familyName;
 
     @Email
     @NotBlank
+    @Column(nullable = false)
     private String email;
 
     @NotBlank
+    @Column(nullable = false)
     private String description;
 
+    @Column(name = "image_uri", nullable = false)
     private String imageUri;
 
     @JoinColumn
@@ -63,7 +72,7 @@ public final class User extends DomainAuditModel {
     }
 
     public User(final Builder builder) {
-        this.archived = builder.archived;
+        this.archived = false;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
@@ -203,7 +212,6 @@ public final class User extends DomainAuditModel {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-        private Boolean archived;
         private String nickname;
         private String givenName;
         private String familyName;
@@ -212,11 +220,6 @@ public final class User extends DomainAuditModel {
         private String imageUri;
         private Status status;
         private Position position;
-
-        public Builder withArchived(final Boolean archived) {
-            this.archived = archived;
-            return this;
-        }
 
         public Builder withNickname(final String nickname) {
             this.nickname = nickname;
