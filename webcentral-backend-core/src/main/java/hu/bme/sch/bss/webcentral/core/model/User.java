@@ -49,7 +49,6 @@ public final class User extends DomainAuditModel {
 
     private String imageUri;
 
-    @NotNull
     @JoinColumn
     @ManyToOne
     private Status status;

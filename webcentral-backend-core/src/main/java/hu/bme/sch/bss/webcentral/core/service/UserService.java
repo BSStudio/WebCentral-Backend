@@ -45,7 +45,7 @@ public final class UserService {
 
     public User create(final UserRequest request, final Status status, final Position position) {
         logger.info(USER_CREATE_STARTED, request);
-        User user = createUserWithRequestData(request);
+        User user = createUserWithRequestData(request, status, position);
         userDao.save(user);
         logger.info(USER_CREATE_SUCCEED, user);
         return user;
@@ -108,7 +108,7 @@ public final class UserService {
         logger.info(USER_DELETE_SUCCEED, user);
     }
 
-    User createUserWithRequestData(final UserRequest request) {
+    User createUserWithRequestData(final UserRequest request, final Status status, final Position position) {
         return User.builder()
             .withArchived(request.getArchived())
             .withDescription(request.getDescription())
@@ -117,6 +117,8 @@ public final class UserService {
             .withGivenName(request.getGivenName())
             .withImageUri(request.getImageUri())
             .withNickname(request.getNickname())
+            .withStatus(status)
+            .withPosition(position)
             .build();
     }
 }

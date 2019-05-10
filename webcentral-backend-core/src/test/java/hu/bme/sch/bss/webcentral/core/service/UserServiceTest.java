@@ -2,6 +2,8 @@ package hu.bme.sch.bss.webcentral.core.service;
 
 import hu.bme.sch.bss.webcentral.core.dao.UserDao;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,8 @@ class UserServiceTest {
     private static final String EMAIL = "email@email.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "/images/profile.png";
+    private static final String STATUS = "status";
+    private static final String POSITION = "position";
 
     private static final Boolean OTHER_ARCHIVED = false;
     private static final String OTHER_NICKNAME = "other nickname";
@@ -40,6 +44,8 @@ class UserServiceTest {
     private static final String OTHER_EMAIL = "otheremail@email.com";
     private static final String OTHER_DESCRIPTION = "other description";
     private static final String OTHER_IMAGE_URI = "other/images/profile.png";
+    private static final String OTHER_STATUS = "other status";
+    private static final String OTHER_POSITION = "other position";
 
     @Mock
     private UserRequest mockUserRequest;
@@ -49,6 +55,10 @@ class UserServiceTest {
     private UserDao mockUserDao;
 
     private User user;
+    @Mock
+    private Position mockPosition;
+    @Mock
+    private Status mockStatus;
     private UserService underTest;
 
     @BeforeEach
@@ -62,6 +72,8 @@ class UserServiceTest {
         given(mockUserRequest.getEmail()).willReturn(OTHER_EMAIL);
         given(mockUserRequest.getDescription()).willReturn(OTHER_DESCRIPTION);
         given(mockUserRequest.getImageUri()).willReturn(OTHER_IMAGE_URI);
+        given(mockPosition.getName()).willReturn(POSITION);
+        given(mockStatus.getName()).willReturn(STATUS);
 
         user = User.builder()
             .withArchived(ARCHIVED)
@@ -74,20 +86,20 @@ class UserServiceTest {
             .build();
     }
 
-//    @Test
-//    void testCreateUser() {
-//        // GIVEN
-//        doReturn(user).when(underTest).createUserWithRequestData(any());
-//
-//        // WHEN
-//        User result = underTest.create(mockUserRequest);
-//
-//        // THEN
-//        then(underTest).should().createUserWithRequestData(mockUserRequest);
-//        then(mockUserDao).should().save(user);
-//
-//        assertEquals(user, result);
-//    }
+    @Test
+    void testCreateUser() {
+        // GIVEN
+        doReturn(user).when(underTest).createUserWithRequestData(any());
+
+        // WHEN
+        User result = underTest.create(mockUserRequest, mockStatus, mockPosition);
+
+        // THEN
+        then(underTest).should().createUserWithRequestData(mockUserRequest);
+        then(mockUserDao).should().save(user);
+
+        assertEquals(user, result);
+    }
 
     @Test
     void testCreateUserWithRequestData() {
@@ -104,6 +116,8 @@ class UserServiceTest {
         then(mockUserRequest).should().getEmail();
         then(mockUserRequest).should().getDescription();
         then(mockUserRequest).should().getImageUri();
+        then(mockUserRequest).should().getStatus();
+        then(mockUserRequest).should().getPosition();
 
         assertAll(
             () -> assertEquals(OTHER_ARCHIVED, result.getArchived()),
@@ -193,8 +207,7 @@ class UserServiceTest {
         // GIVEN setup
 
         // WHEN
-        //TODO
-        //underTest.update(mockUserRequest, user);
+        underTest.update(mockUserRequest, user, mockStatus, mockPosition);
 
         // THEN
         then(mockUserRequest).should().getNickname();
@@ -203,6 +216,8 @@ class UserServiceTest {
         then(mockUserRequest).should().getEmail();
         then(mockUserRequest).should().getDescription();
         then(mockUserRequest).should().getImageUri();
+        then(mockUserRequest).should().getStatus();
+        then(mockUserRequest).should().getPosition();
 
         assertAll(
             () -> assertEquals(OTHER_NICKNAME, user.getNickname()),

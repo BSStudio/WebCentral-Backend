@@ -29,6 +29,9 @@ public class UserTest {
     private static final String EMAIL = "email@address.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "image/uri.png";
+    private static final String STATUS = "status";
+    private static final String POSITION = "position";
+
 
     private static final Boolean OTHER_ARCHIVED = true;
     private static final String OTHER_NICKNAME = "other nickname";
@@ -37,18 +40,19 @@ public class UserTest {
     private static final String OTHER_EMAIL = "other@address.com";
     private static final String OTHER_DESCRIPTION = "other description";
     private static final String OTHER_IMAGE_URI = "image/other.png";
-    private static final String TO_STRING_RESULT = "User{id=null, archived=false, nickname='nickname', givenName='given name', familyName='family name', email='email@address.com', description='description', imageUri='image/uri.png'}";
+    private static final String OTHER_STATUS = "other status";
+    private static final String OTHER_POSITION = "other position";
+
+    private static final String TO_STRING_RESULT = "User{id=null, archived=false, nickname='nickname', givenName='given name', familyName='family name', email='email@address.com', description='description', imageUri='image/uri.png', status=Status{id=null, name='status'}, position=Position{id=null, name='position'}}";
+
 
     private User underTest;
-    @Mock
-    private Status mockStatus;
-    @Mock
-    private Position mockPosition;
-
-    @BeforeEach
-    private void init(){
-        initMocks(this);
-    }
+    private Status status = Status.builder()
+        .withName(STATUS)
+        .build();
+    private Position position = Position.builder()
+        .withName(POSITION)
+        .build();
 
     @Test
     public void testConstructorAndGetters() {
@@ -262,7 +266,9 @@ public class UserTest {
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
             () -> assertEquals(EMAIL, underTest.getEmail()),
             () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
@@ -283,7 +289,9 @@ public class UserTest {
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
             () -> assertEquals(EMAIL, underTest.getEmail()),
             () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
@@ -304,7 +312,9 @@ public class UserTest {
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
             () -> assertEquals(EMAIL, underTest.getEmail()),
             () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
@@ -325,7 +335,9 @@ public class UserTest {
             () -> assertEquals(OTHER_FAMILY_NAME, underTest.getFamilyName()),
             () -> assertEquals(EMAIL, underTest.getEmail()),
             () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
@@ -346,7 +358,9 @@ public class UserTest {
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
             () -> assertEquals(OTHER_EMAIL, underTest.getEmail()),
             () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
@@ -367,7 +381,9 @@ public class UserTest {
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
             () -> assertEquals(EMAIL, underTest.getEmail()),
             () -> assertEquals(OTHER_DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
@@ -388,7 +404,63 @@ public class UserTest {
             () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
             () -> assertEquals(EMAIL, underTest.getEmail()),
             () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(OTHER_IMAGE_URI, underTest.getImageUri())
+            () -> assertEquals(OTHER_IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
+        );
+    }
+
+    @Test
+    public void testSetStatus() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
+            .build();
+
+        // WHEN
+        underTest.setStatus(
+            Status.builder()
+                .withName(OTHER_STATUS)
+                .build()
+        );
+
+        // THEN
+        assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
+            () -> assertEquals(NICKNAME, underTest.getNickname()),
+            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+            () -> assertEquals(EMAIL, underTest.getEmail()),
+            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(OTHER_STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(POSITION, underTest.getPosition().getName())
+        );
+    }
+
+    @Test
+    public void testSetPosition() {
+        // GIVEN
+        underTest = getDefaultValuesBuilder()
+            .build();
+
+        // WHEN
+        underTest.setPosition(
+            Position.builder()
+                .withName(OTHER_POSITION)
+                .build()
+        );
+
+        // THEN
+        assertAll(
+            () -> assertEquals(ARCHIVED, underTest.getArchived()),
+            () -> assertEquals(NICKNAME, underTest.getNickname()),
+            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+            () -> assertEquals(EMAIL, underTest.getEmail()),
+            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+            () -> assertEquals(STATUS, underTest.getStatus().getName()),
+            () -> assertEquals(OTHER_POSITION, underTest.getPosition().getName())
         );
     }
 
@@ -402,8 +474,8 @@ public class UserTest {
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
-            .withStatus(mockStatus)
-            .withPosition(mockPosition);
+            .withStatus(status)
+            .withPosition(position);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<User>> violations,
