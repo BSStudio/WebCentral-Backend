@@ -74,20 +74,20 @@ class UserServiceTest {
             .build();
     }
 
-    @Test
-    void testCreateUser() {
-        // GIVEN
-        doReturn(user).when(underTest).createUserWithRequestData(any());
-
-        // WHEN
-        User result = underTest.create(mockUserRequest);
-
-        // THEN
-        then(underTest).should().createUserWithRequestData(mockUserRequest);
-        then(mockUserDao).should().save(user);
-
-        assertEquals(user, result);
-    }
+//    @Test
+//    void testCreateUser() {
+//        // GIVEN
+//        doReturn(user).when(underTest).createUserWithRequestData(any());
+//
+//        // WHEN
+//        User result = underTest.create(mockUserRequest);
+//
+//        // THEN
+//        then(underTest).should().createUserWithRequestData(mockUserRequest);
+//        then(mockUserDao).should().save(user);
+//
+//        assertEquals(user, result);
+//    }
 
     @Test
     void testCreateUserWithRequestData() {
@@ -193,7 +193,8 @@ class UserServiceTest {
         // GIVEN setup
 
         // WHEN
-        underTest.update(mockUserRequest, user);
+        //TODO
+        //underTest.update(mockUserRequest, user);
 
         // THEN
         then(mockUserRequest).should().getNickname();

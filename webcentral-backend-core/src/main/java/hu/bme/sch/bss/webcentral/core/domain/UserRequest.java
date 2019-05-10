@@ -2,17 +2,15 @@ package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import hu.bme.sch.bss.webcentral.core.model.Position;
-import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@SuppressWarnings("finalclass")
+
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
-public class UserRequest {
+public final class UserRequest {
 
     @NotNull
     private Boolean archived;
@@ -36,11 +34,11 @@ public class UserRequest {
     @NotBlank
     private final String imageUri;
 
-    @NotNull
-    private Status status;
+    @NotBlank
+    private final String status;
 
-    @NotNull
-    private Position position;
+    @NotBlank
+    private final String position;
 
     private UserRequest(final Builder builder) {
         this.archived = builder.archived;
@@ -86,11 +84,11 @@ public class UserRequest {
         return imageUri;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public Position getPosition() {
+    public String getPosition() {
         return position;
     }
 
@@ -104,8 +102,8 @@ public class UserRequest {
         private String email;
         private String description;
         private String imageUri;
-        private Status status;
-        private Position position;
+        private String status;
+        private String position;
 
         public Builder withArchived(final Boolean archived) {
             this.archived = archived;
@@ -142,11 +140,12 @@ public class UserRequest {
             return this;
         }
 
-        public Builder withStatus(final Status status) {
+        public Builder withStatus(final String status) {
             this.status = status;
             return this;
         }
-        public Builder withPosition(final Position position) {
+
+        public Builder withPosition(final String position) {
             this.position = position;
             return this;
         }

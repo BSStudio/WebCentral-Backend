@@ -23,6 +23,8 @@ class UserRequestTest {
     private static final String EMAIL = "email@address.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "image/URI.png";
+    private static final String STATUS = "status";
+    private static final String POSITION = "position";
 
     private UserRequest underTest;
 
@@ -42,7 +44,8 @@ class UserRequestTest {
         assertEquals(EMAIL, underTest.getEmail());
         assertEquals(DESCRIPTION, underTest.getDescription());
         assertEquals(IMAGE_URI, underTest.getImageUri());
-
+        assertEquals(STATUS, underTest.getStatus());
+        assertEquals(POSITION, underTest.getPosition());
     }
 
     @Test
@@ -71,7 +74,6 @@ class UserRequestTest {
 
         // THEN
         thenValidationFails(violations, "must not be blank", "nickname");
-
     }
 
     @Test
@@ -86,7 +88,6 @@ class UserRequestTest {
 
         // THEN
         thenValidationFails(violations, "must not be blank", "givenName");
-
     }
 
     @Test
@@ -101,7 +102,6 @@ class UserRequestTest {
 
         // THEN
         thenValidationFails(violations, "must not be blank", "familyName");
-
     }
 
     @Test
@@ -116,7 +116,6 @@ class UserRequestTest {
 
         // THEN
         thenValidationFails(violations, "must not be blank", "email");
-
     }
 
     @Test
@@ -131,9 +130,35 @@ class UserRequestTest {
 
         // THEN
         thenValidationFails(violations, "must not be blank", "description");
-
     }
 
+    @Test
+    void testValidationShouldFailForEmptyStatus() {
+        //GIVEN
+        underTest = getDefaultValuesBuilder()
+            .withStatus("")
+            .build();
+
+        // WHEN
+        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+
+        // THEN
+        thenValidationFails(violations, "must not be blank", "status");
+    }
+
+    @Test
+    void testValidationShouldFailForEmptyPosition() {
+        //GIVEN
+        underTest = getDefaultValuesBuilder()
+            .withPosition("")
+            .build();
+
+        // WHEN
+        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+
+        // THEN
+        thenValidationFails(violations, "must not be blank", "position");
+    }
 
     private UserRequest.Builder getDefaultValuesBuilder() {
         return UserRequest.builder()
@@ -143,7 +168,9 @@ class UserRequestTest {
             .withFamilyName(FAMILY_NAME)
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI);
+            .withImageUri(IMAGE_URI)
+            .withStatus(STATUS)
+            .withPosition(POSITION);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<UserRequest>> violations,

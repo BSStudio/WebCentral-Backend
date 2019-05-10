@@ -1,6 +1,8 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mock;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -13,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UserTest {
 
@@ -34,9 +37,18 @@ public class UserTest {
     private static final String OTHER_EMAIL = "other@address.com";
     private static final String OTHER_DESCRIPTION = "other description";
     private static final String OTHER_IMAGE_URI = "image/other.png";
-    private static final String TOSTRING_RESULT = "User{id=null, archived=false, nickname='nickname', givenName='given name', familyName='family name', email='email@address.com', description='description', imageUri='image/uri.png'}";
+    private static final String TO_STRING_RESULT = "User{id=null, archived=false, nickname='nickname', givenName='given name', familyName='family name', email='email@address.com', description='description', imageUri='image/uri.png'}";
 
     private User underTest;
+    @Mock
+    private Status mockStatus;
+    @Mock
+    private Position mockPosition;
+
+    @BeforeEach
+    private void init(){
+        initMocks(this);
+    }
 
     @Test
     public void testConstructorAndGetters() {
@@ -111,7 +123,7 @@ public class UserTest {
         // WHEN
 
         // THEN
-        assertEquals(TOSTRING_RESULT, underTest.toString());
+        assertEquals(TO_STRING_RESULT, underTest.toString());
     }
 
 
@@ -389,7 +401,9 @@ public class UserTest {
             .withFamilyName(FAMILY_NAME)
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI);
+            .withImageUri(IMAGE_URI)
+            .withStatus(mockStatus)
+            .withPosition(mockPosition);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<User>> violations,

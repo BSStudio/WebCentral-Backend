@@ -2,6 +2,8 @@ package hu.bme.sch.bss.webcentral.core.service;
 
 import hu.bme.sch.bss.webcentral.core.dao.UserDao;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
@@ -11,10 +13,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-
 @Component
-@SuppressWarnings("designforextension")
-public class UserService {
+public final class UserService {
 
     private static final String USER_CREATE_STARTED = "User creation started. {}";
     private static final String USER_CREATE_SUCCEED = "User creation succeed. {}";
@@ -43,7 +43,7 @@ public class UserService {
     }
 
 
-    public User create(final UserRequest request) {
+    public User create(final UserRequest request, final Status status, final Position position) {
         logger.info(USER_CREATE_STARTED, request);
         User user = createUserWithRequestData(request);
         userDao.save(user);
@@ -76,7 +76,7 @@ public class UserService {
         return archivedUserList;
     }
 
-    public void update(final UserRequest request, final User user) {
+    public void update(final UserRequest request, final User user, final Status status, final Position position) {
         logger.info(USER_UPDATE_STARTED, user);
         user.setNickname(request.getNickname());
         user.setGivenName(request.getGivenName());

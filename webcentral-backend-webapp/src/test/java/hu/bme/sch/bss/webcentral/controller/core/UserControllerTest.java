@@ -3,7 +3,11 @@ package hu.bme.sch.bss.webcentral.controller.core;
 import hu.bme.sch.bss.webcentral.core.domain.UserListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
+import hu.bme.sch.bss.webcentral.core.service.PositionService;
+import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +35,8 @@ class UserControllerTest {
     private static final String EMAIL = "email@email.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "/images/profile.png";
+    private static final String STATUS_NAME = "status";
+    private static final String POSITION_NAME = "position";
 
     private UserController underTest;
     private User user;
@@ -39,11 +45,19 @@ class UserControllerTest {
     private UserService mockUserService;
     @Mock
     private Logger mockLogger;
+    @Mock
+    private StatusService mockStatusService;
+    @Mock
+    private PositionService mockPositionService;
+    @Mock
+    private Status mockStatus;
+    @Mock
+    private Position mockPosition;
 
     @BeforeEach
     void init() {
         initMocks(this);
-        underTest = new UserController(mockUserService, mockLogger);
+        underTest = new UserController(mockUserService, mockPositionService, mockStatusService, mockLogger);
         user = User.builder()
             .withNickname(NICKNAME)
             .withFamilyName(FAMILY_NAME)
@@ -51,7 +65,13 @@ class UserControllerTest {
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
+            .withStatus(mockStatus)
+            .withPosition(mockPosition)
             .build();
+        given(mockStatus.getName()).willReturn(STATUS_NAME);
+        given(mockPosition.getName()).willReturn(POSITION_NAME);
+        given(mockStatusService.findByName(STATUS_NAME)).willReturn(mockStatus);
+        given(mockPositionService.findByName(POSITION_NAME)).willReturn(mockPosition);
     }
 
     @Test
@@ -65,7 +85,7 @@ class UserControllerTest {
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
             .build();
-        given(mockUserService.create(request)).willReturn(user);
+        given(mockUserService.create(request, mockStatus, mockPosition)).willReturn(user);
 
         //WHEN
         UserResponse response = underTest.createUser(request);
@@ -185,7 +205,7 @@ class UserControllerTest {
 
         // THEN
         then(mockUserService).should().findById(USER_ID);
-        then(mockUserService).should().update(request, user);
+        then(mockUserService).should().update(request, user, mockStatus, mockPosition);
 
         assertAll(
             () -> assertEquals(request.getNickname(), response.getNickname()),

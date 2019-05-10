@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotBlank;
 
-@SuppressWarnings("finalclass")
+
 @JsonDeserialize(builder = StatusRequest.Builder.class)
 @JsonRootName("status")
-public class StatusRequest {
+public final class StatusRequest {
 
     @NotBlank
     private String name;

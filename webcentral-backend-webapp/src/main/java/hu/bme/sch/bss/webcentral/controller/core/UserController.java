@@ -3,7 +3,11 @@ package hu.bme.sch.bss.webcentral.controller.core;
 import hu.bme.sch.bss.webcentral.core.domain.UserListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
+import hu.bme.sch.bss.webcentral.core.service.PositionService;
+import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
 import java.util.ArrayList;
@@ -26,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/user", produces = "application/json")
-public class UserController {
+public final class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
     private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
@@ -35,12 +39,17 @@ public class UserController {
     private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
     private static final String REQUEST_USER_RESTORE = "Request to restore user received for id: {}";
     private static final String REQUEST_USER_ARCHIVE = "Request to archive user received for id: {}";
-    private static final String REQUEST_USER_DELETE = "Request to delete user reveived for id: {}";
+    private static final String REQUEST_USER_DELETE = "Request to delete user received for id: {}";
     private final UserService userService;
+    private final PositionService positionService;
+    private final StatusService statusService;
     private final Logger logger;
 
-    public UserController(final UserService userService, final Logger logger) {
+    public UserController(final UserService userService, final PositionService positionService,
+                          final StatusService statusService, final Logger logger) {
         this.userService = userService;
+        this.positionService = positionService;
+        this.statusService = statusService;
         this.logger = logger;
     }
 
@@ -48,7 +57,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public final UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
-        User result = userService.create(request);
+        Status status = getStatusFromUserRequest(request);
+        Position position = getPositionFromUserRequest(request);
+        User result = userService.create(request, status, position);
         return new UserResponse(result);
     }
 
@@ -62,10 +73,12 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public final UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
+    public final UserResponse updateUser(@PathVariable("id") final Long id, @Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_UPDATE, id);
         User user = userService.findById(id);
-        userService.update(request, user);
+        Status status = getStatusFromUserRequest(request);
+        Position position = getPositionFromUserRequest(request);
+        userService.update(request, user, status, position);
         return new UserResponse(user);
     }
 
@@ -113,4 +126,11 @@ public class UserController {
             .build();
     }
 
+    private Position getPositionFromUserRequest(final UserRequest request) {
+        return positionService.findByName(request.getPosition());
+    }
+
+    private Status getStatusFromUserRequest(final UserRequest request) {
+        return statusService.findByName(request.getStatus());
+    }
 }

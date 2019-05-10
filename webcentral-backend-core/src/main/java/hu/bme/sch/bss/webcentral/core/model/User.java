@@ -103,6 +103,14 @@ public final class User extends DomainAuditModel {
         this.imageUri = imageUri;
     }
 
+    public void setStatus(final Status status) {
+        this.status = status;
+    }
+
+    public void setPosition(final Position position) {
+        this.position = position;
+    }
+
     public Long getId() {
         return id;
     }

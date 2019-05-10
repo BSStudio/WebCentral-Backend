@@ -11,8 +11,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-@SuppressWarnings("designforextension")
-public class StatusService {
+public final class StatusService {
     private static final String STATUS_CREATE_STARTED = "Status creation started. {}";
     private static final String STATUS_CREATE_SUCCEED = "Status creation succeed. {}";
     private static final String STATUS_SEARCH_STARTED = "Status search started {}";
@@ -66,5 +65,14 @@ public class StatusService {
         logger.info(STATUS_EDIT_STARTED, request);
         status.setName(request.getName());
         logger.info(STATUS_EDIT_SUCCEED, request);
+    }
+
+    public Status findByName(final String name) {
+        Optional<Status> status = statusDao.findByName(name);
+        if (status.isEmpty()) {
+            logger.warn("Status not found with name {}", name);
+            throw new NoSuchElementException("Status Type Not Found");
+        }
+        return status.get();
     }
 }

@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@SuppressWarnings("designforextension")
-public class PositionService {
+public final class PositionService {
 
     private static final String POSITION_CREATE_STARTED = "Position creation started. {}";
     private static final String POSITION_CREATE_SUCCEED = "Position creation succeed. {}";
@@ -68,5 +67,14 @@ public class PositionService {
         logger.info(POSITION_EDIT_STARTED, request);
         position.setName(request.getName());
         logger.info(POSITION_EDIT_SUCCEED, request);
+    }
+
+    public Position findByName(final String name) {
+        Optional<Position> position = positionDao.findByName(name);
+        if (position.isEmpty()) {
+            logger.warn("Position not found with name {}", name);
+            throw new NoSuchElementException("Position Type Not Found");
+        }
+        return position.get();
     }
 }
