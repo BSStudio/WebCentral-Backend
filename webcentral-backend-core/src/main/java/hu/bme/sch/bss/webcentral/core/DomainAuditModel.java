@@ -1,4 +1,4 @@
-package hu.bme.sch.bss.webcentral;
+package hu.bme.sch.bss.webcentral.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

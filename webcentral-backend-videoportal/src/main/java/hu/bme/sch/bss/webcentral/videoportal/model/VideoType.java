@@ -2,7 +2,8 @@ package hu.bme.sch.bss.webcentral.videoportal.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import hu.bme.sch.bss.webcentral.DomainAuditModel;
+
+import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
 
