@@ -55,7 +55,7 @@ import javax.validation.constraints.NotNull;
 
     private String imageUri;
 
-    public User(final Builder builder) {
+    private User(final Builder builder) {
         this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;

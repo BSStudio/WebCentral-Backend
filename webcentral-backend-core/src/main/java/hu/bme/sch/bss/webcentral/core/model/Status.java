@@ -36,7 +36,7 @@ import javax.validation.constraints.NotBlank;
     @Setter
     private String name;
 
-    public Status(final Builder builder) {
+    private Status(final Builder builder) {
         this.name = builder.name;
     }
 

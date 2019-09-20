@@ -32,7 +32,7 @@ import javax.validation.constraints.NotBlank;
     @Setter
     private String name;
 
-    public Position(final Builder builder) {
+    private Position(final Builder builder) {
         this.name = builder.name;
     }
 
