@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>webcentral-backend</artifactId>
+        <groupId>hu.bme.sch.bss</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>release</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>hu.bme.sch.bss</groupId>
+            <artifactId>webcentral-backend-webapp</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <siteDirectory>${project.parent.basedir}/src/site</siteDirectory>
+                    <outputDirectory>${project.parent.basedir}/target/site</outputDirectory>
+                </configuration>
+            </plugin>
+            <!-- Plugin to create an executable .jar. For more information please see: http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#getting-started-first-application-executable-jar -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>hu.bme.sch.bss.Application</mainClass>
+                    <additionalProperties>
+                        <label>${project.version}</label>
+                        <releaseDate>${timestamp}</releaseDate>
+                        <releaseTag>${application.version}</releaseTag>
+                        <applicationName>${project.parent.artifactId}</applicationName>
+                        <date>${timestamp}</date>
+                        <number>${build.number}</number>
+                        <branch>${build.branch}</branch>
+                    </additionalProperties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-file</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="copy-project-jar-to-docker-folder" unless="${skipDocker}">
+                                <copy file="${project.basedir}/target/${project.artifactId}-${project.version}.jar"
+                                      tofile="${project.basedir}/target/docker/application.jar"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <executions>
+                    <execution>
+                        <id>build-docker-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <skipDockerBuild>${skipDocker}</skipDockerBuild>
+                            <serverId>${docker.server.id}</serverId>
+                            <registryUrl>${docker.repository}</registryUrl>
+                            <imageName>${docker.repository}/repository/docker/${docker.organisation}/${docker.image.name}</imageName>
+                            <dockerDirectory>${project.parent.basedir}/build/docker</dockerDirectory>
+                            <forceTags>true</forceTags>
+                            <imageTags>
+                                <imageTag>${releaseVersion}.${build.number}</imageTag>
+                                <imageTag>latest</imageTag>
+                            </imageTags>
+                            <buildArgs>
+                                <DIRPATH>/bss/share/webcentral</DIRPATH>
+                            </buildArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                        <version>${javax.activation.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
