@@ -100,7 +100,7 @@ public class UserController {
         userService.restore(user);
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public final void deleteUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_DELETE, id);
