@@ -110,7 +110,7 @@ class VideoControllerTest {
         Video video2 = Video.builder()
             .withVideoType(mockVideoType)
             .build();
-
+      
         videoList.add(video);
         videoList.add(video2);
 
