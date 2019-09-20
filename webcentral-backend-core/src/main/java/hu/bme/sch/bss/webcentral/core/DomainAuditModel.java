@@ -12,10 +12,12 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Getter
 @JsonSerialize
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -33,11 +35,4 @@ public abstract class DomainAuditModel implements Serializable {
     @JsonIgnore
     private Date updatedAt;
 
-    public final Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public final Date getUpdatedAt() {
-        return updatedAt;
-    }
 }
