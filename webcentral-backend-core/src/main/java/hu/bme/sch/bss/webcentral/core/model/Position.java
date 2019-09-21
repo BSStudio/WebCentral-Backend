@@ -3,11 +3,6 @@ package hu.bme.sch.bss.webcentral.core.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,11 +11,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "position")
 @JsonSerialize
 @JsonDeserialize(builder = Position.Builder.class)
-@EqualsAndHashCode(callSuper = true) @NoArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Data() public final class Position extends DomainAuditModel {
 
     @Id
