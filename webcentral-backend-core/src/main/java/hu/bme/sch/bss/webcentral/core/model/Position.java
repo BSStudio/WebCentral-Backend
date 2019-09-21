@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import java.util.Objects;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,73 +11,36 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-@JsonSerialize
-@JsonDeserialize(builder = Position.Builder.class)
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "position")
-public final class Position extends DomainAuditModel {
+@JsonSerialize
+@JsonDeserialize(builder = Position.Builder.class)
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Data() public final class Position extends DomainAuditModel {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
+    @Setter
     private String name;
 
-    public Position() {
-        // No-arg constructor for hibernate
-    }
-
-    public Position(final Builder builder) {
+    private Position(final Builder builder) {
         this.name = builder.name;
     }
 
     public static Builder builder() {
         return new Builder();
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    //Generated code begins here
-
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Position position = (Position) o;
-        return Objects.equals(id, position.id)
-            && Objects.equals(name, position.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @Override
-    public String toString() {
-        return "Position{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + '}';
-    }
-
-    // Generated code ends here
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {

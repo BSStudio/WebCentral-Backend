@@ -5,7 +5,19 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>webcentral-backend-videoportal</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>webcentral-backend-videoportal</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <name>webcentral-backend-videoportal</name>
   <description>BSS WebCentral Video Portal</description>
   <packaging>jar</packaging>
 
