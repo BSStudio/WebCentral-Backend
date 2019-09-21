@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 @JsonSerialize
 public final class UserListResponse {
@@ -37,8 +38,15 @@ public final class UserListResponse {
             return this;
         }
 
+        public Builder withUsers(final Set<User> users) {
+            this.users = new User[users.size()];
+            this.users = users.toArray(this.users);
+            return this;
+        }
+
         public UserListResponse build() {
             return new UserListResponse(this);
         }
+
     }
 }

@@ -3,10 +3,12 @@ package hu.bme.sch.bss.webcentral.core.service;
 import hu.bme.sch.bss.webcentral.core.dao.StatusDao;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.model.Status;
+import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,8 @@ public class StatusService {
     private static final String STATUS_EDIT_SUCCEED = "Status edit succeed. {}";
     private static final String STATUSES_ALL_SEARCH_STARTED = "Search for all statuses started.";
     private static final String STATUSES_ALL_SEARCH_SUCCEED = "Search for all statuses succeed.";
+    private static final String STATUS_FIND_ALL_USERS_WITH_POSITION_STARTED = "Search for all user started with status of {}";
+    private static final String STATUS_FIND_ALL_USERS_WITH_POSITION_SUCCEED = "Search for all user succeed with status of {}";
 
     private final StatusDao statusDao;
     private final Logger logger;
@@ -76,5 +80,12 @@ public class StatusService {
         List<Status> statusList = statusDao.findAll();
         logger.info(STATUSES_ALL_SEARCH_SUCCEED);
         return statusList;
+    }
+
+    public Set<User> findAllUserWithStatusOf(final Status status) {
+        logger.info(STATUS_FIND_ALL_USERS_WITH_POSITION_STARTED, status);
+        final Set<User> users = status.getUsers();
+        logger.info(STATUS_FIND_ALL_USERS_WITH_POSITION_SUCCEED, status);
+        return users;
     }
 }

@@ -3,10 +3,12 @@ package hu.bme.sch.bss.webcentral.core.service;
 import hu.bme.sch.bss.webcentral.core.dao.PositionDao;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,8 @@ public class PositionService {
     private static final String POSITION_EDIT_SUCCEED = "Position edit succeed. {}";
     private static final String POSITION_ALL_SEARCH_STARTED = "Search for all position started";
     private static final String POSITION_ALL_SEARCH_SUCCEED = "Search for all position succeed";
+    private static final String POSITION_FIND_ALL_USERS_WITH_POSITION_STARTED = "Search for all user started with position of {}";
+    private static final String POSITION_FIND_ALL_USERS_WITH_POSITION_SUCCEED = "Search for all user succeed with position of {}";
 
     private final PositionDao positionDao;
     private final Logger logger;
@@ -38,7 +42,7 @@ public class PositionService {
 
     public Position create(final PositionRequest request) {
         logger.info(POSITION_CREATE_STARTED, request);
-        Position position = createPositionWithRequestData(request);
+        final Position position = createPositionWithRequestData(request);
         positionDao.save(position);
         logger.info(POSITION_CREATE_SUCCEED, request);
         return position;
@@ -46,7 +50,7 @@ public class PositionService {
 
     public Position findById(final Long id) {
         logger.info(POSITION_SEARCH_STARTED, id);
-        Optional<Position> result = positionDao.findById(id);
+        final Optional<Position> result = positionDao.findById(id);
         if (result.isEmpty()) {
             logger.warn(POSITION_NOT_FOUND, id);
             throw new NoSuchElementException("Position not found");
@@ -75,8 +79,15 @@ public class PositionService {
 
     public List<Position> findAll() {
         logger.info(POSITION_ALL_SEARCH_STARTED);
-        List<Position> positionList = positionDao.findAll();
+        final List<Position> positionList = positionDao.findAll();
         logger.info(POSITION_ALL_SEARCH_SUCCEED);
         return positionList;
+    }
+
+    public Set<User> findAllUserWithPositionOf(final Position position) {
+        logger.info(POSITION_FIND_ALL_USERS_WITH_POSITION_STARTED, position);
+        final Set<User> users = position.getUsers();
+        logger.info(POSITION_FIND_ALL_USERS_WITH_POSITION_SUCCEED, position);
+        return users;
     }
 }
