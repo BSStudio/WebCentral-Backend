@@ -75,18 +75,20 @@ public final class UserService {
         return result;
     }
 
-    public void archive(final User user) {
+    public User archive(final User user) {
         logger.info(USER_ARCHIVE_STARTED, user);
         user.setArchived(true);
-        userDao.save(user);
+        final User result = userDao.save(user);
         logger.info(USER_ARCHIVE_SUCCEED, user);
+        return result;
     }
 
-    public void restore(final User user) {
+    public User restore(final User user) {
         logger.info(USER_RESTORE_STARTED, user);
         user.setArchived(false);
-        userDao.save(user);
+        final User result = userDao.save(user);
         logger.info(USER_RESTORE_SUCCEED, user);
+        return result;
     }
 
     public void delete(final User user) {
@@ -108,29 +110,31 @@ public final class UserService {
 
     public List<User> findAll() {
         logger.info(USERS_ALL_SEARCH_STARTED);
-        List<User> userList = userDao.findAll();
+        final List<User> userList = userDao.findAll();
         logger.info(USERS_ALL_SEARCH_SUCCEED);
         return userList;
     }
 
     public List<User> findArchived() {
         logger.info(USERS_ARCHIVED_SEARCH_STARTED);
-        List<User> archivedUserList = userDao.findAllArchived();
+        final List<User> archivedUserList = userDao.findAllArchived();
         logger.info(USERS_ARCHIVED_SEARCH_SUCCEED);
         return archivedUserList;
     }
 
-    public void updateUserStatus(final User user, final Status status) {
+    public User updateUserStatus(final User user, final Status status) {
         logger.info(USER_STATUS_UPDATE_STARTED, user, status);
         user.setStatus(status);
-        userDao.save(user);
+        final User result = userDao.save(user);
         logger.info(USER_STATUS_UPDATE_SUCCEED, user, status);
+        return result;
     }
 
-    public void updateUserPosition(final User user, final Position position) {
+    public User updateUserPosition(final User user, final Position position) {
         logger.info(USER_POSITION_UPDATE_STARTED, user, position);
         user.setPosition(position);
-        userDao.save(user);
+        final User result = userDao.save(user);
         logger.info(USER_POSITION_UPDATE_SUCCEED, user, position);
+        return result;
     }
 }

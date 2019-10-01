@@ -73,15 +73,15 @@ public class PositionController {
     public final PositionResponse updatePosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_EDIT, id);
         final Position position = positionService.findById(id);
-        positionService.update(request, position);
-        return new PositionResponse(position);
+        final Position result = positionService.update(request, position);
+        return new PositionResponse(result);
     }
 
     @GetMapping("/all")
     @ResponseStatus(FOUND)
     public final PositionListResponse listAllPositions() {
         logger.info(REQUEST_POSITION_LIST);
-        ArrayList<Position> positions = new ArrayList<>(positionService.findAll());
+        final ArrayList<Position> positions = new ArrayList<>(positionService.findAll());
         return PositionListResponse.builder()
             .withPositions(positions)
             .build();

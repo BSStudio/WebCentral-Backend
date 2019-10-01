@@ -74,8 +74,8 @@ public class StatusController {
     public final StatusResponse updateStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_EDIT, id);
         final Status status = statusService.findById(id);
-        statusService.update(request, status);
-        return new StatusResponse(status);
+        final Status result = statusService.update(request, status);
+        return new StatusResponse(result);
     }
 
     @GetMapping("/all")

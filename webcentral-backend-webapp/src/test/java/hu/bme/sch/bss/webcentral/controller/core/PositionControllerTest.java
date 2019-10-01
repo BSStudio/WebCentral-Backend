@@ -27,6 +27,7 @@ final class PositionControllerTest {
 
     private static final Long POSITION_ID = 8L;
     private static final String NAME = "name";
+    private static final String OTHER_NAME = "other name";
 
     private PositionController underTest;
     private Position position;
@@ -113,13 +114,15 @@ final class PositionControllerTest {
     @Test
     void testUpdatePosition() {
         // GIVEN
-        given(mockPositionService.findById(POSITION_ID)).willReturn(position);
-        PositionRequest request = PositionRequest.builder()
-            .withName(NAME)
+        final PositionRequest request = PositionRequest.builder()
+            .withName(OTHER_NAME)
             .build();
+        final Position result = Position.builder().withName(OTHER_NAME).build();
+        given(mockPositionService.findById(POSITION_ID)).willReturn(position);
+        given(mockPositionService.update(request, position)).willReturn(result);
 
         // WHEN
-        PositionResponse response = underTest.updatePosition(POSITION_ID, request);
+        final PositionResponse response = underTest.updatePosition(POSITION_ID, request);
 
         // THEN
         then(mockPositionService).should().findById(POSITION_ID);

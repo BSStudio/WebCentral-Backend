@@ -38,10 +38,12 @@ public final class StatusService {
 
     public Status create(final StatusRequest request) {
         logger.info(STATUS_CREATE_STARTED, request);
-        final Status status = createStatusWithRequestData(request);
-        statusDao.save(status);
+        final Status status = Status.builder()
+                .withName(request.getName())
+                .build();
+        final Status result = statusDao.save(status);
         logger.info(STATUS_CREATE_SUCCEED, request);
-        return status;
+        return result;
     }
 
     public Status findById(final Long id) {
@@ -61,17 +63,12 @@ public final class StatusService {
         logger.info(STATUS_DELETE_SUCCEED, status);
     }
 
-    Status createStatusWithRequestData(final StatusRequest request) {
-        return Status.builder()
-                .withName(request.getName())
-                .build();
-    }
-
-    public void update(final StatusRequest request, final Status status) {
+    public Status update(final StatusRequest request, final Status status) {
         logger.info(STATUS_EDIT_STARTED, request);
         status.setName(request.getName());
-        statusDao.save(status);
+        final Status result = statusDao.save(status);
         logger.info(STATUS_EDIT_SUCCEED, request);
+        return result;
     }
 
     public List<Status> findAll() {
@@ -91,7 +88,7 @@ public final class StatusService {
         });
     }
 
-    public Set<User> findAllUserById(final Long id) {
+    public Set<User> findAllUserByStatusId(final Long id) {
         final Status status = findById(id);
         return status.getUsers();
     }

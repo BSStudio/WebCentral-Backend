@@ -7,10 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
-//TODO
 final class UserResponseTest {
 
     private static final Boolean ARCHIVED = false;
@@ -20,15 +17,21 @@ final class UserResponseTest {
     private static final String EMAIL = "email@address.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "image/uri.png";
-    private static final String STATUS = "status";
-    private static final String POSITION = "position";
+    private static final String STATUS_NAME = "status";
+    private static final String POSITION_NAME = "position";
+    private static final Status STATUS = Status.builder()
+            .withName(STATUS_NAME)
+            .build();
+    private static final Position POSITION = Position.builder()
+            .withName(POSITION_NAME)
+            .build();
+
+    private UserResponse underTest;
 
 
     @Test
     void testConstructorAndGetters() {
         // GIVEN
-        Status mockStatus = mock(Status.class);
-        Position mockPosition = mock(Position.class);
         User actual = User.builder()
                 .withArchived(ARCHIVED)
                 .withNickname(NICKNAME)
@@ -37,28 +40,25 @@ final class UserResponseTest {
                 .withEmail(EMAIL)
                 .withDescription(DESCRIPTION)
                 .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+                .withStatus(STATUS)
+                .withPosition(POSITION)
                 .build();
-        given(mockStatus.getName()).willReturn(STATUS);
-        given(mockPosition.getName()).willReturn(POSITION);
 
         // WHEN
-        UserResponse response = new UserResponse(actual);
+        underTest = new UserResponse(actual);
 
         // THEN
         assertAll(
-                () -> assertEquals(actual.getId(), response.getId()),
-                () -> assertEquals(actual.getArchived(), response.getArchived()),
-                () -> assertEquals(actual.getNickname(), response.getNickname()),
-                () -> assertEquals(actual.getGivenName(), response.getGivenName()),
-                () -> assertEquals(actual.getFamilyName(), response.getFamilyName()),
-                () -> assertEquals(actual.getEmail(), response.getEmail()),
-                () -> assertEquals(actual.getDescription(), response.getDescription()),
-                () -> assertEquals(actual.getImageUri(), response.getImageUri()),
-                () -> assertEquals(actual.getStatus().getName(), response.getStatus()),
-                () -> assertEquals(actual.getPosition().getName(), response.getPosition())
+                () -> assertEquals(actual.getId(), underTest.getId()),
+                () -> assertEquals(actual.getArchived(), underTest.getArchived()),
+                () -> assertEquals(actual.getNickname(), underTest.getNickname()),
+                () -> assertEquals(actual.getGivenName(), underTest.getGivenName()),
+                () -> assertEquals(actual.getFamilyName(), underTest.getFamilyName()),
+                () -> assertEquals(actual.getEmail(), underTest.getEmail()),
+                () -> assertEquals(actual.getDescription(), underTest.getDescription()),
+                () -> assertEquals(actual.getImageUri(), underTest.getImageUri()),
+                () -> assertEquals(actual.getStatus(), underTest.getStatus()),
+                () -> assertEquals(actual.getPosition(), underTest.getPosition())
         );
     }
-
 }

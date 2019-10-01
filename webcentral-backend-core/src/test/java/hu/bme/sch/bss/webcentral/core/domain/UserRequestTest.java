@@ -3,8 +3,8 @@ package hu.bme.sch.bss.webcentral.core.domain;
 
 import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -19,6 +19,7 @@ final class UserRequestTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
             .getValidator();
+
     private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "givenName";
@@ -26,20 +27,26 @@ final class UserRequestTest {
     private static final String EMAIL = "email@address.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "image/URI.png";
+    private static final String POSITION_NAME = "position";
+    private static final String STATUS_NAME = "status";
+    private static final Position POSITION;
+    private static final Status STATUS;
+    static {
+        POSITION = Position.builder()
+                .withName(POSITION_NAME)
+                .build();
+        STATUS = Status.builder()
+                .withName(STATUS_NAME)
+                .build();
+    }
+
+    private UserRequest.Builder defaultBuilder;
 
     private UserRequest underTest;
 
-    @Mock
-    private Position mockPosition;
-    @Mock
-    private Status mockStatus;
-
-    @Test
-    void testConstructorAndGetters() {
-        // GIVEN
-
-        // WHEN
-        underTest = UserRequest.builder()
+    @BeforeEach
+    void init() {
+        defaultBuilder = UserRequest.builder()
                 .withArchived(ARCHIVED)
                 .withNickname(NICKNAME)
                 .withGivenName(GIVEN_NAME)
@@ -47,8 +54,16 @@ final class UserRequestTest {
                 .withEmail(EMAIL)
                 .withDescription(DESCRIPTION)
                 .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+                .withStatus(STATUS)
+                .withPosition(POSITION);
+    }
+
+    @Test
+    void testConstructorAndGetters() {
+        // GIVEN
+
+        // WHEN
+        underTest = defaultBuilder
                 .build();
 
         // THEN
@@ -59,23 +74,14 @@ final class UserRequestTest {
         assertEquals(EMAIL, underTest.getEmail());
         assertEquals(DESCRIPTION, underTest.getDescription());
         assertEquals(IMAGE_URI, underTest.getImageUri());
-        assertEquals(mockStatus, underTest.getStatus());
-        assertEquals(mockPosition, underTest.getPosition());
+        assertEquals(STATUS, underTest.getStatus());
+        assertEquals(POSITION, underTest.getPosition());
     }
 
     @Test
     void testValidationShouldFailForNullArchived() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+        underTest = defaultBuilder
                 .withArchived(null)
                 .build();
 
@@ -89,16 +95,7 @@ final class UserRequestTest {
     @Test
     void testValidationShouldFailForEmptyNickname() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+        underTest = defaultBuilder
                 .withNickname("")
                 .build();
 
@@ -112,16 +109,7 @@ final class UserRequestTest {
     @Test
     void testValidationShouldFailForEmptyGivenName() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+        underTest = defaultBuilder
                 .withGivenName("")
                 .build();
 
@@ -135,16 +123,7 @@ final class UserRequestTest {
     @Test
     void testValidationShouldFailForEmptyFamilyName() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+        underTest = defaultBuilder
                 .withFamilyName("")
                 .build();
 
@@ -158,16 +137,7 @@ final class UserRequestTest {
     @Test
     void testValidationShouldFailForEmptyEmail() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+        underTest = defaultBuilder
                 .withEmail("")
                 .build();
 
@@ -181,16 +151,7 @@ final class UserRequestTest {
     @Test
     void testValidationShouldFailForEmptyDescription() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
+        underTest = defaultBuilder
                 .withDescription("")
                 .build();
 
@@ -202,49 +163,31 @@ final class UserRequestTest {
     }
 
     @Test
-    void testValidationShouldFailForEmptyStatus() {
+    void testValidationShouldFailForNullStatus() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
-                .withStatus(mockStatus)
+        underTest = defaultBuilder
+                .withStatus(null)
                 .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
-        thenValidationFails(violations, "must not be blank", "status");
+        thenValidationFails(violations, "must not be null", "status");
     }
 
     @Test
-    void testValidationShouldFailForEmptyPosition() {
+    void testValidationShouldFailForNullPosition() {
         //GIVEN
-        underTest = UserRequest.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(mockStatus)
-                .withPosition(mockPosition)
-                .withPosition(mockPosition)
+        underTest = defaultBuilder
+                .withPosition(null)
                 .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
-        thenValidationFails(violations, "must not be blank", "position");
+        thenValidationFails(violations, "must not be null", "position");
     }
 
     private void thenValidationFails(Set<ConstraintViolation<UserRequest>> violations,

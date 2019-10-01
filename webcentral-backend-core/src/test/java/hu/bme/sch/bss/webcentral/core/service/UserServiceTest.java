@@ -132,18 +132,14 @@ final class UserServiceTest {
     @Test
     void testFindAll() {
         // GIVEN setup
-        List<User> userList = new ArrayList<>();
-
-        User user2 = User.builder()
+        final User user2 = User.builder()
                 .build();
+        final List<User> userList = List.of(user, user2);
 
-        userList.add(user);
-        userList.add(user2);
-
-        given(mockUserDao.findAllNotArchived()).willReturn(userList);
+        given(mockUserDao.findAll()).willReturn(userList);
 
         // WHEN
-        List<User> result = underTest.findAll();
+        final List<User> result = underTest.findAll();
 
         // THEN
         assertEquals(userList, result);

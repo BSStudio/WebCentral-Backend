@@ -40,10 +40,12 @@ public final class PositionService {
 
     public Position create(final PositionRequest request) {
         logger.info(POSITION_CREATE_STARTED, request);
-        final Position position = createPositionWithRequestData(request);
-        positionDao.save(position);
+        final Position position = Position.builder()
+                .withName(request.getName())
+                .build();
+        final Position result = positionDao.save(position);
         logger.info(POSITION_CREATE_SUCCEED, request);
-        return position;
+        return result;
     }
 
     public Position findById(final Long id) {
@@ -63,22 +65,17 @@ public final class PositionService {
         logger.info(POSITION_DELETE_SUCCEED, position);
     }
 
-    Position createPositionWithRequestData(final PositionRequest request) {
-        return Position.builder()
-                .withName(request.getName())
-                .build();
-    }
-
-    public void update(final PositionRequest request, final Position position) {
+    public Position update(final PositionRequest request, final Position position) {
         logger.info(POSITION_EDIT_STARTED, request);
         position.setName(request.getName());
-        positionDao.save(position);
+        final Position result = positionDao.save(position);
         logger.info(POSITION_EDIT_SUCCEED, request);
+        return result;
     }
 
     public List<Position> findAll() {
         logger.info(POSITION_ALL_SEARCH_STARTED);
-        List<Position> positionList = positionDao.findAll();
+        final List<Position> positionList = positionDao.findAll();
         logger.info(POSITION_ALL_SEARCH_SUCCEED);
         return positionList;
     }

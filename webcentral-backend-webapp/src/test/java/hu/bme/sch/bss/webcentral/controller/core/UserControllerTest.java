@@ -1,6 +1,5 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
-import hu.bme.sch.bss.webcentral.core.domain.PositionListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserListResponse;
@@ -17,12 +16,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
@@ -31,6 +33,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 final class UserControllerTest {
 
     private static final Long USER_ID = 16L;
+    private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "Given_name";
     private static final String FAMILY_NAME = "Family_name";
@@ -39,100 +42,104 @@ final class UserControllerTest {
     private static final String IMAGE_URI = "/images/profile.png";
     private static final String STATUS_NAME = "status";
     private static final String POSITION_NAME = "position";
+    private static final Status STATUS = Status.builder().withName(STATUS_NAME).build();
+    private static final Position POSITION = Position.builder().withName(POSITION_NAME).build();
 
     private UserController underTest;
+
     private User user;
+    private User.Builder defaultBuilder;
+    private UserRequest userRequest;
+    private StatusRequest statusRequest;
+    private PositionRequest positionRequest;
 
     @Mock
     private UserService mockUserService;
     @Mock
-    private Logger mockLogger;
+    private PositionService mockPositionService;
     @Mock
     private StatusService mockStatusService;
     @Mock
-    private PositionService mockPositionService;
-    @Mock
-    private Status mockStatus;
-    @Mock
-    private Position mockPosition;
-    @Mock
-    private PositionRequest mockPositionRequest;
-    @Mock
-    private StatusRequest mockStatusRequest;
+    private Logger mockLogger;
 
     @BeforeEach
     void init() {
         initMocks(this);
         underTest = new UserController(mockUserService, mockPositionService, mockStatusService, mockLogger);
-        user = User.builder()
-            .withNickname(NICKNAME)
-            .withFamilyName(FAMILY_NAME)
-            .withGivenName(GIVEN_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .withStatus(mockStatus)
-            .withPosition(mockPosition)
-            .build();
-        given(mockStatus.getName()).willReturn(STATUS_NAME);
-        given(mockPosition.getName()).willReturn(POSITION_NAME);
-        given(mockStatusService.findByName(STATUS_NAME)).willReturn(mockStatus);
-        given(mockPositionService.findByName(POSITION_NAME)).willReturn(mockPosition);
+        defaultBuilder = User.builder()
+                .withArchived(ARCHIVED)
+                .withNickname(NICKNAME)
+                .withFamilyName(FAMILY_NAME)
+                .withGivenName(GIVEN_NAME)
+                .withEmail(EMAIL)
+                .withDescription(DESCRIPTION)
+                .withImageUri(IMAGE_URI)
+                .withStatus(STATUS)
+                .withPosition(POSITION);
+        user = defaultBuilder
+                .build();
+        userRequest = UserRequest.builder()
+                .withArchived(ARCHIVED)
+                .withNickname(NICKNAME)
+                .withFamilyName(FAMILY_NAME)
+                .withGivenName(GIVEN_NAME)
+                .withEmail(EMAIL)
+                .withDescription(DESCRIPTION)
+                .withImageUri(IMAGE_URI)
+                .withStatus(STATUS)
+                .withPosition(POSITION)
+                .build();
+        positionRequest = PositionRequest.builder()
+                .withName(POSITION_NAME)
+                .build();
+        statusRequest = StatusRequest.builder()
+                .withName(STATUS_NAME)
+                .build();
     }
 
     @Test
     void testCreateUser() {
         //GIVEN
-        UserRequest request = UserRequest.builder()
-            .withNickname(NICKNAME)
-            .withFamilyName(FAMILY_NAME)
-            .withGivenName(GIVEN_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .withStatus(mockStatusRequest)
-            .withPosition(mockPositionRequest)
-            .build();
-        given(mockUserService.create(request, mockStatus, mockPosition)).willReturn(user);
+        given(mockUserService.create(userRequest, STATUS, POSITION)).willReturn(user);
+        given(mockPositionService.findByName(POSITION_NAME)).willReturn(POSITION);
+        given(mockStatusService.findByName(STATUS_NAME)).willReturn(STATUS);
 
         //WHEN
-        UserResponse response = underTest.createUser(request);
+        final UserResponse response = underTest.createUser(userRequest);
 
         //THEN
         assertAll(
-            () -> assertEquals(request.getNickname(), response.getNickname()),
-            () -> assertEquals(request.getFamilyName(), response.getFamilyName()),
-            () -> assertEquals(request.getGivenName(), response.getGivenName()),
-            () -> assertEquals(request.getEmail(), response.getEmail()),
-            () -> assertEquals(request.getDescription(), response.getDescription()),
-            () -> assertEquals(request.getImageUri(), response.getImageUri())
+                () -> assertEquals(userRequest.getArchived(), response.getArchived()),
+                () -> assertEquals(userRequest.getNickname(), response.getNickname()),
+                () -> assertEquals(userRequest.getFamilyName(), response.getFamilyName()),
+                () -> assertEquals(userRequest.getGivenName(), response.getGivenName()),
+                () -> assertEquals(userRequest.getEmail(), response.getEmail()),
+                () -> assertEquals(userRequest.getDescription(), response.getDescription()),
+                () -> assertEquals(userRequest.getImageUri(), response.getImageUri()),
+                () -> assertEquals(userRequest.getPosition(), response.getPosition()),
+                () -> assertEquals(userRequest.getStatus(), response.getStatus())
         );
     }
 
     @Test
     void testGetUser() {
-        User actual = User.builder()
-            .withNickname(NICKNAME)
-            .withFamilyName(FAMILY_NAME)
-            .withGivenName(GIVEN_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .build();
-
+        // GIVEN
         given(mockUserService.findById(USER_ID)).willReturn(user);
 
         // WHEN
-        UserResponse response = underTest.getUser(USER_ID);
+        final UserResponse response = underTest.getUser(USER_ID);
 
         // THEN
         assertAll(
-            () -> assertEquals(actual.getNickname(), response.getNickname()),
-            () -> assertEquals(actual.getFamilyName(), response.getFamilyName()),
-            () -> assertEquals(actual.getGivenName(), response.getGivenName()),
-            () -> assertEquals(actual.getEmail(), response.getEmail()),
-            () -> assertEquals(actual.getDescription(), response.getDescription()),
-            () -> assertEquals(actual.getImageUri(), response.getImageUri())
+                () -> assertEquals(user.getArchived(), response.getArchived()),
+                () -> assertEquals(user.getNickname(), response.getNickname()),
+                () -> assertEquals(user.getFamilyName(), response.getFamilyName()),
+                () -> assertEquals(user.getGivenName(), response.getGivenName()),
+                () -> assertEquals(user.getEmail(), response.getEmail()),
+                () -> assertEquals(user.getDescription(), response.getDescription()),
+                () -> assertEquals(user.getImageUri(), response.getImageUri()),
+                () -> assertEquals(user.getPosition(), response.getPosition()),
+                () -> assertEquals(user.getStatus(), response.getStatus())
         );
     }
 
@@ -159,37 +166,29 @@ final class UserControllerTest {
     @Test
     void testListAllUsers() {
         // GIVEN
-        List<User> userList = new ArrayList<>();
-
-        User user2 = User.builder()
-            .build();
-
-        userList.add(user);
-        userList.add(user2);
-
+        final User user2 = User.builder()
+                .build();
+        final List<User> userList = List.of(user, user2);
         given(mockUserService.findAll()).willReturn(userList);
 
         // WHEN
-        UserListResponse response = underTest.listAllUsers();
+        final UserListResponse response = underTest.listAllUsers();
 
-        assertEquals(userList, Arrays.asList(response.getUsers()));
+        // THEN
+        assertArrayEquals(userList.toArray(), response.getUsers());
     }
 
     @Test
     void testListArchivedUsers() {
         // GIVEN
-        List<User> archivedList = new ArrayList<>();
-
-        User user2 = User.builder()
-            .build();
-
-        archivedList.add(user);
-        archivedList.add(user2);
+        final User user2 = User.builder()
+                .build();
+        final List<User> archivedList = List.of(user, user2);
 
         given(mockUserService.findArchived()).willReturn(archivedList);
 
         // WHEN
-        UserListResponse response = underTest.listAllArchived();
+        final UserListResponse response = underTest.listAllArchived();
 
         // THEN
         assertEquals(archivedList, Arrays.asList(response.getUsers()));
@@ -199,36 +198,36 @@ final class UserControllerTest {
     void testUpdateUser() {
         // GIVEN
         given(mockUserService.findById(USER_ID)).willReturn(user);
-        UserRequest request = UserRequest.builder()
-            .withNickname(NICKNAME)
-            .withFamilyName(FAMILY_NAME)
-            .withGivenName(GIVEN_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .build();
+        given(mockUserService.update(userRequest, user)).willReturn(user);
 
         // WHEN
-        UserResponse response = underTest.updateUser(USER_ID, request);
+        final UserResponse response = underTest.updateUser(USER_ID, userRequest);
 
         // THEN
         then(mockUserService).should().findById(USER_ID);
-        then(mockUserService).should().update(request, user);
+        then(mockUserService).should().update(userRequest, user);
 
         assertAll(
-            () -> assertEquals(request.getNickname(), response.getNickname()),
-            () -> assertEquals(request.getFamilyName(), response.getFamilyName()),
-            () -> assertEquals(request.getGivenName(), response.getGivenName()),
-            () -> assertEquals(request.getEmail(), response.getEmail()),
-            () -> assertEquals(request.getDescription(), response.getDescription()),
-            () -> assertEquals(request.getImageUri(), response.getImageUri())
+                () -> assertEquals(userRequest.getArchived(), response.getArchived()),
+                () -> assertEquals(userRequest.getNickname(), response.getNickname()),
+                () -> assertEquals(userRequest.getFamilyName(), response.getFamilyName()),
+                () -> assertEquals(userRequest.getGivenName(), response.getGivenName()),
+                () -> assertEquals(userRequest.getEmail(), response.getEmail()),
+                () -> assertEquals(userRequest.getDescription(), response.getDescription()),
+                () -> assertEquals(userRequest.getImageUri(), response.getImageUri()),
+                () -> assertEquals(userRequest.getPosition(), response.getPosition()),
+                () -> assertEquals(userRequest.getStatus(), response.getStatus())
         );
     }
 
     @Test
     void testArchiveUser() {
         // GIVEN
+        final User archivedUser = defaultBuilder
+                .withArchived(true)
+                .build();
         given(mockUserService.findById(USER_ID)).willReturn(user);
+        given(mockUserService.archive(user)).willReturn(archivedUser);
 
         // WHEN
         underTest.archiveUser(USER_ID);
@@ -241,10 +240,15 @@ final class UserControllerTest {
     @Test
     void testRestoreUser() {
         // GIVEN
+        user.setArchived(true);
+        final User restoredUser = defaultBuilder
+                .withArchived(false)
+                .build();
         given(mockUserService.findById(USER_ID)).willReturn(user);
+        given(mockUserService.restore(user)).willReturn(restoredUser);
 
         // WHEN
-        underTest.restoreUser(USER_ID);
+        final UserResponse response = underTest.restoreUser(USER_ID);
 
         // THEN
         then(mockUserService).should().findById(USER_ID);
@@ -267,28 +271,41 @@ final class UserControllerTest {
     @Test
     void testUpdateUserStatus() {
         // GIVEN
+        final Status otherStatus = Status.builder()
+                .withName("other")
+                .build();
+        final User updatedUser = defaultBuilder
+                .withStatus(otherStatus)
+                .build();
         given(mockUserService.findById(USER_ID)).willReturn(user);
-        given(mockStatusRequest.getName()).willReturn(STATUS_NAME);
-        given(mockStatusService.findByName(STATUS_NAME)).willReturn(mockStatus);
+        given(mockStatusService.findByName(STATUS_NAME)).willReturn(otherStatus);
+        given(mockUserService.updateUserStatus(user, otherStatus)).willReturn(updatedUser);
 
         // WHEN
-        UserResponse response = underTest.updateUserStatus(USER_ID, mockStatusRequest);
+        final UserResponse response = underTest.updateUserStatus(USER_ID, statusRequest);
 
         // THEN
-        assertEquals(STATUS_NAME, response.getStatus());
+        assertEquals(otherStatus, response.getStatus());
     }
 
     @Test
     void testUpdateUserPosition() {
         // GIVEN
+        final Position otherPosition = Position.builder()
+                .withName("other")
+                .build();
+        final User updatedUser = defaultBuilder
+                .withPosition(otherPosition)
+                .build();
         given(mockUserService.findById(USER_ID)).willReturn(user);
-        given(mockPositionRequest.getName()).willReturn(POSITION_NAME);
-        given(mockPositionService.findByName(POSITION_NAME)).willReturn(mockPosition);
+        given(mockPositionService.findByName(POSITION_NAME)).willReturn(otherPosition);
+        given(mockUserService.updateUserPosition(user, otherPosition)).willReturn(updatedUser);
 
         // WHEN
-        UserResponse response = underTest.updateUserPosition(USER_ID, mockPositionRequest);
+        final UserResponse response = underTest.updateUserPosition(USER_ID, positionRequest);
 
         // THEN
-        assertEquals(POSITION_NAME, response.getPosition());
+        assertEquals(otherPosition, response.getPosition());
     }
+
 }

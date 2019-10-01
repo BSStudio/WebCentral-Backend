@@ -49,12 +49,13 @@ public class UserController {
     private static final String REQUEST_USER_UPDATE_STATUS = "Request to update user status requested for id: {}";
     private static final String REQUEST_USER_UPDATE_POSITION = "Request to update user position requested for id: {}";
     private static final String REQUEST_USERS_WITH_POSITION_OF = "Request users with position of: {}";
+
     private final UserService userService;
     private final PositionService positionService;
     private final StatusService statusService;
     private final Logger logger;
 
-    UserController(final UserService userService, final Logger logger, final PositionService positionService, final StatusService statusService) {
+    UserController(final UserService userService, final PositionService positionService, final StatusService statusService, final Logger logger) {
         this.userService = userService;
         this.positionService = positionService;
         this.statusService = statusService;
@@ -90,18 +91,20 @@ public class UserController {
 
     @PutMapping("/{id}/archive")
     @ResponseStatus(OK)
-    public final void archiveUser(@PathVariable("id") final Long id) {
+    public final UserResponse archiveUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_ARCHIVE, id);
         final User user = userService.findById(id);
-        userService.archive(user);
+        final User result = userService.archive(user);
+        return new UserResponse(result);
     }
 
     @PutMapping("/{id}/restore")
     @ResponseStatus(OK)
-    public final void restoreUser(@PathVariable("id") final Long id) {
+    public final UserResponse restoreUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_RESTORE, id);
         final User user = userService.findById(id);
-        userService.restore(user);
+        final User result = userService.restore(user);
+        return new UserResponse(result);
     }
 
     @DeleteMapping("/{id}")
@@ -116,20 +119,20 @@ public class UserController {
     @ResponseStatus(OK)
     public final UserResponse updateUserStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_USER_UPDATE_STATUS, id);
-        User user = userService.findById(id);
-        Status status = statusService.findByName(request.getName());
-        userService.updateUserStatus(user, status);
-        return new UserResponse(user);
+        final User user = userService.findById(id);
+        final Status status = statusService.findByName(request.getName());
+        final User result = userService.updateUserStatus(user, status);
+        return new UserResponse(result);
     }
 
     @PutMapping("/{id}/position")
     @ResponseStatus(OK)
     public final UserResponse updateUserPosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_USER_UPDATE_POSITION, id);
-        User user = userService.findById(id);
-        Position position = positionService.findByName(request.getName());
-        userService.updateUserPosition(user, position);
-        return new UserResponse(user);
+        final User user = userService.findById(id);
+        final Position position = positionService.findByName(request.getName());
+        final User result = userService.updateUserPosition(user, position);
+        return new UserResponse(result);
     }
 
     @GetMapping("/all")
@@ -156,7 +159,7 @@ public class UserController {
     @ResponseStatus(FOUND)
     public final UserListResponse listAllWithStatusOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
-        final Set<User> users = statusService.findAllUserById(id);
+        final Set<User> users = statusService.findAllUserByStatusId(id);
         return UserListResponse.builder()
                 .withUsers(users)
                 .build();

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -27,6 +28,7 @@ final class StatusControllerTest {
 
     private static final Long STATUS_ID = 8L;
     private static final String NAME = "name";
+    private static final String OTHER_NAME = "other name";
 
     private StatusController underTest;
     private Status status;
@@ -113,13 +115,15 @@ final class StatusControllerTest {
     @Test
     void testUpdateStatus() {
         // GIVEN
-        given(mockStatusService.findById(STATUS_ID)).willReturn(status);
-        StatusRequest request = StatusRequest.builder()
-            .withName(NAME)
+        final StatusRequest request = StatusRequest.builder()
+            .withName(OTHER_NAME)
             .build();
+        final Status serviceResult = Status.builder().withName(OTHER_NAME).build();
+        given(mockStatusService.findById(STATUS_ID)).willReturn(status);
+        given(mockStatusService.update(request, status)).willReturn(serviceResult);
 
         // WHEN
-        StatusResponse response = underTest.updateStatus(STATUS_ID, request);
+        final StatusResponse response = underTest.updateStatus(STATUS_ID, request);
 
         // THEN
         then(mockStatusService).should().findById(STATUS_ID);
@@ -131,19 +135,14 @@ final class StatusControllerTest {
     @Test
     void testListAllStatuses() {
         // GIVEN
-        List<Status> statusList = new ArrayList<>();
-
-        Status status2 = Status.builder()
-            .build();
-
-        statusList.add(status);
-        statusList.add(status2);
-
+        final Status status2 = Status.builder()
+                .build();
+        final List<Status> statusList = List.of(status, status2);
         given(mockStatusService.findAll()).willReturn(statusList);
 
         // WHEN
-        StatusListResponse response = underTest.listAllStatuses();
+        final StatusListResponse response = underTest.listAllStatuses();
 
-        assertEquals(statusList, Arrays.asList(response.getStatuses()));
+        assertArrayEquals(statusList.toArray(), response.getStatuses());
     }
 }

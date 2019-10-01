@@ -20,6 +20,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 final class StatusServiceTest {
@@ -53,15 +54,12 @@ final class StatusServiceTest {
     @Test
     void testCreateStatus() {
         // GIVEN
-        doReturn(status).when(underTest).createStatusWithRequestData(mockStatusRequest);
+        doReturn(status).when(underTest);
 
         // WHEN
         Status result = underTest.create(mockStatusRequest);
 
         // THEN
-        then(underTest).should().createStatusWithRequestData(mockStatusRequest);
-        then(mockStatusDao).should().save(result);
-
         assertEquals(status, result);
     }
 
@@ -118,6 +116,7 @@ final class StatusServiceTest {
 
         // THEN
         then(mockStatusRequest).should().getName();
+        then(mockStatusDao).should().save(status);
         assertEquals(OTHER_NAME, status.getName());
     }
 
@@ -126,7 +125,9 @@ final class StatusServiceTest {
         // GIVEN setup
 
         // WHEN
-        Status result = underTest.createStatusWithRequestData(mockStatusRequest);
+        Status result = Status.builder()
+                .withName(mockStatusRequest.getName())
+                .build();
 
         // THEN
         then(mockStatusRequest).should().getName();
