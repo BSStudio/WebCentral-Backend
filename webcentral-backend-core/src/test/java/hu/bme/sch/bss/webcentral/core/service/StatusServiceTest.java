@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -131,5 +133,23 @@ public class StatusServiceTest {
 
         assertEquals(OTHER_NAME, result.getName());
     }
+    @Test
+    void testFindAll() {
+        // GIVEN setup
+        List<Status> statusList = new ArrayList<>();
 
+        Status status2 = Status.builder()
+            .build();
+
+        statusList.add(status);
+        statusList.add(status2);
+
+        given(mockStatusDao.findAll()).willReturn(statusList);
+
+        // WHEN
+        List<Status> result = underTest.findAll();
+
+        // THEN
+        assertEquals(statusList, result);
+    }
 }
