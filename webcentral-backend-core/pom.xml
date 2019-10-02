@@ -17,7 +17,7 @@
       </plugin>
     </plugins>
   </build>
-  <name>webcentral-backend-core</name>
+    <name>webcentral-backend-core</name>
   <description>BSS WebCentral Core</description>
   <packaging>jar</packaging>
 
