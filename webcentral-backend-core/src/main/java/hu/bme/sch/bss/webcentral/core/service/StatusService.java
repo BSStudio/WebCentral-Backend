@@ -4,6 +4,7 @@ import hu.bme.sch.bss.webcentral.core.dao.StatusDao;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -22,6 +23,8 @@ public class StatusService {
     private static final String STATUS_DELETE_SUCCEED = "Status delete succeed. {}";
     private static final String STATUS_EDIT_STARTED = "Status edit started. {}";
     private static final String STATUS_EDIT_SUCCEED = "Status edit succeed. {}";
+    private static final String STATUSES_ALL_SEARCH_STARTED = "Search for all statuses started.";
+    private static final String STATUSES_ALL_SEARCH_SUCCEED = "Search for all statuses succeed.";
 
     private final StatusDao statusDao;
     private final Logger logger;
@@ -66,5 +69,12 @@ public class StatusService {
         logger.info(STATUS_EDIT_STARTED, request);
         status.setName(request.getName());
         logger.info(STATUS_EDIT_SUCCEED, request);
+    }
+
+    public List<Status> findAll() {
+        logger.info(STATUSES_ALL_SEARCH_STARTED);
+        List<Status> statusList = statusDao.findAll();
+        logger.info(STATUSES_ALL_SEARCH_SUCCEED);
+        return statusList;
     }
 }
