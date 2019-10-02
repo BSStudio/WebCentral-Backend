@@ -2,6 +2,7 @@ package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Getter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
+@Getter
 public class UserRequest {
 
     @NotNull
@@ -46,34 +48,6 @@ public class UserRequest {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUri() {
-        return imageUri;
     }
 
     @SuppressWarnings("hiddenfield")

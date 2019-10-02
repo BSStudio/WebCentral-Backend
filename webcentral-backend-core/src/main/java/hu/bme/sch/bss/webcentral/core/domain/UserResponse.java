@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.model.User;
+import lombok.Getter;
 
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonTypeName("user")
+@Getter
 public final class UserResponse {
     private final Long id;
     private final Boolean archived;
@@ -29,35 +31,4 @@ public final class UserResponse {
         this.imageUri = user.getImageUri();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUri() {
-        return imageUri;
-    }
 }

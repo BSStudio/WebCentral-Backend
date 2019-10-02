@@ -2,12 +2,14 @@ package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 
 @SuppressWarnings("finalclass")
 @JsonDeserialize(builder = StatusRequest.Builder.class)
 @JsonRootName("status")
+@Getter
 public class StatusRequest {
 
     @NotBlank
@@ -19,10 +21,6 @@ public class StatusRequest {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public String getName() {
-        return name;
     }
 
     @SuppressWarnings("hiddenfield")
