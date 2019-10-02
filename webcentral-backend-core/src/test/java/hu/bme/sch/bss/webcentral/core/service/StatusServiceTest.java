@@ -112,12 +112,13 @@ public class StatusServiceTest {
     void testUpdate() {
         // GIVEN setup
 
-
         // WHEN
         underTest.update(mockStatusRequest, status);
 
         // THEN
         then(mockStatusRequest).should().getName();
+        then(mockStatusDao).should().save(status);
+
         assertEquals(OTHER_NAME, status.getName());
     }
 
