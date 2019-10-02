@@ -1,5 +1,9 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FOUND;
+import static org.springframework.http.HttpStatus.OK;
+
 import hu.bme.sch.bss.webcentral.core.domain.StatusListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.domain.StatusResponse;
@@ -12,7 +16,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,15 +44,15 @@ public class StatusController {
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public final StatusResponse createUser(@Valid @RequestBody final StatusRequest request) {
+    @ResponseStatus(CREATED)
+    public final StatusResponse createStatus(@Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_CREATE, request);
         Status result = statusService.create(request);
         return new StatusResponse(result);
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final StatusResponse getStatus(@PathVariable("id") final Long id) {
         logger.info(REQUEST_STATUS_SEARCH, id);
         Status result = statusService.findById(id);
@@ -57,7 +60,7 @@ public class StatusController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final void deleteStatus(@PathVariable("id") final Long id) {
         logger.info(REQUEST_STATUS_DELETE, id);
         Status status = statusService.findById(id);
@@ -65,7 +68,7 @@ public class StatusController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final StatusResponse updateStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_EDIT, id);
         Status status = statusService.findById(id);
@@ -74,7 +77,7 @@ public class StatusController {
     }
 
     @GetMapping("/all")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final StatusListResponse listAllStatuses() {
         logger.info(REQUEST_STATUS_LIST);
         ArrayList<Status> statuses = new ArrayList<>(statusService.findAll());

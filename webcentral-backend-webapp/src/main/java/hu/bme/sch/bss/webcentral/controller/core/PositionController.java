@@ -1,5 +1,9 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FOUND;
+import static org.springframework.http.HttpStatus.OK;
+
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
@@ -9,7 +13,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +42,7 @@ public class PositionController {
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public final PositionResponse createUser(@Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_CREATE, request);
         Position result = positionService.create(request);
@@ -47,7 +50,7 @@ public class PositionController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final PositionResponse getPosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_SEARCH, id);
         Position result = positionService.findById(id);
@@ -55,7 +58,7 @@ public class PositionController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final void deletePosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_DELETE, id);
         Position position = positionService.findById(id);
@@ -63,11 +66,12 @@ public class PositionController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final PositionResponse updatePosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_EDIT, id);
         Position position = positionService.findById(id);
         positionService.update(request, position);
         return new PositionResponse(position);
     }
+
 }

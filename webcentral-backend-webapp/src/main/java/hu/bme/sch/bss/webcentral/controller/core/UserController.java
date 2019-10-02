@@ -1,5 +1,9 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FOUND;
+import static org.springframework.http.HttpStatus.OK;
+
 import hu.bme.sch.bss.webcentral.core.domain.UserListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
@@ -12,7 +16,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @RequestMapping(value = "/api/user", produces = "application/json")
@@ -45,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public final UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
         User result = userService.create(request);
@@ -53,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final UserResponse getUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_SEARCH, id);
         User result = userService.findById(id);
@@ -61,7 +63,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_UPDATE, id);
         User user = userService.findById(id);
@@ -70,7 +72,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/archive")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final void archiveUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_ARCHIVE, id);
         User user = userService.findById(id);
@@ -78,7 +80,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/restore")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final void restoreUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_RESTORE, id);
         User user = userService.findById(id);
@@ -86,7 +88,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final void deleteUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_DELETE, id);
         User user = userService.findById(id);
@@ -94,7 +96,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final UserListResponse listAllUsers() {
         logger.info(REQUEST_USERS_LIST);
         ArrayList<User> users = new ArrayList<>(userService.findAll());
@@ -104,7 +106,7 @@ public class UserController {
     }
 
     @GetMapping("/archived")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final UserListResponse listAllArchived() {
         logger.info(REQUEST_ARCHIVED_USERS_LIST);
         ArrayList<User> users = new ArrayList<>(userService.findArchived());

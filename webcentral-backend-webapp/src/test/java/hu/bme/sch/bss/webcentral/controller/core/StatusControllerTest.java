@@ -55,7 +55,7 @@ public class StatusControllerTest {
         given(mockStatusService.create(request)).willReturn(status);
 
         // WHEN
-        StatusResponse response = underTest.createUser(request);
+        StatusResponse response = underTest.createStatus(request);
 
         // THEN
         assertEquals(request.getName(), response.getName());
