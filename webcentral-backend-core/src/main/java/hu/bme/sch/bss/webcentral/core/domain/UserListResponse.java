@@ -1,10 +1,12 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.model.User;
-import lombok.Getter;
 
 import java.util.List;
+
+import lombok.Getter;
 
 @JsonSerialize
 @Getter
