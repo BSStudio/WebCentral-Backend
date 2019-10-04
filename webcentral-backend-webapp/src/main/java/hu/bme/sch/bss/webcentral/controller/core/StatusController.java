@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/user/status", produces = "application/json")
+@RequestMapping(value = "/api/status", produces = "application/json")
 public class StatusController {
 
     private static final String REQUEST_STATUS_CREATE = "Request for status creation received. {}";

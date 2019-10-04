@@ -7,7 +7,9 @@ import hu.bme.sch.bss.webcentral.core.model.Position;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
+import hu.bme.sch.bss.webcentral.core.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -87,5 +89,10 @@ public final class PositionService {
             throw new NoSuchElementException("Position Type Not Found");
         }
         return position.get();
+    }
+
+    public Set<User> findAllUserById(final Long id) {
+        final Position position = findById(id);
+        return position.getUsers();
     }
 }

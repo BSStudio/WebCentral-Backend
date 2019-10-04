@@ -13,6 +13,7 @@ import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -61,9 +62,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public final UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
-        Status status = statusService.findByName(request.getStatusName());
-        Position position = positionService.findByName(request.getPositionName());
-        User result = userService.create(request, status, position);
+        final Status status = statusService.findByName(request.getStatusRequest().getName());
+        final Position position = positionService.findByName(request.getPositionRequest().getName());
+        final User result = userService.create(request, status, position);
         return new UserResponse(result);
     }
 
@@ -146,5 +147,25 @@ public class UserController {
         return UserListResponse.builder()
             .withUsers(users)
             .build();
+    }
+
+    @GetMapping("/status/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public final UserListResponse listAllWithStatusOf(@PathVariable("id") final Long id) {
+        //logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
+        final Set<User> users = statusService.findAllUserById(id);
+        return UserListResponse.builder()
+                .withUsers(users)
+                .build();
+    }
+
+    @GetMapping("/position/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public final UserListResponse listAllWithPositionOf(@PathVariable("id") final Long id) {
+        //logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
+        final Set<User> users = positionService.findAllUserById(id);
+        return UserListResponse.builder()
+                .withUsers(users)
+                .build();
     }
 }

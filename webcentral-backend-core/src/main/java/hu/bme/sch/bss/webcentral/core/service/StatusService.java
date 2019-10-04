@@ -7,7 +7,9 @@ import hu.bme.sch.bss.webcentral.core.model.Status;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
+import hu.bme.sch.bss.webcentral.core.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -85,5 +87,10 @@ public final class StatusService {
             throw new NoSuchElementException("Status Type Not Found");
         }
         return status.get();
+    }
+
+    public Set<User> findAllUserById(final Long id) {
+        final Status status = findById(id);
+        return status.getUsers();
     }
 }

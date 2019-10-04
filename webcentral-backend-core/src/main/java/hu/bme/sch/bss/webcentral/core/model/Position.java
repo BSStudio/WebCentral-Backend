@@ -5,14 +5,18 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import static javax.persistence.CascadeType.ALL;
 
 @JsonSerialize
 @JsonDeserialize(builder = Position.Builder.class)
@@ -27,6 +31,9 @@ public final class Position extends DomainAuditModel {
     @NotBlank
     @Column(unique = true, nullable = false)
     private String name;
+
+    @OneToMany(cascade = ALL)
+    private Set<User> users;
 
     public Position() {
         // No-arg constructor for hibernate
@@ -50,6 +57,10 @@ public final class Position extends DomainAuditModel {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
     }
 
     //Generated code begins here

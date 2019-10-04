@@ -3,6 +3,8 @@ package hu.bme.sch.bss.webcentral.core.domain;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 @JsonSerialize
@@ -17,8 +19,8 @@ public final class UserResponse {
     private final String email;
     private final String description;
     private final String imageUri;
-    private final String status;
-    private final String position;
+    private final Status status;
+    private final Position position;
 
 
     public UserResponse(final User user) {
@@ -30,8 +32,8 @@ public final class UserResponse {
         this.email = user.getEmail();
         this.description = user.getDescription();
         this.imageUri = user.getImageUri();
-        this.status = user.getStatus().getName();
-        this.position = user.getPosition().getName();
+        this.status = user.getStatus();
+        this.position = user.getPosition();
     }
 
     public Long getId() {
@@ -66,11 +68,11 @@ public final class UserResponse {
         return imageUri;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public String getPosition() {
+    public Position getPosition() {
         return position;
     }
 }

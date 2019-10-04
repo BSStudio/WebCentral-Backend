@@ -91,8 +91,8 @@ class UserControllerTest {
             .withEmail(EMAIL)
             .withDescription(DESCRIPTION)
             .withImageUri(IMAGE_URI)
-            .withStatus(STATUS_NAME)
-            .withPosition(POSITION_NAME)
+            .withStatus(mockStatusRequest)
+            .withPosition(mockPositionRequest)
             .build();
         given(mockUserService.create(request, mockStatus, mockPosition)).willReturn(user);
 

@@ -1,7 +1,10 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -15,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class UserRequestTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-        .getValidator();
+            .getValidator();
     private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "givenName";
@@ -23,10 +26,13 @@ class UserRequestTest {
     private static final String EMAIL = "email@address.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "image/URI.png";
-    private static final String STATUS = "status";
-    private static final String POSITION = "position";
 
     private UserRequest underTest;
+
+    @Mock
+    private PositionRequest mockPosition;
+    @Mock
+    private StatusRequest mockStatus;
 
     @Test
     void testConstructorAndGetters() {
@@ -34,7 +40,7 @@ class UserRequestTest {
 
         // WHEN
         underTest = getDefaultValuesBuilder()
-            .build();
+                .build();
 
         // THEN
         assertEquals(ARCHIVED, underTest.getArchived());
@@ -44,16 +50,16 @@ class UserRequestTest {
         assertEquals(EMAIL, underTest.getEmail());
         assertEquals(DESCRIPTION, underTest.getDescription());
         assertEquals(IMAGE_URI, underTest.getImageUri());
-        assertEquals(STATUS, underTest.getStatusName());
-        assertEquals(POSITION, underTest.getPositionName());
+        assertEquals(mockStatus, underTest.getStatusRequest());
+        assertEquals(mockPosition, underTest.getPositionRequest());
     }
 
     @Test
     void testValidationShouldFailForNullArchived() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withArchived(null)
-            .build();
+                .withArchived(null)
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -66,8 +72,8 @@ class UserRequestTest {
     void testValidationShouldFailForEmptyNickname() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withNickname("")
-            .build();
+                .withNickname("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -80,8 +86,8 @@ class UserRequestTest {
     void testValidationShouldFailForEmptyGivenName() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withGivenName("")
-            .build();
+                .withGivenName("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -94,8 +100,8 @@ class UserRequestTest {
     void testValidationShouldFailForEmptyFamilyName() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withFamilyName("")
-            .build();
+                .withFamilyName("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -108,8 +114,8 @@ class UserRequestTest {
     void testValidationShouldFailForEmptyEmail() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withEmail("")
-            .build();
+                .withEmail("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -122,8 +128,8 @@ class UserRequestTest {
     void testValidationShouldFailForEmptyDescription() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withDescription("")
-            .build();
+                .withDescription("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -136,8 +142,8 @@ class UserRequestTest {
     void testValidationShouldFailForEmptyStatus() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withStatus("")
-            .build();
+                .withStatus(mockStatus)
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -150,8 +156,8 @@ class UserRequestTest {
     void testValidationShouldFailForEmptyPosition() {
         //GIVEN
         underTest = getDefaultValuesBuilder()
-            .withPosition("")
-            .build();
+                .withPosition(mockPosition)
+                .build();
 
         // WHEN
         Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
@@ -162,15 +168,15 @@ class UserRequestTest {
 
     private UserRequest.Builder getDefaultValuesBuilder() {
         return UserRequest.builder()
-            .withArchived(ARCHIVED)
-            .withNickname(NICKNAME)
-            .withGivenName(GIVEN_NAME)
-            .withFamilyName(FAMILY_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .withStatus(STATUS)
-            .withPosition(POSITION);
+                .withArchived(ARCHIVED)
+                .withNickname(NICKNAME)
+                .withGivenName(GIVEN_NAME)
+                .withFamilyName(FAMILY_NAME)
+                .withEmail(EMAIL)
+                .withDescription(DESCRIPTION)
+                .withImageUri(IMAGE_URI)
+                .withStatus(mockStatus)
+                .withPosition(mockPosition);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<UserRequest>> violations,
@@ -180,4 +186,5 @@ class UserRequestTest {
         assertThat(violation.getMessage(), is(expectedMessage));
         assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
     }
+
 }
