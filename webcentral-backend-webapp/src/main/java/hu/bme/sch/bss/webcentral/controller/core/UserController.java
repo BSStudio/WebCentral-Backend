@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/user", produces = "application/json")
+@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
@@ -37,11 +38,12 @@ public class UserController {
     private static final String REQUEST_USER_UPDATE = "Request to update user received for id {}";
     private static final String REQUEST_USER_RESTORE = "Request to restore user received for id: {}";
     private static final String REQUEST_USER_ARCHIVE = "Request to archive user received for id: {}";
-    private static final String REQUEST_USER_DELETE = "Request to delete user reveived for id: {}";
+    private static final String REQUEST_USER_DELETE = "Request to delete user received for id: {}";
+
     private final UserService userService;
     private final Logger logger;
 
-    public UserController(final UserService userService, final Logger logger) {
+    UserController(final UserService userService, final Logger logger) {
         this.userService = userService;
         this.logger = logger;
     }

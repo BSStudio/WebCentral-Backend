@@ -23,7 +23,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class StatusControllerTest {
+final class StatusControllerTest {
 
     private static final Long STATUS_ID = 8L;
     private static final String NAME = "name";
