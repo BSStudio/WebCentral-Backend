@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/api/user", produces = "application/json")
+@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE )
 public class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
