@@ -25,7 +25,7 @@ public class PositionServiceTest {
     private static final long POSITION_ID = 8L;
     private static final String NAME = "name";
 
-    private static final String OTHER_NAME = "name";
+    private static final String OTHER_NAME = "other name";
 
     private PositionRequest positionRequest;
     @Mock
