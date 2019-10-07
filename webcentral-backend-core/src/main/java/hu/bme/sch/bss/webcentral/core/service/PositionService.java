@@ -34,7 +34,7 @@ public class PositionService {
 
     public Position create(final PositionRequest request) {
         logger.info(POSITION_CREATE_STARTED, request);
-        Position position = createPositionWithRequestData(request);
+        final Position position = createPositionWithRequestData(request);
         positionDao.save(position);
         logger.info(POSITION_CREATE_SUCCEED, request);
         return position;

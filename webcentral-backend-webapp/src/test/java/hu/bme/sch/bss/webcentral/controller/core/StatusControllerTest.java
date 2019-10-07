@@ -23,7 +23,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class StatusControllerTest {
+final class StatusControllerTest {
 
     private static final Long STATUS_ID = 8L;
     private static final String NAME = "name";
@@ -55,7 +55,7 @@ public class StatusControllerTest {
         given(mockStatusService.create(request)).willReturn(status);
 
         // WHEN
-        StatusResponse response = underTest.createUser(request);
+        StatusResponse response = underTest.createStatus(request);
 
         // THEN
         assertEquals(request.getName(), response.getName());

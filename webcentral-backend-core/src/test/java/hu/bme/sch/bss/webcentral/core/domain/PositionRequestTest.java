@@ -1,6 +1,5 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
-import hu.bme.sch.bss.webcentral.core.model.Position;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
@@ -13,7 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PositionRequestTest {
+final class PositionRequestTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();

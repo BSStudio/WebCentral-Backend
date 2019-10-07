@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StatusTest {
+final class StatusTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();
 
