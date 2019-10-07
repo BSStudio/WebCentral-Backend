@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.spy;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-class UserServiceTest {
+final class UserServiceTest {
 
     private static final Long USER_ID = 16L;
 
@@ -108,7 +108,7 @@ class UserServiceTest {
         userList.add(user);
         userList.add(user2);
 
-        given(mockUserDao.findAll()).willReturn(userList);
+        given(mockUserDao.findAllNotArchived()).willReturn(userList);
 
         // WHEN
         List<User> result = underTest.findAll();
