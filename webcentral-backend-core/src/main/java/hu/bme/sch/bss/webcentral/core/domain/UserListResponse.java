@@ -14,7 +14,7 @@ public final class UserListResponse {
 
     private final User[] users;
 
-    public UserListResponse(final Builder builder) {
+    private UserListResponse(final Builder builder) {
         this.users = builder.users;
     }
 

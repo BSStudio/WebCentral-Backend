@@ -31,7 +31,6 @@ import lombok.Setter;
     private Long id;
 
     @NotBlank
-    @Setter
     private String name;
 
     private Position(final Builder builder) {

@@ -42,7 +42,6 @@ public class UserService {
         this.logger = logger;
     }
 
-
     public User create(final UserRequest request) {
         logger.info(USER_CREATE_STARTED, request);
         User user = createUserWithRequestData(request);
