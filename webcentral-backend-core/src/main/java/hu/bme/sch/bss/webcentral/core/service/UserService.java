@@ -71,7 +71,7 @@ public class UserService {
 
     public List<User> findAll() {
         logger.info(USERS_ALL_SEARCH_STARTED);
-        List<User> userList = userDao.findAll();
+        List<User> userList = userDao.findAllNotArchived();
         logger.info(USERS_ALL_SEARCH_SUCCEED);
         return userList;
     }

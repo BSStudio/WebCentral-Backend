@@ -52,7 +52,7 @@ public class UserController {
     @ResponseStatus(CREATED)
     public final UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
-        User result = userService.create(request);
+        final User result = userService.create(request);
         return new UserResponse(result);
     }
 
@@ -60,7 +60,7 @@ public class UserController {
     @ResponseStatus(FOUND)
     public final UserResponse getUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_SEARCH, id);
-        User result = userService.findById(id);
+        final User result = userService.findById(id);
         return new UserResponse(result);
     }
 
@@ -68,7 +68,7 @@ public class UserController {
     @ResponseStatus(OK)
     public final UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_UPDATE, id);
-        User user = userService.findById(id);
+        final User user = userService.findById(id);
         userService.update(request, user);
         return new UserResponse(user);
     }
@@ -77,7 +77,7 @@ public class UserController {
     @ResponseStatus(OK)
     public final void archiveUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_ARCHIVE, id);
-        User user = userService.findById(id);
+        final User user = userService.findById(id);
         userService.archive(user);
     }
 
@@ -85,7 +85,7 @@ public class UserController {
     @ResponseStatus(OK)
     public final void restoreUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_RESTORE, id);
-        User user = userService.findById(id);
+        final User user = userService.findById(id);
         userService.restore(user);
     }
 
@@ -93,7 +93,7 @@ public class UserController {
     @ResponseStatus(OK)
     public final void deleteUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_DELETE, id);
-        User user = userService.findById(id);
+        final User user = userService.findById(id);
         userService.delete(user);
     }
 
@@ -101,7 +101,7 @@ public class UserController {
     @ResponseStatus(FOUND)
     public final UserListResponse listAllUsers() {
         logger.info(REQUEST_USERS_LIST);
-        ArrayList<User> users = new ArrayList<>(userService.findAll());
+        final ArrayList<User> users = new ArrayList<>(userService.findAll());
         return UserListResponse.builder()
             .withUsers(users)
             .build();
@@ -111,7 +111,7 @@ public class UserController {
     @ResponseStatus(FOUND)
     public final UserListResponse listAllArchived() {
         logger.info(REQUEST_ARCHIVED_USERS_LIST);
-        ArrayList<User> users = new ArrayList<>(userService.findArchived());
+        final ArrayList<User> users = new ArrayList<>(userService.findArchived());
         return UserListResponse.builder()
             .withUsers(users)
             .build();

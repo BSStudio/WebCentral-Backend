@@ -39,7 +39,7 @@ public class StatusController {
     private final StatusService statusService;
     private final Logger logger;
 
-    public StatusController(final StatusService userService, final Logger logger) {
+    StatusController(final StatusService userService, final Logger logger) {
         this.statusService = userService;
         this.logger = logger;
     }
@@ -48,7 +48,7 @@ public class StatusController {
     @ResponseStatus(CREATED)
     public final StatusResponse createStatus(@Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_CREATE, request);
-        Status result = statusService.create(request);
+        final Status result = statusService.create(request);
         return new StatusResponse(result);
     }
 
@@ -56,7 +56,7 @@ public class StatusController {
     @ResponseStatus(FOUND)
     public final StatusResponse getStatus(@PathVariable("id") final Long id) {
         logger.info(REQUEST_STATUS_SEARCH, id);
-        Status result = statusService.findById(id);
+        final Status result = statusService.findById(id);
         return new StatusResponse(result);
     }
 
@@ -64,7 +64,7 @@ public class StatusController {
     @ResponseStatus(OK)
     public final void deleteStatus(@PathVariable("id") final Long id) {
         logger.info(REQUEST_STATUS_DELETE, id);
-        Status status = statusService.findById(id);
+        final Status status = statusService.findById(id);
         statusService.delete(status);
     }
 
@@ -72,7 +72,7 @@ public class StatusController {
     @ResponseStatus(OK)
     public final StatusResponse updateStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_EDIT, id);
-        Status status = statusService.findById(id);
+        final Status status = statusService.findById(id);
         statusService.update(request, status);
         return new StatusResponse(status);
     }
@@ -81,7 +81,7 @@ public class StatusController {
     @ResponseStatus(FOUND)
     public final StatusListResponse listAllStatuses() {
         logger.info(REQUEST_STATUS_LIST);
-        ArrayList<Status> statuses = new ArrayList<>(statusService.findAll());
+        final ArrayList<Status> statuses = new ArrayList<>(statusService.findAll());
         return StatusListResponse.builder()
             .withStatuses(statuses)
             .build();

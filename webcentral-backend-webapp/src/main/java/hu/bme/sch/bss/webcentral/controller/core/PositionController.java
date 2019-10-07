@@ -46,7 +46,7 @@ public class PositionController {
     @ResponseStatus(CREATED)
     public final PositionResponse createUser(@Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_CREATE, request);
-        Position result = positionService.create(request);
+        final Position result = positionService.create(request);
         return new PositionResponse(result);
     }
 
@@ -54,7 +54,7 @@ public class PositionController {
     @ResponseStatus(FOUND)
     public final PositionResponse getPosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_SEARCH, id);
-        Position result = positionService.findById(id);
+        final Position result = positionService.findById(id);
         return new PositionResponse(result);
     }
 
@@ -62,7 +62,7 @@ public class PositionController {
     @ResponseStatus(OK)
     public final void deletePosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_DELETE, id);
-        Position position = positionService.findById(id);
+        final Position position = positionService.findById(id);
         positionService.delete(position);
     }
 
@@ -70,7 +70,7 @@ public class PositionController {
     @ResponseStatus(OK)
     public final PositionResponse updatePosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_EDIT, id);
-        Position position = positionService.findById(id);
+        final Position position = positionService.findById(id);
         positionService.update(request, position);
         return new PositionResponse(position);
     }

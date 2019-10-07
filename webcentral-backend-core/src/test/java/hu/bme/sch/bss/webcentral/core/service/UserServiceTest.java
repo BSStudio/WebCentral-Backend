@@ -115,7 +115,7 @@ final class UserServiceTest {
         userList.add(user);
         userList.add(user2);
 
-        given(mockUserDao.findAll()).willReturn(userList);
+        given(mockUserDao.findAllNotArchived()).willReturn(userList);
 
         // WHEN
         List<User> result = underTest.findAll();

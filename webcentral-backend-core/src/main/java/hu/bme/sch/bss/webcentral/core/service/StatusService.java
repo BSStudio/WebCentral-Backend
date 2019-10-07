@@ -35,7 +35,7 @@ public class StatusService {
 
     public Status create(final StatusRequest request) {
         logger.info(STATUS_CREATE_STARTED, request);
-        Status status = createStatusWithRequestData(request);
+        final Status status = createStatusWithRequestData(request);
         statusDao.save(status);
         logger.info(STATUS_CREATE_SUCCEED, request);
         return status;
@@ -72,7 +72,7 @@ public class StatusService {
 
     public List<Status> findAll() {
         logger.info(STATUSES_ALL_SEARCH_STARTED);
-        List<Status> statusList = statusDao.findAll();
+        final List<Status> statusList = statusDao.findAll();
         logger.info(STATUSES_ALL_SEARCH_SUCCEED);
         return statusList;
     }
