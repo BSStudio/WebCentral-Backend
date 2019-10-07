@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-@SuppressWarnings("designforextension")
-public class StatusService {
+public final class StatusService {
+
     private static final String STATUS_CREATE_STARTED = "Status creation started. {}";
     private static final String STATUS_CREATE_SUCCEED = "Status creation succeed. {}";
     private static final String STATUS_SEARCH_STARTED = "Status search started {}";
@@ -28,7 +28,7 @@ public class StatusService {
     private final StatusDao statusDao;
     private final Logger logger;
 
-    public StatusService(final StatusDao statusDao, final Logger logger) {
+    StatusService(final StatusDao statusDao, final Logger logger) {
         this.statusDao = statusDao;
         this.logger = logger;
     }
