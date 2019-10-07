@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UserResponseTest {
+final class UserResponseTest {
 
     private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";

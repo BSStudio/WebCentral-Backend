@@ -5,7 +5,6 @@ import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.model.Position;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -35,7 +34,7 @@ public class PositionService {
 
     public Position create(final PositionRequest request) {
         logger.info(POSITION_CREATE_STARTED, request);
-        Position position = createPositionWithRequestData(request);
+        final Position position = createPositionWithRequestData(request);
         positionDao.save(position);
         logger.info(POSITION_CREATE_SUCCEED, request);
         return position;
@@ -43,13 +42,13 @@ public class PositionService {
 
     public Position findById(final Long id) {
         logger.info(POSITION_SEARCH_STARTED, id);
-        Optional<Position> result = positionDao.findById(id);
-        if (result.isEmpty()) {
+        return positionDao.findById(id).map(position -> {
+            logger.info(POSITION_SEARCH_SUCCEED, id);
+            return position;
+        }).orElseThrow(() -> {
             logger.warn(POSITION_NOT_FOUND, id);
-            throw new NoSuchElementException("Position not found");
-        }
-        logger.info(POSITION_SEARCH_SUCCEED, id);
-        return result.get();
+            return new NoSuchElementException("Position not found");
+        });
     }
 
     public void delete(final Position position) {
@@ -60,8 +59,8 @@ public class PositionService {
 
     Position createPositionWithRequestData(final PositionRequest request) {
         return Position.builder()
-            .withName(request.getName())
-            .build();
+                .withName(request.getName())
+                .build();
     }
 
     public void update(final PositionRequest request, final Position position) {
@@ -69,4 +68,5 @@ public class PositionService {
         position.setName(request.getName());
         logger.info(POSITION_EDIT_SUCCEED, request);
     }
+
 }

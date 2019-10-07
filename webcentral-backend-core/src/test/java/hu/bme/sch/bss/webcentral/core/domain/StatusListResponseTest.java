@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class StatusListResponseTest {
+final class StatusListResponseTest {
     @Test
     void testBuilderWithList() {
         //GIVEN

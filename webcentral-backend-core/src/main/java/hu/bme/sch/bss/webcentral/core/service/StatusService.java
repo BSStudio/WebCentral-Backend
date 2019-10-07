@@ -6,7 +6,6 @@ import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -36,7 +35,7 @@ public class StatusService {
 
     public Status create(final StatusRequest request) {
         logger.info(STATUS_CREATE_STARTED, request);
-        Status status = createStatusWithRequestData(request);
+        final Status status = createStatusWithRequestData(request);
         statusDao.save(status);
         logger.info(STATUS_CREATE_SUCCEED, request);
         return status;
@@ -44,13 +43,13 @@ public class StatusService {
 
     public Status findById(final Long id) {
         logger.info(STATUS_SEARCH_STARTED, id);
-        Optional<Status> result = statusDao.findById(id);
-        if (result.isEmpty()) {
+        return statusDao.findById(id).map(status -> {
+            logger.info(STATUS_SEARCH_SUCCEED, id);
+            return status;
+        }).orElseThrow(() -> {
             logger.warn(STATUS_NOT_FOUND, id);
             throw new NoSuchElementException("Status not found");
-        }
-        logger.info(STATUS_SEARCH_SUCCEED, id);
-        return result.get();
+        });
     }
 
     public void delete(final Status status) {
@@ -61,8 +60,8 @@ public class StatusService {
 
     Status createStatusWithRequestData(final StatusRequest request) {
         return Status.builder()
-            .withName(request.getName())
-            .build();
+                .withName(request.getName())
+                .build();
     }
 
     public void update(final StatusRequest request, final Status status) {
@@ -74,8 +73,9 @@ public class StatusService {
 
     public List<Status> findAll() {
         logger.info(STATUSES_ALL_SEARCH_STARTED);
-        List<Status> statusList = statusDao.findAll();
+        final List<Status> statusList = statusDao.findAll();
         logger.info(STATUSES_ALL_SEARCH_SUCCEED);
         return statusList;
     }
+
 }

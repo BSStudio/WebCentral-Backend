@@ -22,11 +22,11 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class StatusServiceTest {
+final class StatusServiceTest {
     private static final long STATUS_ID = 8L;
     private static final String NAME = "name";
 
-    private static final String OTHER_NAME = "name";
+    private static final String OTHER_NAME = "other name";
 
     @Mock
     private StatusRequest mockStatusRequest;

@@ -1,5 +1,8 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FOUND;
+
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTypeRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTypeResponse;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
@@ -8,7 +11,6 @@ import hu.bme.sch.bss.webcentral.videoportal.service.VideoTypeService;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,21 +32,21 @@ public class VideoTypeController {
     private final VideoTypeService videoTypeService;
     private final Logger logger;
 
-    public VideoTypeController(final VideoTypeService videoTypeService, final Logger logger) {
+    VideoTypeController(final VideoTypeService videoTypeService, final Logger logger) {
         this.videoTypeService = videoTypeService;
         this.logger = logger;
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public final VideoTypeResponse createVideoType(@Valid @RequestBody final VideoTypeRequest request) {
         logger.info(REQUEST_VIDEO_TYPE_CREATE, request);
-        VideoType result = videoTypeService.create(request);
+        final VideoType result = videoTypeService.create(request);
         return new VideoTypeResponse(result);
     }
 
     @GetMapping("/{canonicalName}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final VideoTypeResponse getVideoType(@PathVariable("canonicalName") final String canonicalName) {
         logger.info(REQUEST_VIDEO_TYPE_SEARCH, canonicalName);
         return new VideoTypeResponse(videoTypeService.findByCanonicalName(canonicalName));
