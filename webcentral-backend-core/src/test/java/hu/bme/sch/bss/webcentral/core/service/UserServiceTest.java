@@ -42,13 +42,12 @@ class UserServiceTest {
     private static final String OTHER_IMAGE_URI = "other/images/profile.png";
 
     @Mock
-    private UserRequest mockUserRequest;
-    @Mock
     private Logger mockLogger;
     @Mock
     private UserDao mockUserDao;
 
     private User user;
+    private UserRequest userRequest;
     private UserService underTest;
 
     @BeforeEach
@@ -56,13 +55,15 @@ class UserServiceTest {
         initMocks(this);
         underTest = spy(new UserService(mockUserDao, mockLogger));
 
-        given(mockUserRequest.getNickname()).willReturn(OTHER_NICKNAME);
-        given(mockUserRequest.getGivenName()).willReturn(OTHER_GIVEN_NAME);
-        given(mockUserRequest.getFamilyName()).willReturn(OTHER_FAMILY_NAME);
-        given(mockUserRequest.getEmail()).willReturn(OTHER_EMAIL);
-        given(mockUserRequest.getDescription()).willReturn(OTHER_DESCRIPTION);
-        given(mockUserRequest.getImageUri()).willReturn(OTHER_IMAGE_URI);
-        given(mockUserRequest.getArchived()).willReturn(OTHER_ARCHIVED);
+        userRequest = UserRequest.builder()
+                .withNickname(OTHER_NICKNAME)
+                .withGivenName(OTHER_GIVEN_NAME)
+                .withFamilyName(OTHER_FAMILY_NAME)
+                .withEmail(OTHER_EMAIL)
+                .withDescription(OTHER_DESCRIPTION)
+                .withImageUri(OTHER_IMAGE_URI)
+                .withArchived(OTHER_ARCHIVED)
+                .build();
 
         user = User.builder()
                 .withArchived(ARCHIVED)
@@ -80,27 +81,19 @@ class UserServiceTest {
         // GIVEN
 
         // WHEN
-        final User result = underTest.create(mockUserRequest);
+        final User result = underTest.create(userRequest);
 
         // THEN
-        then(mockUserRequest).should().getArchived();
-        then(mockUserRequest).should().getNickname();
-        then(mockUserRequest).should().getGivenName();
-        then(mockUserRequest).should().getFamilyName();
-        then(mockUserRequest).should().getEmail();
-        then(mockUserRequest).should().getDescription();
-        then(mockUserRequest).should().getImageUri();
-
         then(mockUserDao).should().save(result);
 
         assertAll(
-                () -> assertEquals(mockUserRequest.getArchived(), result.getArchived()),
-                () -> assertEquals(mockUserRequest.getNickname(), result.getNickname()),
-                () -> assertEquals(mockUserRequest.getGivenName(), result.getGivenName()),
-                () -> assertEquals(mockUserRequest.getFamilyName(), result.getFamilyName()),
-                () -> assertEquals(mockUserRequest.getEmail(), result.getEmail()),
-                () -> assertEquals(mockUserRequest.getDescription(), result.getDescription()),
-                () -> assertEquals(mockUserRequest.getImageUri(), result.getImageUri())
+                () -> assertEquals(userRequest.getArchived(), result.getArchived()),
+                () -> assertEquals(userRequest.getNickname(), result.getNickname()),
+                () -> assertEquals(userRequest.getGivenName(), result.getGivenName()),
+                () -> assertEquals(userRequest.getFamilyName(), result.getFamilyName()),
+                () -> assertEquals(userRequest.getEmail(), result.getEmail()),
+                () -> assertEquals(userRequest.getDescription(), result.getDescription()),
+                () -> assertEquals(userRequest.getImageUri(), result.getImageUri())
         );
     }
 
@@ -193,16 +186,9 @@ class UserServiceTest {
         // GIVEN setup
 
         // WHEN
-        underTest.update(mockUserRequest, user);
+        underTest.update(userRequest, user);
 
         // THEN
-        then(mockUserRequest).should().getNickname();
-        then(mockUserRequest).should().getGivenName();
-        then(mockUserRequest).should().getFamilyName();
-        then(mockUserRequest).should().getEmail();
-        then(mockUserRequest).should().getDescription();
-        then(mockUserRequest).should().getImageUri();
-
         assertAll(
                 () -> assertEquals(OTHER_NICKNAME, user.getNickname()),
                 () -> assertEquals(OTHER_GIVEN_NAME, user.getGivenName()),

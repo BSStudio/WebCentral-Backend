@@ -7,11 +7,10 @@ import javax.validation.constraints.NotBlank;
 
 import lombok.Getter;
 
-@SuppressWarnings("finalclass")
 @JsonDeserialize(builder = StatusRequest.Builder.class)
 @JsonRootName("status")
 @Getter
-public class StatusRequest {
+public final class StatusRequest {
 
     @NotBlank
     private String name;

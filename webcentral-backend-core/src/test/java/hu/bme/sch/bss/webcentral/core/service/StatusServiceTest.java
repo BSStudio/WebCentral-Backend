@@ -29,13 +29,12 @@ public class StatusServiceTest {
     private static final String OTHER_NAME = "other name";
 
     @Mock
-    private StatusRequest mockStatusRequest;
-    @Mock
     private Logger mockLogger;
     @Mock
     private StatusDao mockStatusDao;
 
     private Status status;
+    private StatusRequest statusRequest;
     private StatusService underTest;
 
     @BeforeEach
@@ -43,7 +42,9 @@ public class StatusServiceTest {
         initMocks(this);
         underTest = spy(new StatusService(mockStatusDao, mockLogger));
 
-        given(mockStatusRequest.getName()).willReturn(OTHER_NAME);
+        statusRequest = StatusRequest.builder()
+                .withName(OTHER_NAME)
+                .build();
 
         status = Status.builder()
             .withName(NAME)
@@ -53,13 +54,13 @@ public class StatusServiceTest {
     @Test
     void testCreateStatus() {
         // GIVEN
-        doReturn(status).when(underTest).createStatusWithRequestData(mockStatusRequest);
+        doReturn(status).when(underTest).createStatusWithRequestData(statusRequest);
 
         // WHEN
-        Status result = underTest.create(mockStatusRequest);
+        Status result = underTest.create(statusRequest);
 
         // THEN
-        then(underTest).should().createStatusWithRequestData(mockStatusRequest);
+        then(underTest).should().createStatusWithRequestData(statusRequest);
         then(mockStatusDao).should().save(result);
 
         assertEquals(status, result);
@@ -114,10 +115,9 @@ public class StatusServiceTest {
 
 
         // WHEN
-        underTest.update(mockStatusRequest, status);
+        underTest.update(statusRequest, status);
 
         // THEN
-        then(mockStatusRequest).should().getName();
         assertEquals(OTHER_NAME, status.getName());
     }
 
@@ -126,11 +126,9 @@ public class StatusServiceTest {
         // GIVEN setup
 
         // WHEN
-        Status result = underTest.createStatusWithRequestData(mockStatusRequest);
+        Status result = underTest.createStatusWithRequestData(statusRequest);
 
         // THEN
-        then(mockStatusRequest).should().getName();
-
         assertEquals(OTHER_NAME, result.getName());
     }
     @Test

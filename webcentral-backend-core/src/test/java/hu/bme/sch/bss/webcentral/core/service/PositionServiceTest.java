@@ -27,13 +27,13 @@ public class PositionServiceTest {
 
     private static final String OTHER_NAME = "other name";
 
-    private PositionRequest positionRequest;
     @Mock
     private Logger mockLogger;
     @Mock
     private PositionDao mockPositionDao;
 
     private Position position;
+    private PositionRequest positionRequest;
     private PositionService underTest;
 
     @BeforeEach
@@ -41,7 +41,9 @@ public class PositionServiceTest {
         initMocks(this);
         underTest = spy(new PositionService(mockPositionDao, mockLogger));
 
-        positionRequest = PositionRequest.builder().withName(OTHER_NAME).build();
+        positionRequest = PositionRequest.builder()
+                .withName(OTHER_NAME)
+                .build();
 
         position = Position.builder()
             .withName(NAME)

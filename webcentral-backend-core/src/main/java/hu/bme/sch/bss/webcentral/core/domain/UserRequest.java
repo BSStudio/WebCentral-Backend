@@ -9,11 +9,10 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 
-@SuppressWarnings("finalclass")
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
 @Getter
-public class UserRequest {
+public final class UserRequest {
 
     @NotNull
     private Boolean archived;
