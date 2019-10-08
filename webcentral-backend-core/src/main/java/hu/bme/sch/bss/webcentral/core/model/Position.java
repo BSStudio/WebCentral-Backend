@@ -1,5 +1,7 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
+import static javax.persistence.CascadeType.ALL;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
@@ -15,8 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-
-import static javax.persistence.CascadeType.ALL;
 
 @JsonSerialize
 @JsonDeserialize(builder = Position.Builder.class)

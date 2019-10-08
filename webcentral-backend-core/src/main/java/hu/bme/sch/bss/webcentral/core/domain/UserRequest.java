@@ -2,8 +2,6 @@ package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import hu.bme.sch.bss.webcentral.core.model.Position;
-import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

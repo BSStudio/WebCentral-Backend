@@ -3,13 +3,12 @@ package hu.bme.sch.bss.webcentral.core.service;
 import hu.bme.sch.bss.webcentral.core.dao.PositionDao;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 
-import hu.bme.sch.bss.webcentral.core.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -86,9 +85,9 @@ public final class PositionService {
 
     public Position findByName(final String name) {
         return positionDao.findByName(name).map(position -> {
-            logger.info(POSITION_SEARCH_WITH_NAME_STARTED);
+            logger.info(POSITION_SEARCH_WITH_NAME_STARTED, name);
             return position;
-        }).orElseThrow(()-> {
+        }).orElseThrow(() -> {
             logger.warn(POSITION_SEARCH_WITH_NAME_FAILURE, name);
             return new NoSuchElementException("Position Type Not Found");
         });

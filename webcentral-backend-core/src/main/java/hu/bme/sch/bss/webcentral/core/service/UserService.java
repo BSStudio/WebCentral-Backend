@@ -99,7 +99,7 @@ public final class UserService {
         return userDao.findById(id).map(user -> {
             logger.info(USER_SEARCH_SUCCEED, id);
             return user;
-        }).orElseThrow(()-> {
+        }).orElseThrow(() -> {
             logger.warn(USER_NOT_FOUND, id);
             return new NoSuchElementException("User Not Found.");
         });

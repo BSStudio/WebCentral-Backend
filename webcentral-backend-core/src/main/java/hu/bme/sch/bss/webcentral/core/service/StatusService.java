@@ -3,13 +3,12 @@ package hu.bme.sch.bss.webcentral.core.service;
 import hu.bme.sch.bss.webcentral.core.dao.StatusDao;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.model.Status;
+import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 
-import hu.bme.sch.bss.webcentral.core.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -83,7 +82,7 @@ public final class StatusService {
     }
 
     public Status findByName(final String name) {
-        return statusDao.findByName(name).map( status -> {
+        return statusDao.findByName(name).map(status -> {
             logger.info(STATUS_SEARCH_WITH_NAME_SUCCEED, name);
             return status;
         }).orElseThrow(() -> {

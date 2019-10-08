@@ -1,25 +1,22 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
+import static javax.persistence.CascadeType.ALL;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import java.awt.print.Book;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-
-import static javax.persistence.CascadeType.*;
 
 @JsonSerialize
 @JsonDeserialize(builder = Status.Builder.class)
