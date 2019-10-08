@@ -19,6 +19,7 @@ public final class StatusService {
     private static final String STATUS_CREATE_SUCCEED = "Status creation succeed. {}";
     private static final String STATUS_SEARCH_STARTED = "Status search started {}";
     private static final String STATUS_SEARCH_SUCCEED = "Status search succeed {}";
+    private static final String STATUS_SEARCH_WITH_NAME_SUCCEED = "Status search succeed {}";
     private static final String STATUS_NOT_FOUND = "Status not found with id: {}";
     private static final String STATUS_DELETE_STARTED = "Status delete started. {}";
     private static final String STATUS_DELETE_SUCCEED = "Status delete succeed. {}";
@@ -26,11 +27,12 @@ public final class StatusService {
     private static final String STATUS_EDIT_SUCCEED = "Status edit succeed. {}";
     private static final String STATUSES_ALL_SEARCH_STARTED = "Search for all statuses started.";
     private static final String STATUSES_ALL_SEARCH_SUCCEED = "Search for all statuses succeed.";
+    private static final String STATUS_SEARCH_WITH_NAME_FAILURE = "Status not found with name {}";
 
     private final StatusDao statusDao;
     private final Logger logger;
 
-    public StatusService(final StatusDao statusDao, final Logger logger) {
+    StatusService(final StatusDao statusDao, final Logger logger) {
         this.statusDao = statusDao;
         this.logger = logger;
     }
@@ -45,13 +47,13 @@ public final class StatusService {
 
     public Status findById(final Long id) {
         logger.info(STATUS_SEARCH_STARTED, id);
-        Optional<Status> result = statusDao.findById(id);
-        if (result.isEmpty()) {
+        return statusDao.findById(id).map(status -> {
+            logger.info(STATUS_SEARCH_SUCCEED, id);
+            return status;
+        }).orElseThrow(() -> {
             logger.warn(STATUS_NOT_FOUND, id);
             throw new NoSuchElementException("Status not found");
-        }
-        logger.info(STATUS_SEARCH_SUCCEED, id);
-        return result.get();
+        });
     }
 
     public void delete(final Status status) {
@@ -62,8 +64,8 @@ public final class StatusService {
 
     Status createStatusWithRequestData(final StatusRequest request) {
         return Status.builder()
-            .withName(request.getName())
-            .build();
+                .withName(request.getName())
+                .build();
     }
 
     public void update(final StatusRequest request, final Status status) {
@@ -81,12 +83,13 @@ public final class StatusService {
     }
 
     public Status findByName(final String name) {
-        Optional<Status> status = statusDao.findByName(name);
-        if (status.isEmpty()) {
-            logger.warn("Status not found with name {}", name);
-            throw new NoSuchElementException("Status Type Not Found");
-        }
-        return status.get();
+        return statusDao.findByName(name).map( status -> {
+            logger.info(STATUS_SEARCH_WITH_NAME_SUCCEED, name);
+            return status;
+        }).orElseThrow(() -> {
+            logger.warn(STATUS_SEARCH_WITH_NAME_FAILURE, name);
+            return new NoSuchElementException("Status Type Not Found");
+        });
     }
 
     public Set<User> findAllUserById(final Long id) {

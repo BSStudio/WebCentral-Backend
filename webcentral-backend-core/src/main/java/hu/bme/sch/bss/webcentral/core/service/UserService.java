@@ -8,7 +8,6 @@ import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -48,7 +47,7 @@ public final class UserService {
 
     public User create(final UserRequest request, final Status status, final Position position) {
         logger.info(USER_CREATE_STARTED, request);
-        User user = User.builder()
+        final User user = User.builder()
             .withDescription(request.getDescription())
             .withEmail(request.getEmail())
             .withFamilyName(request.getFamilyName())
@@ -97,13 +96,13 @@ public final class UserService {
 
     public User findById(final Long id) {
         logger.info(USER_SEARCH_STARTED, id);
-        Optional<User> user = userDao.findById(id);
-        if (user.isEmpty()) {
+        return userDao.findById(id).map(user -> {
+            logger.info(USER_SEARCH_SUCCEED, id);
+            return user;
+        }).orElseThrow(()-> {
             logger.warn(USER_NOT_FOUND, id);
-            throw new NoSuchElementException("User Not Found.");
-        }
-        logger.info(USER_SEARCH_SUCCEED, id);
-        return user.get();
+            return new NoSuchElementException("User Not Found.");
+        });
     }
 
     public List<User> findAll() {

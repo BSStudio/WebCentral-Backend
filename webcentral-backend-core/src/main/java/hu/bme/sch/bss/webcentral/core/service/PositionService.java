@@ -28,11 +28,13 @@ public final class PositionService {
     private static final String POSITION_EDIT_SUCCEED = "Position edit succeed. {}";
     private static final String POSITION_ALL_SEARCH_STARTED = "Search for all position started";
     private static final String POSITION_ALL_SEARCH_SUCCEED = "Search for all position succeed";
+    private static final String POSITION_SEARCH_WITH_NAME_STARTED = "Position search started with name: {}";
+    private static final String POSITION_SEARCH_WITH_NAME_FAILURE = "Position not found with name {}";
 
     private final PositionDao positionDao;
     private final Logger logger;
 
-    public PositionService(final PositionDao positionDao, final Logger logger) {
+    PositionService(final PositionDao positionDao, final Logger logger) {
         this.positionDao = positionDao;
         this.logger = logger;
     }
@@ -47,13 +49,13 @@ public final class PositionService {
 
     public Position findById(final Long id) {
         logger.info(POSITION_SEARCH_STARTED, id);
-        Optional<Position> result = positionDao.findById(id);
-        if (result.isEmpty()) {
+        return positionDao.findById(id).map(position -> {
+            logger.info(POSITION_SEARCH_SUCCEED, id);
+            return position;
+        }).orElseThrow(() -> {
             logger.warn(POSITION_NOT_FOUND, id);
-            throw new NoSuchElementException("Position not found");
-        }
-        logger.info(POSITION_SEARCH_SUCCEED, id);
-        return result.get();
+            return new NoSuchElementException("Position not found");
+        });
     }
 
     public void delete(final Position position) {
@@ -64,8 +66,8 @@ public final class PositionService {
 
     Position createPositionWithRequestData(final PositionRequest request) {
         return Position.builder()
-            .withName(request.getName())
-            .build();
+                .withName(request.getName())
+                .build();
     }
 
     public void update(final PositionRequest request, final Position position) {
@@ -83,12 +85,13 @@ public final class PositionService {
     }
 
     public Position findByName(final String name) {
-        Optional<Position> position = positionDao.findByName(name);
-        if (position.isEmpty()) {
-            logger.warn("Position not found with name {}", name);
-            throw new NoSuchElementException("Position Type Not Found");
-        }
-        return position.get();
+        return positionDao.findByName(name).map(position -> {
+            logger.info(POSITION_SEARCH_WITH_NAME_STARTED);
+            return position;
+        }).orElseThrow(()-> {
+            logger.warn(POSITION_SEARCH_WITH_NAME_FAILURE, name);
+            return new NoSuchElementException("Position Type Not Found");
+        });
     }
 
     public Set<User> findAllUserById(final Long id) {
