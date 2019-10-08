@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotBlank;
 
-@SuppressWarnings("finalclass")
+import lombok.Getter;
+
 @JsonDeserialize(builder = PositionRequest.Builder.class)
 @JsonRootName("position")
-public class PositionRequest {
+@Getter
+public final class PositionRequest {
 
     @NotBlank
     private String name;
@@ -19,10 +21,6 @@ public class PositionRequest {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public String getName() {
-        return name;
     }
 
     @SuppressWarnings("hiddenfield")

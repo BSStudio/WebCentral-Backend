@@ -12,9 +12,9 @@ final class PositionResponseTest {
     private PositionResponse underTest;
 
     @Test
-    void testConstructorAndGetters() {
+    void testConstructor() {
         // GIVEN
-        Position position = Position.builder()
+        final Position position = Position.builder()
             .withName(NAME)
             .build();
 
