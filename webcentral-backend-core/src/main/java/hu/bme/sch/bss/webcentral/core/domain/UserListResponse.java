@@ -1,6 +1,7 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public final class UserListResponse {
         return users;
     }
 
-    public UserListResponse(final Builder builder) {
+    private UserListResponse(final Builder builder) {
         this.users = builder.users;
     }
 

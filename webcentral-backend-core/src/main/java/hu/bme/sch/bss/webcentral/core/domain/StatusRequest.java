@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotBlank;
 
-
 @JsonDeserialize(builder = StatusRequest.Builder.class)
 @JsonRootName("status")
 public final class StatusRequest {

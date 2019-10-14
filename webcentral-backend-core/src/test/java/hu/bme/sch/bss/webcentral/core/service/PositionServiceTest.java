@@ -23,7 +23,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PositionServiceTest {
+final class PositionServiceTest {
 
     private static final long POSITION_ID = 8L;
     private static final String NAME = "name";

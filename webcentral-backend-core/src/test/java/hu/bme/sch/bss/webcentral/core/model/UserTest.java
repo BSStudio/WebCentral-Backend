@@ -1,8 +1,6 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
+import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -15,9 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.MockitoAnnotations.initMocks;
 
-public class UserTest {
+final class UserTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();
@@ -31,7 +28,6 @@ public class UserTest {
     private static final String IMAGE_URI = "image/uri.png";
     private static final String STATUS = "status";
     private static final String POSITION = "position";
-
 
     private static final Boolean OTHER_ARCHIVED = true;
     private static final String OTHER_NICKNAME = "other nickname";
@@ -55,7 +51,7 @@ public class UserTest {
         .build();
 
     @Test
-    public void testConstructorAndGetters() {
+    void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
@@ -75,7 +71,7 @@ public class UserTest {
     }
 
     @Test
-    public void testNoArgConstructor() {
+    void testNoArgConstructor() {
         // GIVEN
 
         // WHEN
@@ -98,7 +94,7 @@ public class UserTest {
     }
 
     @Test
-    public void testEqualsAndHash() {
+    void testEqualsAndHash() {
         // GIVEN
         User.Builder builder = getDefaultValuesBuilder();
 
@@ -119,7 +115,7 @@ public class UserTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -132,7 +128,7 @@ public class UserTest {
 
 
     @Test
-    public void testValidationShouldFailForMissingNickname() {
+    void testValidationShouldFailForMissingNickname() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .withNickname("")
@@ -146,7 +142,7 @@ public class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingGivenName() {
+    void testValidationShouldFailForMissingGivenName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .withGivenName("")
@@ -160,7 +156,7 @@ public class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingFamilyName() {
+    void testValidationShouldFailForMissingFamilyName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .withFamilyName("")
@@ -174,7 +170,7 @@ public class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForNotWellFormedEmailAddress() {
+    void testValidationShouldFailForNotWellFormedEmailAddress() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .withEmail("asd")
@@ -189,7 +185,7 @@ public class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForNullEmail() {
+    void testValidationShouldFailForNullEmail() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .withEmail(null)
@@ -204,7 +200,7 @@ public class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForBlankEmail() {
+    void testValidationShouldFailForBlankEmail() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .withEmail("")
@@ -219,7 +215,7 @@ public class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingDescription() {
+    void testValidationShouldFailForMissingDescription() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .withDescription("")
@@ -234,7 +230,7 @@ public class UserTest {
 
 
     @Test
-    public void testSetArchived() {
+    void testSetArchived() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -258,7 +254,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetNickname() {
+    void testSetNickname() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -281,7 +277,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetGivenName() {
+    void testSetGivenName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -304,7 +300,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetFamilyName() {
+    void testSetFamilyName() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -327,7 +323,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetEmail() {
+    void testSetEmail() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -350,7 +346,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetDescription() {
+    void testSetDescription() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -373,7 +369,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetImageUri() {
+    void testSetImageUri() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -396,7 +392,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetStatus() {
+    void testSetStatus() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();
@@ -423,7 +419,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetPosition() {
+    void testSetPosition() {
         // GIVEN
         underTest = getDefaultValuesBuilder()
             .build();

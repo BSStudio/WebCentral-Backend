@@ -24,7 +24,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-class UserServiceTest {
+final class UserServiceTest {
 
     private static final Long USER_ID = 16L;
 
@@ -34,6 +34,8 @@ class UserServiceTest {
     private static final String EMAIL = "email@email.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "/images/profile.png";
+    private static final Position POSITION;
+    private static final Status STATUS;
 
     private static final String OTHER_NICKNAME = "other nickname";
     private static final String OTHER_GIVEN_NAME = "other GivenName";
@@ -42,18 +44,23 @@ class UserServiceTest {
     private static final String OTHER_DESCRIPTION = "other description";
     private static final String OTHER_IMAGE_URI = "other/images/profile.png";
 
+    static {
+        POSITION = Position.builder()
+                .withName("position")
+                .build();
+        STATUS = Status.builder()
+                .withName("status")
+                .build();
+    }
+
     @Mock
     private UserDao mockUserDao;
     @Mock
     private Logger mockLogger;
-    @Mock
-    private UserRequest mockUserRequest;
 
+    private UserRequest userRequest;
     private User user;
-    @Mock
-    private Position mockPosition;
-    @Mock
-    private Status mockStatus;
+    private User userResult;
 
     private UserService underTest;
 
@@ -62,23 +69,41 @@ class UserServiceTest {
         initMocks(this);
         underTest = new UserService(mockUserDao, mockLogger);
 
-        given(mockUserRequest.getNickname()).willReturn(NICKNAME);
-        given(mockUserRequest.getGivenName()).willReturn(GIVEN_NAME);
-        given(mockUserRequest.getFamilyName()).willReturn(FAMILY_NAME);
-        given(mockUserRequest.getEmail()).willReturn(EMAIL);
-        given(mockUserRequest.getDescription()).willReturn(DESCRIPTION);
-        given(mockUserRequest.getImageUri()).willReturn(IMAGE_URI);
+        userRequest = UserRequest.builder()
+                .withNickname(NICKNAME)
+                .withGivenName(GIVEN_NAME)
+                .withFamilyName(FAMILY_NAME)
+                .withEmail(EMAIL)
+                .withDescription(DESCRIPTION)
+                .withImageUri(IMAGE_URI)
+                .withStatus(STATUS)
+                .withPosition(POSITION)
+                .build();
 
         user = User.builder()
-            .withNickname(NICKNAME)
-            .withGivenName(GIVEN_NAME)
-            .withFamilyName(FAMILY_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .withStatus(mockStatus)
-            .withPosition(mockPosition)
-            .build();
+                .withNickname(NICKNAME)
+                .withGivenName(GIVEN_NAME)
+                .withFamilyName(FAMILY_NAME)
+                .withEmail(EMAIL)
+                .withDescription(DESCRIPTION)
+                .withImageUri(IMAGE_URI)
+                .withStatus(STATUS)
+                .withPosition(POSITION)
+                .build();
+
+        userResult = User.builder()
+                .withId(USER_ID)
+                .withNickname(NICKNAME)
+                .withGivenName(GIVEN_NAME)
+                .withFamilyName(FAMILY_NAME)
+                .withEmail(EMAIL)
+                .withDescription(DESCRIPTION)
+                .withImageUri(IMAGE_URI)
+                .withStatus(STATUS)
+                .withPosition(POSITION)
+                .build();
+
+        given(mockUserDao.save(user)).willReturn(userResult);
     }
 
     @Test
@@ -86,21 +111,21 @@ class UserServiceTest {
         // GIVEN
 
         // WHEN
-        User result = underTest.create(mockUserRequest, mockStatus, mockPosition);
+        final User result = underTest.create(userRequest, STATUS, POSITION);
 
         // THEN
         then(mockUserDao).should().save(user);
 
-
         assertAll(
-            () -> assertEquals(NICKNAME, result.getNickname()),
-            () -> assertEquals(GIVEN_NAME, result.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, result.getFamilyName()),
-            () -> assertEquals(EMAIL, result.getEmail()),
-            () -> assertEquals(DESCRIPTION, result.getDescription()),
-            () -> assertEquals(IMAGE_URI, result.getImageUri()),
-            () -> assertEquals(mockStatus, result.getStatus()),
-            () -> assertEquals(mockPosition, result.getPosition())
+                () -> assertEquals(USER_ID, result.getId()),
+                () -> assertEquals(NICKNAME, result.getNickname()),
+                () -> assertEquals(GIVEN_NAME, result.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, result.getFamilyName()),
+                () -> assertEquals(EMAIL, result.getEmail()),
+                () -> assertEquals(DESCRIPTION, result.getDescription()),
+                () -> assertEquals(IMAGE_URI, result.getImageUri()),
+                () -> assertEquals(STATUS, result.getStatus()),
+                () -> assertEquals(POSITION, result.getPosition())
         );
     }
 
@@ -110,12 +135,12 @@ class UserServiceTest {
         List<User> userList = new ArrayList<>();
 
         User user2 = User.builder()
-            .build();
+                .build();
 
         userList.add(user);
         userList.add(user2);
 
-        given(mockUserDao.findAll()).willReturn(userList);
+        given(mockUserDao.findAllNotArchived()).willReturn(userList);
 
         // WHEN
         List<User> result = underTest.findAll();
@@ -130,7 +155,7 @@ class UserServiceTest {
         List<User> archivedList = new ArrayList<>();
 
         User user2 = User.builder()
-            .build();
+                .build();
 
         archivedList.add(user);
         archivedList.add(user2);
@@ -148,7 +173,7 @@ class UserServiceTest {
     void testFindById() {
         // GIVEN setup
         User user = User.builder()
-            .build();
+                .build();
 
         given(mockUserDao.findById(USER_ID)).willReturn(Optional.of(user));
 
@@ -179,34 +204,30 @@ class UserServiceTest {
     @Test
     void testUpdate() {
         // GIVEN setup
-        given(mockUserRequest.getNickname()).willReturn(OTHER_NICKNAME);
-        given(mockUserRequest.getGivenName()).willReturn(OTHER_GIVEN_NAME);
-        given(mockUserRequest.getFamilyName()).willReturn(OTHER_FAMILY_NAME);
-        given(mockUserRequest.getEmail()).willReturn(OTHER_EMAIL);
-        given(mockUserRequest.getDescription()).willReturn(OTHER_DESCRIPTION);
-        given(mockUserRequest.getImageUri()).willReturn(OTHER_IMAGE_URI);
-
+        userRequest = UserRequest.builder()
+                .withNickname(OTHER_NICKNAME)
+                .withGivenName(OTHER_GIVEN_NAME)
+                .withFamilyName(OTHER_FAMILY_NAME)
+                .withEmail(OTHER_EMAIL)
+                .withDescription(OTHER_DESCRIPTION)
+                .withImageUri(OTHER_IMAGE_URI)
+                .withStatus(STATUS)
+                .withPosition(POSITION)
+                .build();
 
         // WHEN
-        underTest.update(mockUserRequest, user);
+        underTest.update(userRequest, user);
 
         // THEN
-        then(mockUserRequest).should().getNickname();
-        then(mockUserRequest).should().getGivenName();
-        then(mockUserRequest).should().getFamilyName();
-        then(mockUserRequest).should().getEmail();
-        then(mockUserRequest).should().getDescription();
-        then(mockUserRequest).should().getImageUri();
-
-        assertAll(
-            () -> assertEquals(OTHER_NICKNAME, user.getNickname()),
-            () -> assertEquals(OTHER_GIVEN_NAME, user.getGivenName()),
-            () -> assertEquals(OTHER_FAMILY_NAME, user.getFamilyName()),
-            () -> assertEquals(OTHER_EMAIL, user.getEmail()),
-            () -> assertEquals(OTHER_DESCRIPTION, user.getDescription()),
-            () -> assertEquals(OTHER_IMAGE_URI, user.getImageUri())
-        );
         then(mockUserDao).should().save(user);
+        assertAll(
+                () -> assertEquals(OTHER_NICKNAME, user.getNickname()),
+                () -> assertEquals(OTHER_GIVEN_NAME, user.getGivenName()),
+                () -> assertEquals(OTHER_FAMILY_NAME, user.getFamilyName()),
+                () -> assertEquals(OTHER_EMAIL, user.getEmail()),
+                () -> assertEquals(OTHER_DESCRIPTION, user.getDescription()),
+                () -> assertEquals(OTHER_IMAGE_URI, user.getImageUri())
+        );
     }
 
     @Test
@@ -249,10 +270,10 @@ class UserServiceTest {
         // GIVEN
 
         // WHEN
-        underTest.updateUserStatus(user, mockStatus);
+        underTest.updateUserStatus(user, STATUS);
 
         // THEN
-        assertEquals(user.getStatus(), mockStatus);
+        assertEquals(user.getStatus(), STATUS);
         then(mockUserDao).should().save(user);
     }
 
@@ -261,10 +282,11 @@ class UserServiceTest {
         // GIVEN
 
         // WHEN
-        underTest.updateUserPosition(user, mockPosition);
+        underTest.updateUserPosition(user, POSITION);
 
         // THEN
-        assertEquals(user.getPosition(), mockPosition);
+        assertEquals(user.getPosition(), POSITION);
         then(mockUserDao).should().save(user);
     }
+
 }

@@ -22,14 +22,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-class UserControllerTest {
+final class UserControllerTest {
 
     private static final Long USER_ID = 16L;
     private static final String NICKNAME = "nickname";

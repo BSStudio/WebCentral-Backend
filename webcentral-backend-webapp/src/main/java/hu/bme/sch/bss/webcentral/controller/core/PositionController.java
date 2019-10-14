@@ -1,5 +1,9 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FOUND;
+import static org.springframework.http.HttpStatus.OK;
+
 import hu.bme.sch.bss.webcentral.core.domain.PositionListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
@@ -12,7 +16,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,46 +39,46 @@ public class PositionController {
     private final PositionService positionService;
     private final Logger logger;
 
-    public PositionController(final PositionService userService, final Logger logger) {
+    PositionController(final PositionService userService, final Logger logger) {
         this.positionService = userService;
         this.logger = logger;
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     public final PositionResponse createUser(@Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_CREATE, request);
-        Position result = positionService.create(request);
+        final Position result = positionService.create(request);
         return new PositionResponse(result);
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final PositionResponse getPosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_SEARCH, id);
-        Position result = positionService.findById(id);
+        final Position result = positionService.findById(id);
         return new PositionResponse(result);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final void deletePosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_DELETE, id);
-        Position position = positionService.findById(id);
+        final Position position = positionService.findById(id);
         positionService.delete(position);
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     public final PositionResponse updatePosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_EDIT, id);
-        Position position = positionService.findById(id);
+        final Position position = positionService.findById(id);
         positionService.update(request, position);
         return new PositionResponse(position);
     }
 
     @GetMapping("/all")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(FOUND)
     public final PositionListResponse listAllPositions() {
         logger.info(REQUEST_POSITION_LIST);
         ArrayList<Position> positions = new ArrayList<>(positionService.findAll());

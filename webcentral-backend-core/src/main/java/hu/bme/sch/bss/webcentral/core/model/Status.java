@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;

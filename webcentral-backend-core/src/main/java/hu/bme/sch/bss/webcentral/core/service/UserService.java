@@ -57,12 +57,12 @@ public final class UserService {
             .withStatus(status)
             .withPosition(position)
             .build();
-        userDao.save(user);
+        final User userResult = userDao.save(user);
         logger.info(USER_CREATE_SUCCEED, user);
-        return user;
+        return userResult;
     }
 
-    public void update(final UserRequest request, final User user) {
+    public User update(final UserRequest request, final User user) {
         logger.info(USER_UPDATE_STARTED, user);
         user.setNickname(request.getNickname());
         user.setGivenName(request.getGivenName());
@@ -70,8 +70,9 @@ public final class UserService {
         user.setEmail(request.getEmail());
         user.setDescription(request.getDescription());
         user.setImageUri(request.getImageUri());
-        userDao.save(user);
+        final User result = userDao.save(user);
         logger.info(USER_UPDATE_SUCCEED, user);
+        return result;
     }
 
     public void archive(final User user) {

@@ -1,52 +1,55 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import hu.bme.sch.bss.webcentral.core.model.Position;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+final class PositionListResponseTest {
 
-public class PositionListResponseTest {
+    private Position position1;
+    private Position position2;
+
+    private PositionListResponse underTest;
+
+    @BeforeEach
+    void initTests() {
+        position1 = Position.builder().build();
+        position2 = Position.builder().build();
+    }
+
     @Test
     void testBuilderWithList() {
         //GIVEN
-        List<Position> PositionList = new ArrayList<>();
-
-        Position Position1 = Position.builder().build();
-        Position Position2 = Position.builder().build();
-
-        PositionList.add(Position1);
-        PositionList.add(Position2);
+        final List<Position> positionList = List.of(position1, position2);
 
         //WHEN
-        PositionListResponse response = PositionListResponse.builder()
-            .withPositions(PositionList)
+        underTest = PositionListResponse.builder()
+            .withPositions(positionList)
             .build();
 
         //THEN
-        assertEquals(PositionList, Arrays.asList(response.getPositions()));
+        assertEquals(positionList, Arrays.asList(underTest.getPositions()));
     }
 
     @Test
     void testBuilderWithArray() {
         //GIVEN
-        Position[] PositionList = new Position[2];
-
-        Position Position1 = Position.builder().build();
-        Position Position2 = Position.builder().build();
-
-        PositionList[0] = Position1;
-        PositionList[1] = Position2;
+        final Position[] positionList = new Position[2];
+        positionList[0] = position1;
+        positionList[1] = position2;
 
         //WHEN
-        PositionListResponse response = PositionListResponse.builder()
-            .withPositions(PositionList)
+        underTest = PositionListResponse.builder()
+            .withPositions(positionList)
             .build();
 
         //THEN
-        assertEquals(PositionList, response.getPositions());
+        assertEquals(positionList, underTest.getPositions());
     }
 }

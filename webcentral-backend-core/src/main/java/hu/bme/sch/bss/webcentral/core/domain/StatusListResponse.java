@@ -1,6 +1,7 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public final class StatusListResponse {
         return statuses;
     }
 
-    public StatusListResponse(final Builder builder) {
+    private StatusListResponse(final Builder builder) {
         this.statuses = builder.statuses;
     }
 

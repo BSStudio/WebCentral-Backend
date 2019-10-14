@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface StatusDao extends JpaRepository<Status, Long> {
+
     String FIND_BY_NAME_QUERY = "SELECT status FROM Status status WHERE status.name = :name";
 
     @Query(FIND_BY_NAME_QUERY)

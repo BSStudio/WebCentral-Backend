@@ -10,7 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class UserResponseTest {
+//TODO
+final class UserResponseTest {
 
     private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
@@ -29,15 +30,16 @@ class UserResponseTest {
         Status mockStatus = mock(Status.class);
         Position mockPosition = mock(Position.class);
         User actual = User.builder()
-            .withNickname(NICKNAME)
-            .withGivenName(GIVEN_NAME)
-            .withFamilyName(FAMILY_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .withStatus(mockStatus)
-            .withPosition(mockPosition)
-            .build();
+                .withArchived(ARCHIVED)
+                .withNickname(NICKNAME)
+                .withGivenName(GIVEN_NAME)
+                .withFamilyName(FAMILY_NAME)
+                .withEmail(EMAIL)
+                .withDescription(DESCRIPTION)
+                .withImageUri(IMAGE_URI)
+                .withStatus(mockStatus)
+                .withPosition(mockPosition)
+                .build();
         given(mockStatus.getName()).willReturn(STATUS);
         given(mockPosition.getName()).willReturn(POSITION);
 
@@ -46,16 +48,17 @@ class UserResponseTest {
 
         // THEN
         assertAll(
-            () -> assertEquals(actual.getId(), response.getId()),
-            () -> assertEquals(actual.getArchived(), response.getArchived()),
-            () -> assertEquals(actual.getNickname(), response.getNickname()),
-            () -> assertEquals(actual.getGivenName(), response.getGivenName()),
-            () -> assertEquals(actual.getFamilyName(), response.getFamilyName()),
-            () -> assertEquals(actual.getEmail(), response.getEmail()),
-            () -> assertEquals(actual.getDescription(), response.getDescription()),
-            () -> assertEquals(actual.getImageUri(), response.getImageUri()),
-            () -> assertEquals(actual.getStatus().getName(), response.getStatus()),
-            () -> assertEquals(actual.getPosition().getName(), response.getPosition())
+                () -> assertEquals(actual.getId(), response.getId()),
+                () -> assertEquals(actual.getArchived(), response.getArchived()),
+                () -> assertEquals(actual.getNickname(), response.getNickname()),
+                () -> assertEquals(actual.getGivenName(), response.getGivenName()),
+                () -> assertEquals(actual.getFamilyName(), response.getFamilyName()),
+                () -> assertEquals(actual.getEmail(), response.getEmail()),
+                () -> assertEquals(actual.getDescription(), response.getDescription()),
+                () -> assertEquals(actual.getImageUri(), response.getImageUri()),
+                () -> assertEquals(actual.getStatus().getName(), response.getStatus()),
+                () -> assertEquals(actual.getPosition().getName(), response.getPosition())
         );
     }
+
 }

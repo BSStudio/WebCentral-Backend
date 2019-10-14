@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface PositionDao extends JpaRepository<Position, Long> {
+
     String FIND_BY_NAME_QUERY = "SELECT position FROM Position position WHERE position.name = :name";
 
     @Query(FIND_BY_NAME_QUERY)

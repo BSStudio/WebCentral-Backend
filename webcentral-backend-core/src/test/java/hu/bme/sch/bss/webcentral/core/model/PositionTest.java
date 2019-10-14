@@ -1,6 +1,7 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class PositionTest {
+final class PositionTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();
@@ -27,11 +28,12 @@ public class PositionTest {
     private Position underTest;
 
     @Test
-    public void testConstructorAndGetters() {
+    void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
-        underTest = getDefaultValuesBuilder()
+        underTest = Position.builder()
+                .withName(NAME)
             .build();
 
         // THEN
@@ -39,7 +41,7 @@ public class PositionTest {
     }
 
     @Test
-    public void testNoArgConstructor() {
+    void testNoArgConstructor() {
         // GIVEN
 
         // WHEN
@@ -51,13 +53,16 @@ public class PositionTest {
     }
 
     @Test
-    public void testEqualsAndHash() {
+    void testEqualsAndHash() {
         // GIVEN
-        Position.Builder builder = getDefaultValuesBuilder();
+        Position.Builder builder = Position.builder()
+                .withName(NAME);
 
         // WHEN
-        Position validPosition1 = getDefaultValuesBuilder().build();
-        Position validPosition2 = getDefaultValuesBuilder().build();
+        Position validPosition1 = Position.builder()
+                .withName(NAME).build();
+        Position validPosition2 = Position.builder()
+                .withName(NAME).build();
         Position invalidPosition = builder
             .withName("something else")
             .build();
@@ -73,9 +78,10 @@ public class PositionTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
+        underTest = Position.builder()
+                .withName(NAME)
             .build();
 
         // WHEN
@@ -85,7 +91,7 @@ public class PositionTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingName() {
+    void testValidationShouldFailForMissingName() {
         // GIVEN
         underTest = Position.builder()
             .build();
@@ -98,9 +104,10 @@ public class PositionTest {
     }
 
     @Test
-    public void testSetName() {
+    void testSetName() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
+        underTest = Position.builder()
+                .withName(NAME)
             .build();
 
         // WHEN
@@ -108,11 +115,6 @@ public class PositionTest {
 
         // THEN
         assertEquals(OTHER_NAME, underTest.getName());
-    }
-
-    private Position.Builder getDefaultValuesBuilder() {
-        return Position.builder()
-            .withName(NAME);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<Position>> violations,

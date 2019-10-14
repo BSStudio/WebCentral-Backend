@@ -2,6 +2,7 @@ package hu.bme.sch.bss.webcentral.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Objects;
@@ -17,7 +18,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 
 @JsonSerialize
 @JsonDeserialize(builder = User.Builder.class)
@@ -72,7 +72,8 @@ public final class User extends DomainAuditModel {
     }
 
     public User(final Builder builder) {
-        this.archived = false;
+        this.id = builder.id;
+        this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
         this.familyName = builder.familyName;
@@ -175,15 +176,15 @@ public final class User extends DomainAuditModel {
         }
         User user = (User) o;
         return Objects.equals(id, user.id)
-            && Objects.equals(archived, user.archived)
-            && Objects.equals(nickname, user.nickname)
-            && Objects.equals(givenName, user.givenName)
-            && Objects.equals(familyName, user.familyName)
-            && Objects.equals(email, user.email)
-            && Objects.equals(description, user.description)
-            && Objects.equals(imageUri, user.imageUri)
-            && Objects.equals(status, user.status)
-            && Objects.equals(position, user.position);
+                && Objects.equals(archived, user.archived)
+                && Objects.equals(nickname, user.nickname)
+                && Objects.equals(givenName, user.givenName)
+                && Objects.equals(familyName, user.familyName)
+                && Objects.equals(email, user.email)
+                && Objects.equals(description, user.description)
+                && Objects.equals(imageUri, user.imageUri)
+                && Objects.equals(status, user.status)
+                && Objects.equals(position, user.position);
     }
 
     @Override
@@ -194,17 +195,17 @@ public final class User extends DomainAuditModel {
     @Override
     public String toString() {
         return "User{"
-            + "id=" + id
-            + ", archived=" + archived
-            + ", nickname='" + nickname + '\''
-            + ", givenName='" + givenName + '\''
-            + ", familyName='" + familyName + '\''
-            + ", email='" + email + '\''
-            + ", description='" + description + '\''
-            + ", imageUri='" + imageUri + '\''
-            + ", status=" + status
-            + ", position=" + position
-            + '}';
+                + "id=" + id
+                + ", archived=" + archived
+                + ", nickname='" + nickname + '\''
+                + ", givenName='" + givenName + '\''
+                + ", familyName='" + familyName + '\''
+                + ", email='" + email + '\''
+                + ", description='" + description + '\''
+                + ", imageUri='" + imageUri + '\''
+                + ", status=" + status
+                + ", position=" + position
+                + '}';
     }
 
     // Generated code ends here
@@ -212,6 +213,8 @@ public final class User extends DomainAuditModel {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
+        private Long id;
+        private Boolean archived = false;
         private String nickname;
         private String givenName;
         private String familyName;
@@ -220,6 +223,16 @@ public final class User extends DomainAuditModel {
         private String imageUri;
         private Status status;
         private Position position;
+
+        public Builder withId(final Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withArchived(final Boolean archived) {
+            this.archived = archived;
+            return this;
+        }
 
         public Builder withNickname(final String nickname) {
             this.nickname = nickname;
@@ -264,5 +277,7 @@ public final class User extends DomainAuditModel {
         public User build() {
             return new User(this);
         }
+
     }
+
 }

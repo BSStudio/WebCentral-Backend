@@ -2,6 +2,8 @@ package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -35,10 +37,10 @@ public final class UserRequest {
     private final String imageUri;
 
     @NotNull
-    private final StatusRequest status;
+    private final Status status;
 
     @NotNull
-    private final PositionRequest position;
+    private final Position position;
 
     private UserRequest(final Builder builder) {
         this.archived = builder.archived;
@@ -84,11 +86,11 @@ public final class UserRequest {
         return imageUri;
     }
 
-    public StatusRequest getStatusRequest() {
+    public Status getStatus() {
         return status;
     }
 
-    public PositionRequest getPositionRequest() {
+    public Position getPosition() {
         return position;
     }
 
@@ -102,8 +104,8 @@ public final class UserRequest {
         private String email;
         private String description;
         private String imageUri;
-        private StatusRequest status;
-        private PositionRequest position;
+        private Status status;
+        private Position position;
 
         public Builder withArchived(final Boolean archived) {
             this.archived = archived;
@@ -140,12 +142,12 @@ public final class UserRequest {
             return this;
         }
 
-        public Builder withStatus(final StatusRequest status) {
+        public Builder withStatus(final Status status) {
             this.status = status;
             return this;
         }
 
-        public Builder withPosition(final PositionRequest position) {
+        public Builder withPosition(final Position position) {
             this.position = position;
             return this;
         }

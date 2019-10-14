@@ -1,6 +1,7 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.model.Position;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public final class PositionListResponse {
         return position;
     }
 
-    public PositionListResponse(final Builder builder) {
+    private PositionListResponse(final Builder builder) {
         this.position = builder.position;
     }
 

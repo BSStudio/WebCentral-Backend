@@ -1,6 +1,6 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StatusTest {
+final class StatusTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();
 
@@ -26,11 +26,12 @@ public class StatusTest {
     private Status underTest;
 
     @Test
-    public void testConstructorAndGetters() {
+    void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
-        underTest = getDefaultValuesBuilder()
+        underTest = Status.builder()
+                .withName(NAME)
             .build();
 
         // THEN
@@ -38,7 +39,7 @@ public class StatusTest {
     }
 
     @Test
-    public void testNoArgConstructor() {
+    void testNoArgConstructor() {
         // GIVEN
 
         // WHEN
@@ -50,13 +51,16 @@ public class StatusTest {
     }
 
     @Test
-    public void testEqualsAndHash() {
+    void testEqualsAndHash() {
         // GIVEN
-        Status.Builder builder = getDefaultValuesBuilder();
+        Status.Builder builder = Status.builder()
+                .withName(NAME);
 
         // WHEN
-        Status validStatus1 = getDefaultValuesBuilder().build();
-        Status validStatus2 = getDefaultValuesBuilder().build();
+        Status validStatus1 = Status.builder()
+                .withName(NAME).build();
+        Status validStatus2 = Status.builder()
+                .withName(NAME).build();
         Status invalidStatus = builder
             .withName("something else")
             .build();
@@ -72,9 +76,10 @@ public class StatusTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
+        underTest = Status.builder()
+                .withName(NAME)
             .build();
 
         // WHEN
@@ -84,7 +89,7 @@ public class StatusTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingName() {
+    void testValidationShouldFailForMissingName() {
         // GIVEN
         underTest = Status.builder()
             .build();
@@ -97,9 +102,10 @@ public class StatusTest {
     }
 
     @Test
-    public void testSetName() {
+    void testSetName() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
+        underTest = Status.builder()
+                .withName(NAME)
             .build();
 
         // WHEN
@@ -107,11 +113,6 @@ public class StatusTest {
 
         // THEN
         assertEquals(OTHER_NAME, underTest.getName());
-    }
-
-    private Status.Builder getDefaultValuesBuilder() {
-        return Status.builder()
-            .withName(NAME);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<Status>> violations,

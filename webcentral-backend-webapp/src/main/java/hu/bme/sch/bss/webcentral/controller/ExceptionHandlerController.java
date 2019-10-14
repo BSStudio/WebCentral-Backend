@@ -18,7 +18,7 @@ public final class ExceptionHandlerController {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ErrorDetails> noSuchElementExceptionHandler(final Exception exception, final HttpServletRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(
+        final ErrorDetails errorDetails = new ErrorDetails(
                 new Date(),
                 HttpStatus.NOT_FOUND,
                 exception.getMessage(),

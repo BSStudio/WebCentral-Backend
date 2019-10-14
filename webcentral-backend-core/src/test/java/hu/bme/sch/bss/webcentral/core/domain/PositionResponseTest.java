@@ -1,11 +1,12 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
-import hu.bme.sch.bss.webcentral.core.model.Position;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PositionResponseTest {
+import hu.bme.sch.bss.webcentral.core.model.Position;
+
+import org.junit.jupiter.api.Test;
+
+final class PositionResponseTest {
 
     private static final String NAME = "name";
 
@@ -14,7 +15,7 @@ public class PositionResponseTest {
     @Test
     void testConstructorAndGetters() {
         // GIVEN
-        Position position = Position.builder()
+        final Position position = Position.builder()
             .withName(NAME)
             .build();
 
