@@ -19,7 +19,7 @@ public interface UserDao extends JpaRepository<User, Long> {
 
     @Nullable
     @Query(LIST_NOT_ARCHIVED_QUERY)
-    List<User> findAll();
+    List<User> findAllNotArchived();
 
     @Nullable
     @Query(LIST_ARCHIVED_QUERY)

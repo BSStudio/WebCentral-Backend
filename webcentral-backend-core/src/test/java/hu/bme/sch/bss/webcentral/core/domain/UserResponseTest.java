@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class UserResponseTest {
+final class UserResponseTest {
 
     private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";

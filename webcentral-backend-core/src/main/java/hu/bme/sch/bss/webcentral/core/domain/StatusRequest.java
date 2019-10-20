@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotBlank;
 
+import lombok.Getter;
 
 @JsonDeserialize(builder = StatusRequest.Builder.class)
 @JsonRootName("status")
+@Getter
 public final class StatusRequest {
 
     @NotBlank
@@ -19,10 +21,6 @@ public final class StatusRequest {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public String getName() {
-        return name;
     }
 
     @SuppressWarnings("hiddenfield")

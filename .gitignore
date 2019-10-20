@@ -4,6 +4,7 @@ target
 
 ### IntelliJ IDEA ###
 .idea
+!.idea/runConfigurations/*.xml
 *.iws
 *.iml
 *.ipr

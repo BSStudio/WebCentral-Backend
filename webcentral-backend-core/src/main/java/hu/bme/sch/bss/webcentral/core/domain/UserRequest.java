@@ -7,9 +7,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
 
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
+@Getter
 public final class UserRequest {
 
     @NotNull
@@ -34,12 +36,6 @@ public final class UserRequest {
     @NotBlank
     private final String imageUri;
 
-    @NotBlank
-    private final String status;
-
-    @NotBlank
-    private final String position;
-
     private UserRequest(final Builder builder) {
         this.archived = builder.archived;
         this.nickname = builder.nickname;
@@ -48,48 +44,10 @@ public final class UserRequest {
         this.email = builder.email;
         this.description = builder.description;
         this.imageUri = builder.imageUri;
-        this.status = builder.status;
-        this.position = builder.position;
     }
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public String getStatusName() {
-        return status;
-    }
-
-    public String getPositionName() {
-        return position;
     }
 
     @SuppressWarnings("hiddenfield")
@@ -102,8 +60,6 @@ public final class UserRequest {
         private String email;
         private String description;
         private String imageUri;
-        private String status;
-        private String position;
 
         public Builder withArchived(final Boolean archived) {
             this.archived = archived;
@@ -137,16 +93,6 @@ public final class UserRequest {
 
         public Builder withImageUri(final String imageUri) {
             this.imageUri = imageUri;
-            return this;
-        }
-
-        public Builder withStatus(final String status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder withPosition(final String position) {
-            this.position = position;
             return this;
         }
 

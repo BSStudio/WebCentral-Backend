@@ -6,13 +6,13 @@ import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
 public final class StatusService {
+
     private static final String STATUS_CREATE_STARTED = "Status creation started. {}";
     private static final String STATUS_CREATE_SUCCEED = "Status creation succeed. {}";
     private static final String STATUS_SEARCH_STARTED = "Status search started {}";
@@ -28,14 +28,14 @@ public final class StatusService {
     private final StatusDao statusDao;
     private final Logger logger;
 
-    public StatusService(final StatusDao statusDao, final Logger logger) {
+    StatusService(final StatusDao statusDao, final Logger logger) {
         this.statusDao = statusDao;
         this.logger = logger;
     }
 
     public Status create(final StatusRequest request) {
         logger.info(STATUS_CREATE_STARTED, request);
-        Status status = createStatusWithRequestData(request);
+        final Status status = createStatusWithRequestData(request);
         statusDao.save(status);
         logger.info(STATUS_CREATE_SUCCEED, request);
         return status;
@@ -43,13 +43,13 @@ public final class StatusService {
 
     public Status findById(final Long id) {
         logger.info(STATUS_SEARCH_STARTED, id);
-        Optional<Status> result = statusDao.findById(id);
-        if (result.isEmpty()) {
+        return statusDao.findById(id).map(status -> {
+            logger.info(STATUS_SEARCH_SUCCEED, id);
+            return status;
+        }).orElseThrow(() -> {
             logger.warn(STATUS_NOT_FOUND, id);
             throw new NoSuchElementException("Status not found");
-        }
-        logger.info(STATUS_SEARCH_SUCCEED, id);
-        return result.get();
+        });
     }
 
     public void delete(final Status status) {
@@ -60,30 +60,21 @@ public final class StatusService {
 
     Status createStatusWithRequestData(final StatusRequest request) {
         return Status.builder()
-            .withName(request.getName())
-            .build();
+                .withName(request.getName())
+                .build();
     }
 
     public void update(final StatusRequest request, final Status status) {
         logger.info(STATUS_EDIT_STARTED, request);
         status.setName(request.getName());
-        statusDao.save(status);
         logger.info(STATUS_EDIT_SUCCEED, request);
     }
 
     public List<Status> findAll() {
         logger.info(STATUSES_ALL_SEARCH_STARTED);
-        List<Status> statusList = statusDao.findAll();
+        final List<Status> statusList = statusDao.findAll();
         logger.info(STATUSES_ALL_SEARCH_SUCCEED);
         return statusList;
     }
 
-    public Status findByName(final String name) {
-        Optional<Status> status = statusDao.findByName(name);
-        if (status.isEmpty()) {
-            logger.warn("Status not found with name {}", name);
-            throw new NoSuchElementException("Status Type Not Found");
-        }
-        return status.get();
-    }
 }
