@@ -22,7 +22,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-class UserControllerTest {
+final class UserControllerTest {
 
     private static final Long USER_ID = 16L;
     private static final String NICKNAME = "nickname";

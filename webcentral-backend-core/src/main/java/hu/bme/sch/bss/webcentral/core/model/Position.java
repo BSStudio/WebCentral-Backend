@@ -35,7 +35,6 @@ import lombok.Setter;
     private Long id;
 
     @NotBlank
-    @Setter
     private String name;
 
     @OneToMany

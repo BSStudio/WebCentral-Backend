@@ -5,16 +5,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PositionResponseTest {
+final class PositionResponseTest {
 
     private static final String NAME = "name";
 
     private PositionResponse underTest;
 
     @Test
-    void testConstructorAndGetters() {
+    void testConstructor() {
         // GIVEN
-        Position position = Position.builder()
+        final Position position = Position.builder()
             .withName(NAME)
             .build();
 

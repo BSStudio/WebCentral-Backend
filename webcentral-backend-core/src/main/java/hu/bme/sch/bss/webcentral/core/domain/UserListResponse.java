@@ -1,21 +1,21 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
 import java.util.Set;
 
+import lombok.Getter;
+
 @JsonSerialize
+@Getter
 public final class UserListResponse {
 
     private final User[] users;
 
-    public User[] getUsers() {
-        return users;
-    }
-
-    public UserListResponse(final Builder builder) {
+    private UserListResponse(final Builder builder) {
         this.users = builder.users;
     }
 
@@ -49,4 +49,5 @@ public final class UserListResponse {
         }
 
     }
+
 }

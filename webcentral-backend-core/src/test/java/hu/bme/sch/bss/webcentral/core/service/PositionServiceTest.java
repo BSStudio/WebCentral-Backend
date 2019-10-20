@@ -20,24 +20,22 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PositionServiceTest {
+final class PositionServiceTest {
 
     private static final long POSITION_ID = 8L;
     private static final String NAME = "name";
 
-    private static final String OTHER_NAME = "name";
+    private static final String OTHER_NAME = "other name";
 
-    @Mock
-    private PositionRequest mockPositionRequest;
     @Mock
     private Logger mockLogger;
     @Mock
     private PositionDao mockPositionDao;
 
     private Position position;
+    private PositionRequest positionRequest;
     private PositionService underTest;
 
     @BeforeEach
@@ -45,7 +43,9 @@ public class PositionServiceTest {
         initMocks(this);
         underTest = spy(new PositionService(mockPositionDao, mockLogger));
 
-        given(mockPositionRequest.getName()).willReturn(OTHER_NAME);
+        positionRequest = PositionRequest.builder()
+                .withName(OTHER_NAME)
+                .build();
 
         position = Position.builder()
             .withName(NAME)
@@ -55,13 +55,13 @@ public class PositionServiceTest {
     @Test
     void testCreatePosition() {
         // GIVEN
-        doReturn(position).when(underTest).createPositionWithRequestData(mockPositionRequest);
+        doReturn(position).when(underTest).createPositionWithRequestData(positionRequest);
 
         // WHEN
-        Position result = underTest.create(mockPositionRequest);
+        Position result = underTest.create(positionRequest);
 
         // THEN
-        then(underTest).should().createPositionWithRequestData(mockPositionRequest);
+        then(underTest).should().createPositionWithRequestData(positionRequest);
         then(mockPositionDao).should().save(result);
 
         assertEquals(position, result);
@@ -116,10 +116,9 @@ public class PositionServiceTest {
 
 
         // WHEN
-        underTest.update(mockPositionRequest, position);
+        underTest.update(positionRequest, position);
 
         // THEN
-        then(mockPositionRequest).should().getName();
         assertEquals(OTHER_NAME, position.getName());
     }
 
@@ -128,11 +127,9 @@ public class PositionServiceTest {
         // GIVEN setup
 
         // WHEN
-        Position result = underTest.createPositionWithRequestData(mockPositionRequest);
+        Position result = underTest.createPositionWithRequestData(positionRequest);
 
         // THEN
-        then(mockPositionRequest).should().getName();
-
         assertEquals(OTHER_NAME, result.getName());
     }
 

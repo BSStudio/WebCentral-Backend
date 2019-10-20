@@ -8,8 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class StatusListResponseTest {
+final class StatusListResponseTest {
     @Test
     void testBuilderWithList() {
         //GIVEN
@@ -47,6 +48,6 @@ public class StatusListResponseTest {
             .build();
 
         //THEN
-        assertEquals(statusList, response.getStatuses());
+        assertArrayEquals(statusList, response.getStatuses());
     }
 }
