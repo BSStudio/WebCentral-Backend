@@ -13,18 +13,21 @@ import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
@@ -41,7 +44,9 @@ final class UserControllerTest {
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "/images/profile.png";
     private static final String STATUS_NAME = "status";
+    private static final Long STATUS_ID = 15L;
     private static final String POSITION_NAME = "position";
+    private static final Long POSITION_ID = 14L;
     private static final Status STATUS = Status.builder().withName(STATUS_NAME).build();
     private static final Position POSITION = Position.builder().withName(POSITION_NAME).build();
 
@@ -100,9 +105,9 @@ final class UserControllerTest {
     @Test
     void testCreateUser() {
         //GIVEN
-        given(mockUserService.create(userRequest, STATUS, POSITION)).willReturn(user);
-        given(mockPositionService.findByName(POSITION_NAME)).willReturn(POSITION);
         given(mockStatusService.findByName(STATUS_NAME)).willReturn(STATUS);
+        given(mockPositionService.findByName(POSITION_NAME)).willReturn(POSITION);
+        given(mockUserService.create(userRequest, STATUS, POSITION)).willReturn(user);
 
         //WHEN
         final UserResponse response = underTest.createUser(userRequest);
@@ -149,25 +154,17 @@ final class UserControllerTest {
         given(mockUserService.findById(USER_ID)).willThrow(new NoSuchElementException());
 
         // WHEN
-        Exception exception = null;
-        UserResponse response = null;
-        try {
-            response = underTest.getUser(USER_ID);
-        } catch (Exception e) {
-            exception = e;
-        }
+        final Executable testSubject = () -> underTest.getUser(USER_ID);
 
         // THEN
-        assertNotNull(exception);
-        assertNull(response);
+        assertThrows(NoSuchElementException.class, testSubject);
         verify(mockUserService).findById(USER_ID);
     }
 
     @Test
     void testListAllUsers() {
         // GIVEN
-        final User user2 = User.builder()
-                .build();
+        final User user2 = defaultBuilder.build();
         final List<User> userList = List.of(user, user2);
         given(mockUserService.findAll()).willReturn(userList);
 
@@ -181,8 +178,7 @@ final class UserControllerTest {
     @Test
     void testListArchivedUsers() {
         // GIVEN
-        final User user2 = User.builder()
-                .build();
+        final User user2 = defaultBuilder.build();
         final List<User> archivedList = List.of(user, user2);
 
         given(mockUserService.findArchived()).willReturn(archivedList);
@@ -230,9 +226,10 @@ final class UserControllerTest {
         given(mockUserService.archive(user)).willReturn(archivedUser);
 
         // WHEN
-        underTest.archiveUser(USER_ID);
+        final UserResponse response = underTest.archiveUser(USER_ID);
 
         // THEN
+        assertTrue(response.getArchived());
         then(mockUserService).should().findById(USER_ID);
         then(mockUserService).should().archive(user);
     }
@@ -251,6 +248,7 @@ final class UserControllerTest {
         final UserResponse response = underTest.restoreUser(USER_ID);
 
         // THEN
+        assertFalse(response.getArchived());
         then(mockUserService).should().findById(USER_ID);
         then(mockUserService).should().restore(user);
     }
@@ -306,6 +304,34 @@ final class UserControllerTest {
 
         // THEN
         assertEquals(otherPosition, response.getPosition());
+    }
+
+    @Test
+    void testListAllWithStatusOf() {
+        // GIVEN
+        final User user2 = User.builder().build();
+        final Set<User> users = Set.of(user, user2);
+        given(mockStatusService.findAllUserByStatusId(STATUS_ID)).willReturn(users);
+
+        // WHEN
+        final UserListResponse response = underTest.listAllWithStatusOf(STATUS_ID);
+
+        // THEN
+        assertArrayEquals(response.getUsers(), users.toArray());
+    }
+
+    @Test
+    void testListAllWithPositionOf() {
+        // GIVEN
+        final User user2 = User.builder().build();
+        final Set<User> users = Set.of(user, user2);
+        given(mockPositionService.findAllUserByPositionId(POSITION_ID)).willReturn(users);
+
+        // WHEN
+        final UserListResponse response = underTest.listAllWithPositionOf(POSITION_ID);
+
+        // THEN
+        assertArrayEquals(response.getUsers(), users.toArray());
     }
 
 }

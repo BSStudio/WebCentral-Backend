@@ -169,7 +169,7 @@ public class UserController {
     @ResponseStatus(FOUND)
     public final UserListResponse listAllWithPositionOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
-        final Set<User> users = positionService.findAllUserById(id);
+        final Set<User> users = positionService.findAllUserByPositionId(id);
         return UserListResponse.builder()
                 .withUsers(users)
                 .build();

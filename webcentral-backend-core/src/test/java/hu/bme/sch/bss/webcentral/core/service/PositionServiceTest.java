@@ -169,7 +169,7 @@ final class PositionServiceTest {
         doReturn(userSet).when(position).getUsers();
 
         // WHEN
-        final Set<User> result = underTest.findAllUserById(POSITION_ID);
+        final Set<User> result = underTest.findAllUserByPositionId(POSITION_ID);
 
         // THEN
         assertEquals(result, userSet);

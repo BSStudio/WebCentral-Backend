@@ -92,7 +92,7 @@ public final class PositionService {
         });
     }
 
-    public Set<User> findAllUserById(final Long id) {
+    public Set<User> findAllUserByPositionId(final Long id) {
         logger.info(USER_SEARCH_BY_POSITION_ID_STARTED, id);
         final Position position = findById(id);
         logger.info(USER_SEARCH_BY_POSITION_ID_SUCCEED, id);
