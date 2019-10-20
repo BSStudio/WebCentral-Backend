@@ -60,12 +60,12 @@ final class UserServiceTest {
     private UserDao mockUserDao;
     @Mock
     private Logger mockLogger;
-
+    @Mock
     private UserRequest userRequest;
     private User user;
     private Position position;
     private Status status;
-    private User.Builder defaultUser;
+    private User.Builder defaultUserBuilder;
 
     private UserService underTest;
 
@@ -80,17 +80,15 @@ final class UserServiceTest {
         status = Status.builder()
                 .withName("status")
                 .build();
-        userRequest = spy(UserRequest.builder()
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withStatus(status)
-                .withPosition(position)
-                .build());
-        defaultUser = User.builder()
+        given(userRequest.getNickname()).willReturn(NICKNAME);
+        given(userRequest.getGivenName()).willReturn(GIVEN_NAME);
+        given(userRequest.getFamilyName()).willReturn(FAMILY_NAME);
+        given(userRequest.getEmail()).willReturn(EMAIL);
+        given(userRequest.getDescription()).willReturn(DESCRIPTION);
+        given(userRequest.getImageUri()).willReturn(IMAGE_URI);
+        given(userRequest.getStatus()).willReturn(status);
+        given(userRequest.getPosition()).willReturn(position);
+        defaultUserBuilder = User.builder()
                 .withNickname(NICKNAME)
                 .withGivenName(GIVEN_NAME)
                 .withFamilyName(FAMILY_NAME)
@@ -100,7 +98,7 @@ final class UserServiceTest {
                 .withStatus(status)
                 .withPosition(position);
 
-        user = spy(defaultUser.build());
+        user = spy(defaultUserBuilder.build());
     }
 
     @Test
@@ -112,6 +110,12 @@ final class UserServiceTest {
         final User result = underTest.create(userRequest, status, position);
 
         // THEN
+        verify(userRequest).getNickname();
+        verify(userRequest).getGivenName();
+        verify(userRequest).getFamilyName();
+        verify(userRequest).getEmail();
+        verify(userRequest).getDescription();
+        verify(userRequest).getImageUri();
         assertAll(
                 () -> assertNotNull(result),
                 () -> assertFalse(result.getArchived()),
@@ -129,7 +133,7 @@ final class UserServiceTest {
     @Test
     void testUpdate() {
         // GIVEN setup
-        userRequest = UserRequest.builder()
+        userRequest = spy(UserRequest.builder()
                 .withNickname(OTHER_NICKNAME)
                 .withGivenName(OTHER_GIVEN_NAME)
                 .withFamilyName(OTHER_FAMILY_NAME)
@@ -138,8 +142,8 @@ final class UserServiceTest {
                 .withImageUri(OTHER_IMAGE_URI)
                 .withStatus(status)
                 .withPosition(position)
-                .build();
-        final User updatedUser = User.builder()
+                .build());
+        final User updatedUser = defaultUserBuilder
                 .withNickname(OTHER_NICKNAME)
                 .withGivenName(OTHER_GIVEN_NAME)
                 .withFamilyName(OTHER_FAMILY_NAME)
@@ -156,6 +160,12 @@ final class UserServiceTest {
         final User result = underTest.update(userRequest, user);
 
         // THEN
+        verify(user).setNickname(any()); verify(userRequest).getNickname();
+        verify(user).setGivenName(any()); verify(userRequest).getGivenName();
+        verify(user).setFamilyName(any()); verify(userRequest).getFamilyName();
+        verify(user).setEmail(any()); verify(userRequest).getEmail();
+        verify(user).setDescription(any()); verify(userRequest).getDescription();
+        verify(user).setImageUri(any()); verify(userRequest).getImageUri();
         assertAll(
                 () -> assertNotNull(result),
                 () -> assertFalse(result.getArchived()),
@@ -198,7 +208,7 @@ final class UserServiceTest {
     @Test
     void testRestore() {
         // GIVEN setup
-        final User archivedUser = spy(defaultUser
+        final User archivedUser = spy(defaultUserBuilder
                 .withArchived(true)
                 .build());
         given(mockUserDao.save(archivedUser)).willReturn(user);
@@ -254,7 +264,7 @@ final class UserServiceTest {
     @Test
     void testFindAll() {
         // GIVEN setup
-        final User user2 = defaultUser.build();
+        final User user2 = defaultUserBuilder.build();
         final List<User> userList = List.of(user, user2);
 
         given(mockUserDao.findAll()).willReturn(userList);
@@ -269,7 +279,7 @@ final class UserServiceTest {
     @Test
     void testFindArchived() {
         // GIVEN setup
-        final User user2 = defaultUser.build();
+        final User user2 = defaultUserBuilder.build();
         final List<User> archivedList = List.of(user, user2);
         given(mockUserDao.findAllArchived()).willReturn(archivedList);
 
@@ -283,7 +293,7 @@ final class UserServiceTest {
     @Test
     void testUpdateUserStatus() {
         // GIVEN
-        final User updatedUser = defaultUser
+        final User updatedUser = defaultUserBuilder
                 .withStatus(OTHER_STATUS)
                 .build();
         given(mockUserDao.save(user)).willReturn(updatedUser);
@@ -300,7 +310,7 @@ final class UserServiceTest {
     @Test
     void testUpdateUserPosition() {
         // GIVEN
-        final User updatedUser = defaultUser
+        final User updatedUser = defaultUserBuilder
                 .withPosition(OTHER_POSITION)
                 .build();
         given(mockUserDao.save(user)).willReturn(updatedUser);
