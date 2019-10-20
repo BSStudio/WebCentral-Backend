@@ -13,7 +13,7 @@ final class PositionResponseTest {
     private PositionResponse underTest;
 
     @Test
-    void testConstructorAndGetters() {
+    void testConstructor() {
         // GIVEN
         final Position position = Position.builder()
             .withName(NAME)

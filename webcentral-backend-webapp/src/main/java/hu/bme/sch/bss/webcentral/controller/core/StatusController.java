@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/status", produces = MediaType.APPLICATION_JSON_VALUE)
-public class StatusController {
+public final class StatusController {
 
     private static final String REQUEST_STATUS_CREATE = "Request for status creation received. {}";
     private static final String REQUEST_STATUS_SEARCH = "Request for status search received with id of: {}";
@@ -47,7 +47,7 @@ public class StatusController {
 
     @PostMapping()
     @ResponseStatus(CREATED)
-    public final StatusResponse createStatus(@Valid @RequestBody final StatusRequest request) {
+    public StatusResponse createStatus(@Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_CREATE, request);
         final Status result = statusService.create(request);
         return new StatusResponse(result);
@@ -55,7 +55,7 @@ public class StatusController {
 
     @GetMapping("/{id}")
     @ResponseStatus(FOUND)
-    public final StatusResponse getStatus(@PathVariable("id") final Long id) {
+    public StatusResponse getStatus(@PathVariable("id") final Long id) {
         logger.info(REQUEST_STATUS_SEARCH, id);
         final Status result = statusService.findById(id);
         return new StatusResponse(result);
@@ -63,7 +63,7 @@ public class StatusController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
-    public final void deleteStatus(@PathVariable("id") final Long id) {
+    public void deleteStatus(@PathVariable("id") final Long id) {
         logger.info(REQUEST_STATUS_DELETE, id);
         final Status status = statusService.findById(id);
         statusService.delete(status);
@@ -71,7 +71,7 @@ public class StatusController {
 
     @PutMapping("/{id}")
     @ResponseStatus(OK)
-    public final StatusResponse updateStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
+    public StatusResponse updateStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_EDIT, id);
         final Status status = statusService.findById(id);
         final Status result = statusService.update(request, status);
@@ -80,7 +80,7 @@ public class StatusController {
 
     @GetMapping("/all")
     @ResponseStatus(FOUND)
-    public final StatusListResponse listAllStatuses() {
+    public StatusListResponse listAllStatuses() {
         logger.info(REQUEST_STATUS_LIST);
         final ArrayList<Status> statuses = new ArrayList<>(statusService.findAll());
         return StatusListResponse.builder()

@@ -9,9 +9,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
 
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
+@Getter
 public final class UserRequest {
 
     @NotNull
@@ -56,42 +58,6 @@ public final class UserRequest {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Position getPosition() {
-        return position;
     }
 
     @SuppressWarnings("hiddenfield")

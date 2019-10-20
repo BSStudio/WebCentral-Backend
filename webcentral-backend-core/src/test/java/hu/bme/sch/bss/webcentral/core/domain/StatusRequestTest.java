@@ -8,8 +8,7 @@ import javax.validation.Validator;
 
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static hu.bme.sch.bss.webcentral.WcTestUtil.thenValidationFails;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 final class StatusRequestTest {
@@ -43,14 +42,6 @@ final class StatusRequestTest {
 
         // THEN
         thenValidationFails(violations, "must not be blank", "name");
-    }
-
-    private void thenValidationFails(Set<ConstraintViolation<StatusRequest>> violations,
-                                     String expectedMessage, String expectedProperty) {
-        assertThat(violations.size(), is(1));
-        ConstraintViolation<StatusRequest> violation = violations.stream().findFirst().get();
-        assertThat(violation.getMessage(), is(expectedMessage));
-        assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
     }
 
 }

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import java.util.Objects;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,13 +20,22 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@JsonSerialize
-@JsonDeserialize(builder = User.Builder.class)
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "users")
-public final class User extends DomainAuditModel {
+@JsonSerialize
+@JsonDeserialize(builder = User.Builder.class)
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Data public final class User extends DomainAuditModel {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
@@ -72,11 +79,7 @@ public final class User extends DomainAuditModel {
     @ManyToOne
     private Position position;
 
-    public User() {
-        // No-arg constructor for hibernate
-    }
-
-    public User(final Builder builder) {
+    private User(final Builder builder) {
         this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
@@ -91,128 +94,6 @@ public final class User extends DomainAuditModel {
     public static Builder builder() {
         return new Builder();
     }
-
-    public void setNickname(final String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setGivenName(final String givenName) {
-        this.givenName = givenName;
-    }
-
-    public void setFamilyName(final String familyName) {
-        this.familyName = familyName;
-    }
-
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public void setImageUri(final String imageUri) {
-        this.imageUri = imageUri;
-    }
-
-    public void setStatus(final Status status) {
-        this.status = status;
-    }
-
-    public void setPosition(final Position position) {
-        this.position = position;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public void setArchived(final Boolean archived) {
-        this.archived = archived;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    //Generated code begins here
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        User user = (User) o;
-        return Objects.equals(id, user.id)
-                && Objects.equals(archived, user.archived)
-                && Objects.equals(nickname, user.nickname)
-                && Objects.equals(givenName, user.givenName)
-                && Objects.equals(familyName, user.familyName)
-                && Objects.equals(email, user.email)
-                && Objects.equals(description, user.description)
-                && Objects.equals(imageUri, user.imageUri)
-                && Objects.equals(status, user.status)
-                && Objects.equals(position, user.position);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, archived, nickname, givenName, familyName, email, description, imageUri, status, position);
-    }
-
-    @Override
-    public String toString() {
-        return "User{"
-                + "id=" + id
-                + ", archived=" + archived
-                + ", nickname='" + nickname + '\''
-                + ", givenName='" + givenName + '\''
-                + ", familyName='" + familyName + '\''
-                + ", email='" + email + '\''
-                + ", description='" + description + '\''
-                + ", imageUri='" + imageUri + '\''
-                + ", status=" + status
-                + ", position=" + position
-                + '}';
-    }
-
-    // Generated code ends here
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {

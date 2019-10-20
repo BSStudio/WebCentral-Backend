@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+public final class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
     private static final String REQUEST_USER_SEARCH = "Request to find user received for id {}";
@@ -64,7 +64,7 @@ public class UserController {
 
     @PostMapping()
     @ResponseStatus(CREATED)
-    public final UserResponse createUser(@Valid @RequestBody final UserRequest request) {
+    public UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
         final Status status = statusService.findByName(request.getStatus().getName());
         final Position position = positionService.findByName(request.getPosition().getName());
@@ -74,7 +74,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(FOUND)
-    public final UserResponse getUser(@PathVariable("id") final Long id) {
+    public UserResponse getUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_SEARCH, id);
         final User result = userService.findById(id);
         return new UserResponse(result);
@@ -82,7 +82,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(OK)
-    public final UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
+    public UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_UPDATE, id);
         final User user = userService.findById(id);
         final User result = userService.update(request, user);
@@ -91,7 +91,7 @@ public class UserController {
 
     @PutMapping("/{id}/archive")
     @ResponseStatus(OK)
-    public final UserResponse archiveUser(@PathVariable("id") final Long id) {
+    public UserResponse archiveUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_ARCHIVE, id);
         final User user = userService.findById(id);
         final User result = userService.archive(user);
@@ -100,7 +100,7 @@ public class UserController {
 
     @PutMapping("/{id}/restore")
     @ResponseStatus(OK)
-    public final UserResponse restoreUser(@PathVariable("id") final Long id) {
+    public UserResponse restoreUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_RESTORE, id);
         final User user = userService.findById(id);
         final User result = userService.restore(user);
@@ -109,7 +109,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
-    public final void deleteUser(@PathVariable("id") final Long id) {
+    public void deleteUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_DELETE, id);
         final User user = userService.findById(id);
         userService.delete(user);
@@ -117,7 +117,7 @@ public class UserController {
 
     @PutMapping("/{id}/status")
     @ResponseStatus(OK)
-    public final UserResponse updateUserStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
+    public UserResponse updateUserStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_USER_UPDATE_STATUS, id);
         final User user = userService.findById(id);
         final Status status = statusService.findByName(request.getName());
@@ -127,7 +127,7 @@ public class UserController {
 
     @PutMapping("/{id}/position")
     @ResponseStatus(OK)
-    public final UserResponse updateUserPosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
+    public UserResponse updateUserPosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_USER_UPDATE_POSITION, id);
         final User user = userService.findById(id);
         final Position position = positionService.findByName(request.getName());
@@ -137,7 +137,7 @@ public class UserController {
 
     @GetMapping("/all")
     @ResponseStatus(FOUND)
-    public final UserListResponse listAllUsers() {
+    public UserListResponse listAllUsers() {
         logger.info(REQUEST_USERS_LIST);
         final ArrayList<User> users = new ArrayList<>(userService.findAll());
         return UserListResponse.builder()
@@ -147,7 +147,7 @@ public class UserController {
 
     @GetMapping("/archived")
     @ResponseStatus(FOUND)
-    public final UserListResponse listAllArchived() {
+    public UserListResponse listAllArchived() {
         logger.info(REQUEST_ARCHIVED_USERS_LIST);
         final ArrayList<User> users = new ArrayList<>(userService.findArchived());
         return UserListResponse.builder()
@@ -157,7 +157,7 @@ public class UserController {
 
     @GetMapping("/status/{id}")
     @ResponseStatus(FOUND)
-    public final UserListResponse listAllWithStatusOf(@PathVariable("id") final Long id) {
+    public UserListResponse listAllWithStatusOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
         final Set<User> users = statusService.findAllUserByStatusId(id);
         return UserListResponse.builder()
@@ -167,7 +167,7 @@ public class UserController {
 
     @GetMapping("/position/{id}")
     @ResponseStatus(FOUND)
-    public final UserListResponse listAllWithPositionOf(@PathVariable("id") final Long id) {
+    public UserListResponse listAllWithPositionOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
         final Set<User> users = positionService.findAllUserByPositionId(id);
         return UserListResponse.builder()

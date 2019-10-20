@@ -6,9 +6,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.core.model.Status;
 
+import lombok.Getter;
+
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonTypeName("status")
+@Getter
 public final class StatusResponse {
 
     private final Long id;
@@ -18,13 +21,5 @@ public final class StatusResponse {
     public StatusResponse(final Status result) {
         this.id = result.getId();
         this.name = result.getName();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
     }
 }

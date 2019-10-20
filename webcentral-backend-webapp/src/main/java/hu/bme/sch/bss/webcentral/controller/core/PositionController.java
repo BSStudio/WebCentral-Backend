@@ -28,8 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/position", produces = "application/json")
-public class PositionController {
-
+public final class PositionController {
 
     private static final String REQUEST_POSITION_CREATE = "Request for position creation received. {}";
     private static final String REQUEST_POSITION_SEARCH = "Request for position search received with id of: {}";
@@ -39,14 +38,14 @@ public class PositionController {
     private final PositionService positionService;
     private final Logger logger;
 
-    PositionController(final PositionService userService, final Logger logger) {
-        this.positionService = userService;
+    PositionController(final PositionService positionService, final Logger logger) {
+        this.positionService = positionService;
         this.logger = logger;
     }
 
     @PostMapping()
     @ResponseStatus(CREATED)
-    public final PositionResponse createUser(@Valid @RequestBody final PositionRequest request) {
+    public PositionResponse createUser(@Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_CREATE, request);
         final Position result = positionService.create(request);
         return new PositionResponse(result);
@@ -54,7 +53,7 @@ public class PositionController {
 
     @GetMapping("/{id}")
     @ResponseStatus(FOUND)
-    public final PositionResponse getPosition(@PathVariable("id") final Long id) {
+    public PositionResponse getPosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_SEARCH, id);
         final Position result = positionService.findById(id);
         return new PositionResponse(result);
@@ -62,7 +61,7 @@ public class PositionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
-    public final void deletePosition(@PathVariable("id") final Long id) {
+    public void deletePosition(@PathVariable("id") final Long id) {
         logger.info(REQUEST_POSITION_DELETE, id);
         final Position position = positionService.findById(id);
         positionService.delete(position);
@@ -70,7 +69,7 @@ public class PositionController {
 
     @PutMapping("/{id}")
     @ResponseStatus(OK)
-    public final PositionResponse updatePosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
+    public PositionResponse updatePosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
         logger.info(REQUEST_POSITION_EDIT, id);
         final Position position = positionService.findById(id);
         final Position result = positionService.update(request, position);
@@ -79,7 +78,7 @@ public class PositionController {
 
     @GetMapping("/all")
     @ResponseStatus(FOUND)
-    public final PositionListResponse listAllPositions() {
+    public PositionListResponse listAllPositions() {
         logger.info(REQUEST_POSITION_LIST);
         final ArrayList<Position> positions = new ArrayList<>(positionService.findAll());
         return PositionListResponse.builder()

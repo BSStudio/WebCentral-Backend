@@ -7,11 +7,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static hu.bme.sch.bss.webcentral.WcTestUtil.thenValidationFails;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 final class UserTest {
@@ -101,40 +99,6 @@ final class UserTest {
                 () -> assertNull(underTest.getUpdatedAt())
 
         );
-    }
-
-    @Test
-    void testEqualsAndHash() {
-        // GIVEN
-        User.Builder builder = defaultBuilder;
-
-        // WHEN
-        User validUser1 = builder.build();
-        User validUser2 = builder.build();
-        User invalidUser = builder
-                .withNickname("something else")
-                .build();
-
-        // THEN
-        assertEquals(validUser1, validUser2);
-        assertEquals(validUser1, validUser1);
-        assertNotEquals(validUser1, invalidUser);
-        assertNotEquals(validUser1, null);
-        assertNotEquals(validUser1, new Object());
-        assertNotEquals(validUser2, invalidUser);
-        assertEquals(validUser1.hashCode(), validUser2.hashCode());
-    }
-
-    @Test
-    void testToString() {
-        // GIVEN
-        underTest = defaultBuilder
-                .build();
-
-        // WHEN
-
-        // THEN
-        assertEquals(TO_STRING_RESULT, underTest.toString());
     }
 
 
@@ -455,14 +419,4 @@ final class UserTest {
                 () -> assertEquals(OTHER_POSITION, underTest.getPosition().getName())
         );
     }
-
-    private void thenValidationFails(Set<ConstraintViolation<User>> violations,
-                                     String expectedMessage, String expectedProperty) {
-        assertThat(violations.size(), is(1));
-        ConstraintViolation<User> violation = violations.stream().findFirst().get();
-        assertThat(violation.getMessage(), is(expectedMessage));
-        assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
-    }
-
-
 }

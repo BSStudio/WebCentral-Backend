@@ -7,11 +7,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static hu.bme.sch.bss.webcentral.WcTestUtil.thenValidationFails;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 final class StatusTest {
@@ -55,44 +53,6 @@ final class StatusTest {
     }
 
     @Test
-    void testEqualsAndHash() {
-        // GIVEN
-        final Status.Builder builder = Status.builder()
-                .withName(NAME);
-
-        // WHEN
-        final Status validStatus1 = Status.builder()
-                .withName(NAME).build();
-        final Status validStatus2 = Status.builder()
-                .withName(NAME).build();
-        final Status invalidStatus = builder
-            .withName("something else")
-            .build();
-
-        // THEN
-        assertEquals(validStatus1, validStatus2);
-        assertEquals(validStatus1, validStatus1);
-        assertNotEquals(validStatus1, invalidStatus);
-        assertNotEquals(validStatus2, invalidStatus);
-        assertNotEquals(validStatus2, null);
-        assertNotEquals(validStatus2, new Object());
-        assertEquals(validStatus1.hashCode(), validStatus2.hashCode());
-    }
-
-    @Test
-    void testToString() {
-        // GIVEN
-        underTest = Status.builder()
-                .withName(NAME)
-            .build();
-
-        // WHEN
-
-        // THEN
-        assertEquals(TO_STRING_RESULT, underTest.toString());
-    }
-
-    @Test
     void testValidationShouldFailForMissingName() {
         // GIVEN
         underTest = Status.builder()
@@ -117,13 +77,5 @@ final class StatusTest {
 
         // THEN
         assertEquals(OTHER_NAME, underTest.getName());
-    }
-
-    private void thenValidationFails(Set<ConstraintViolation<Status>> violations,
-                                     String expectedMessage, String expectedProperty) {
-        assertThat(violations.size(), is(1));
-        ConstraintViolation<Status> violation = violations.stream().findFirst().get();
-        assertThat(violation.getMessage(), is(expectedMessage));
-        assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
     }
 }

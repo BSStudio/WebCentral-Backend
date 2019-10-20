@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public final class StatusService {
+
     private static final String STATUS_CREATE_STARTED = "Status creation started. {}";
     private static final String STATUS_CREATE_SUCCEED = "Status creation succeed. {}";
     private static final String STATUS_SEARCH_STARTED = "Status search started {}";

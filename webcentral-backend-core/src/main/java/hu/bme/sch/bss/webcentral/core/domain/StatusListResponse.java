@@ -6,13 +6,13 @@ import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import java.util.List;
 
-@JsonSerialize
-public final class StatusListResponse {
-    private final Status[] statuses;
+import lombok.Getter;
 
-    public Status[] getStatuses() {
-        return statuses;
-    }
+@JsonSerialize
+@Getter
+public final class StatusListResponse {
+
+    private final Status[] statuses;
 
     private StatusListResponse(final Builder builder) {
         this.statuses = builder.statuses;

@@ -6,9 +6,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.core.model.Position;
 
+import lombok.Getter;
+
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonTypeName("position")
+@Getter
 public final class PositionResponse {
 
     private final Long id;
@@ -20,11 +23,4 @@ public final class PositionResponse {
         this.name = result.getName();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
 }

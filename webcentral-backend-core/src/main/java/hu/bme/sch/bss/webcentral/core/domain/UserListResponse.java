@@ -7,14 +7,13 @@ import hu.bme.sch.bss.webcentral.core.model.User;
 import java.util.List;
 import java.util.Set;
 
+import lombok.Getter;
+
 @JsonSerialize
+@Getter
 public final class UserListResponse {
 
     private final User[] users;
-
-    public User[] getUsers() {
-        return users;
-    }
 
     private UserListResponse(final Builder builder) {
         this.users = builder.users;

@@ -8,10 +8,14 @@ import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 
+import lombok.Getter;
+
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonTypeName("user")
+@Getter
 public final class UserResponse {
+
     private final Long id;
     private final Boolean archived;
     private final String nickname;
@@ -35,45 +39,5 @@ public final class UserResponse {
         this.imageUri = user.getImageUri();
         this.status = user.getStatus();
         this.position = user.getPosition();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Position getPosition() {
-        return position;
     }
 }
