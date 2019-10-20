@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -76,7 +75,7 @@ final class PositionServiceTest {
         final Position result = underTest.findById(POSITION_ID);
 
         // THEN
-        assertEquals(position, result);
+        assertEquals(result, position);
     }
 
     @Test
@@ -85,9 +84,7 @@ final class PositionServiceTest {
         given(mockPositionDao.findById(any())).willReturn(Optional.empty());
 
         // WHEN
-        final Executable testSubject = () -> {
-            underTest.findById(POSITION_ID);
-        };
+        final Executable testSubject = () -> underTest.findById(POSITION_ID);
 
         // THEN
         assertThrows(NoSuchElementException.class, testSubject);
@@ -128,14 +125,13 @@ final class PositionServiceTest {
         final Position position2 = Position.builder()
                 .build();
         final List<Position> positionList = List.of(position, position2);
-
         given(mockPositionDao.findAll()).willReturn(positionList);
 
         // WHEN
         final List<Position> result = underTest.findAll();
 
         // THEN
-        assertEquals(positionList, result);
+        assertEquals(result, positionList);
     }
 
     @Test
@@ -150,7 +146,7 @@ final class PositionServiceTest {
         final Position result = underTest.findByName(NAME);
 
         // THEN
-        assertEquals(position, result);
+        assertEquals(result, position);
     }
 
     @Test
@@ -159,9 +155,7 @@ final class PositionServiceTest {
         given(mockPositionDao.findByName(any())).willReturn(Optional.empty());
 
         // WHEN
-        final Executable testSubject = () -> {
-            underTest.findByName(NAME);
-        };
+        final Executable testSubject = () -> underTest.findByName(NAME);
 
         // THEN
         assertThrows(NoSuchElementException.class, testSubject);

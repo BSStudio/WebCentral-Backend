@@ -27,6 +27,8 @@ public final class StatusService {
     private static final String STATUSES_ALL_SEARCH_STARTED = "Search for all statuses started.";
     private static final String STATUSES_ALL_SEARCH_SUCCEED = "Search for all statuses succeed.";
     private static final String STATUS_SEARCH_WITH_NAME_FAILURE = "Status not found with name {}";
+    private static final String USER_SEARCH_BY_STATUS_ID_STARTED = "User search by status started with id: {}";
+    private static final String USER_SEARCH_BY_STATUS_ID_SUCCEED = "User search by status succeed with id: {}";
 
     private final StatusDao statusDao;
     private final Logger logger;
@@ -89,7 +91,9 @@ public final class StatusService {
     }
 
     public Set<User> findAllUserByStatusId(final Long id) {
+        logger.info(USER_SEARCH_BY_STATUS_ID_STARTED, id);
         final Status status = findById(id);
+        logger.info(USER_SEARCH_BY_STATUS_ID_SUCCEED, id);
         return status.getUsers();
     }
 }
