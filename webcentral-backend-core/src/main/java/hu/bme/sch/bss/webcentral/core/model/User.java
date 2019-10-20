@@ -1,14 +1,19 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,8 +63,10 @@ public final class User extends DomainAuditModel {
     @Column(name = "image_uri", nullable = false, unique = true)
     private String imageUri;
 
+    //TODO read more about it
     @JoinColumn
-    @ManyToOne
+    @ManyToOne(targetEntity = Status.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private Status status;
 
     @NotNull

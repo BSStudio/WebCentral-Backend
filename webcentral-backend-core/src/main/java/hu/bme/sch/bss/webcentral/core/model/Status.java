@@ -1,7 +1,10 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.*;
+import static javax.persistence.GenerationType.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -12,6 +15,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,18 +26,20 @@ import javax.validation.constraints.NotBlank;
 @JsonSerialize
 @JsonDeserialize(builder = Status.Builder.class)
 @Entity
-@Table(name = "statuses")
+@Table(name = "status")
 public final class Status extends DomainAuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(cascade = ALL, orphanRemoval = true)
+    //TODO read more about it
+    @JsonIgnore
+    @OneToMany(targetEntity = User.class, cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "status")
     private Set<User> users;
 
     public Status() {

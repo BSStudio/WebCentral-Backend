@@ -2,6 +2,7 @@ package hu.bme.sch.bss.webcentral.core.model;
 
 import static javax.persistence.CascadeType.ALL;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +35,8 @@ public final class Position extends DomainAuditModel {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(cascade = ALL)
+    @JsonIgnore
+    @OneToMany(targetEntity = User.class, cascade = ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "position")
     private Set<User> users;
 
     public Position() {
@@ -77,7 +80,7 @@ public final class Position extends DomainAuditModel {
         }
         Position position = (Position) o;
         return Objects.equals(id, position.id)
-            && Objects.equals(name, position.name);
+                && Objects.equals(name, position.name);
     }
 
     @Override
@@ -88,9 +91,9 @@ public final class Position extends DomainAuditModel {
     @Override
     public String toString() {
         return "Position{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + '}';
+                + "id=" + id
+                + ", name='" + name + '\''
+                + '}';
     }
 
     // Generated code ends here
@@ -108,5 +111,7 @@ public final class Position extends DomainAuditModel {
         public Position build() {
             return new Position(this);
         }
+
     }
+
 }
