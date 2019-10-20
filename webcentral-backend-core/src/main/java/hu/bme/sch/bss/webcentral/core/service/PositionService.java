@@ -29,6 +29,8 @@ public final class PositionService {
     private static final String POSITION_ALL_SEARCH_SUCCEED = "Search for all position succeed";
     private static final String POSITION_SEARCH_WITH_NAME_STARTED = "Position search started with name: {}";
     private static final String POSITION_SEARCH_WITH_NAME_FAILURE = "Position not found with name {}";
+    private static final String USER_SEARCH_BY_POSITION_ID_STARTED = "User search by position started with id: {}";
+    private static final String USER_SEARCH_BY_POSITION_ID_SUCCEED = "User search by position succeed with id: {}";
 
     private final PositionDao positionDao;
     private final Logger logger;
@@ -91,7 +93,9 @@ public final class PositionService {
     }
 
     public Set<User> findAllUserById(final Long id) {
+        logger.info(USER_SEARCH_BY_POSITION_ID_STARTED, id);
         final Position position = findById(id);
+        logger.info(USER_SEARCH_BY_POSITION_ID_SUCCEED, id);
         return position.getUsers();
     }
 }

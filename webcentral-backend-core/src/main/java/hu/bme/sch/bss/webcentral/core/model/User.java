@@ -224,11 +224,6 @@ public final class User extends DomainAuditModel {
         private Status status;
         private Position position;
 
-        public Builder withId(final Long id) {
-            this.id = id;
-            return this;
-        }
-
         public Builder withArchived(final Boolean archived) {
             this.archived = archived;
             return this;

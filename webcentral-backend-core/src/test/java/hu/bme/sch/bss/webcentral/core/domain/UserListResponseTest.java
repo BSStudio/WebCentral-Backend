@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -17,14 +18,28 @@ final class UserListResponseTest {
 
     @BeforeEach
     void init() {
-        user1 = User.builder().build();
-        user2 = User.builder().build();
+        user1 = User.builder().withNickname("a").build();
+        user2 = User.builder().withNickname("b").build();
     }
 
     @Test
     void testBuilderWithList() {
         //GIVEN
         final List<User> userList = List.of(user1, user2);
+
+        //WHEN
+        underTest = UserListResponse.builder()
+                .withUsers(userList)
+                .build();
+
+        //THEN
+        assertArrayEquals(userList.toArray(), underTest.getUsers());
+    }
+
+    @Test
+    void testBuilderWithSet() {
+        //GIVEN
+        final Set<User> userList = Set.of(user1, user2);
 
         //WHEN
         underTest = UserListResponse.builder()

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 final class UserTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-        .getValidator();
+            .getValidator();
 
     private static final Boolean ARCHIVED = false;
     private static final String NICKNAME = "nickname";
@@ -44,29 +44,39 @@ final class UserTest {
 
     private User underTest;
     private Status status = Status.builder()
-        .withName(STATUS)
-        .build();
+            .withName(STATUS)
+            .build();
     private Position position = Position.builder()
-        .withName(POSITION)
-        .build();
+            .withName(POSITION)
+            .build();
+    private User.Builder defaultBuilder = User.builder()
+            .withArchived(ARCHIVED)
+            .withNickname(NICKNAME)
+            .withGivenName(GIVEN_NAME)
+            .withFamilyName(FAMILY_NAME)
+            .withEmail(EMAIL)
+            .withDescription(DESCRIPTION)
+            .withImageUri(IMAGE_URI)
+            .withStatus(status)
+            .withPosition(position);
 
     @Test
     void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri())
         );
     }
 
@@ -79,16 +89,16 @@ final class UserTest {
 
         // THEN
         assertAll(
-            () -> assertNull(underTest.getId()),
-            () -> assertNull(underTest.getArchived()),
-            () -> assertNull(underTest.getNickname()),
-            () -> assertNull(underTest.getGivenName()),
-            () -> assertNull(underTest.getFamilyName()),
-            () -> assertNull(underTest.getEmail()),
-            () -> assertNull(underTest.getDescription()),
-            () -> assertNull(underTest.getImageUri()),
-            () -> assertNull(underTest.getCreatedAt()),
-            () -> assertNull(underTest.getUpdatedAt())
+                () -> assertNull(underTest.getId()),
+                () -> assertNull(underTest.getArchived()),
+                () -> assertNull(underTest.getNickname()),
+                () -> assertNull(underTest.getGivenName()),
+                () -> assertNull(underTest.getFamilyName()),
+                () -> assertNull(underTest.getEmail()),
+                () -> assertNull(underTest.getDescription()),
+                () -> assertNull(underTest.getImageUri()),
+                () -> assertNull(underTest.getCreatedAt()),
+                () -> assertNull(underTest.getUpdatedAt())
 
         );
     }
@@ -96,17 +106,18 @@ final class UserTest {
     @Test
     void testEqualsAndHash() {
         // GIVEN
-        User.Builder builder = getDefaultValuesBuilder();
+        User.Builder builder = defaultBuilder;
 
         // WHEN
         User validUser1 = builder.build();
         User validUser2 = builder.build();
         User invalidUser = builder
-            .withNickname("something else")
-            .build();
+                .withNickname("something else")
+                .build();
 
         // THEN
         assertEquals(validUser1, validUser2);
+        assertEquals(validUser1, validUser1);
         assertNotEquals(validUser1, invalidUser);
         assertNotEquals(validUser1, null);
         assertNotEquals(validUser1, new Object());
@@ -117,8 +128,8 @@ final class UserTest {
     @Test
     void testToString() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
 
@@ -130,9 +141,9 @@ final class UserTest {
     @Test
     void testValidationShouldFailForMissingNickname() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withNickname("")
-            .build();
+        underTest = defaultBuilder
+                .withNickname("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
@@ -144,9 +155,9 @@ final class UserTest {
     @Test
     void testValidationShouldFailForMissingGivenName() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withGivenName("")
-            .build();
+        underTest = defaultBuilder
+                .withGivenName("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
@@ -158,9 +169,9 @@ final class UserTest {
     @Test
     void testValidationShouldFailForMissingFamilyName() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withFamilyName("")
-            .build();
+        underTest = defaultBuilder
+                .withFamilyName("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
@@ -172,9 +183,9 @@ final class UserTest {
     @Test
     void testValidationShouldFailForNotWellFormedEmailAddress() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withEmail("asd")
-            .build();
+        underTest = defaultBuilder
+                .withEmail("asd")
+                .build();
 
 
         // WHEN
@@ -187,9 +198,9 @@ final class UserTest {
     @Test
     void testValidationShouldFailForNullEmail() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withEmail(null)
-            .build();
+        underTest = defaultBuilder
+                .withEmail(null)
+                .build();
 
 
         // WHEN
@@ -202,9 +213,9 @@ final class UserTest {
     @Test
     void testValidationShouldFailForBlankEmail() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withEmail("")
-            .build();
+        underTest = defaultBuilder
+                .withEmail("")
+                .build();
 
 
         // WHEN
@@ -217,9 +228,9 @@ final class UserTest {
     @Test
     void testValidationShouldFailForMissingDescription() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .withDescription("")
-            .build();
+        underTest = defaultBuilder
+                .withDescription("")
+                .build();
 
         // WHEN
         Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
@@ -232,8 +243,8 @@ final class UserTest {
     @Test
     void testSetArchived() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setArchived(OTHER_ARCHIVED);
@@ -241,221 +252,208 @@ final class UserTest {
 
         // THEN
         assertAll(
-            () -> assertEquals(OTHER_ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(OTHER_ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetNickname() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setNickname(OTHER_NICKNAME);
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(OTHER_NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(OTHER_NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetGivenName() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setGivenName(OTHER_GIVEN_NAME);
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(OTHER_GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(OTHER_GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetFamilyName() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setFamilyName(OTHER_FAMILY_NAME);
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(OTHER_FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(OTHER_FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetEmail() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setEmail(OTHER_EMAIL);
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(OTHER_EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(OTHER_EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetDescription() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setDescription(OTHER_DESCRIPTION);
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(OTHER_DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(OTHER_DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetImageUri() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setImageUri(OTHER_IMAGE_URI);
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(OTHER_IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(OTHER_IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetStatus() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setStatus(
-            Status.builder()
-                .withName(OTHER_STATUS)
-                .build()
+                Status.builder()
+                        .withName(OTHER_STATUS)
+                        .build()
         );
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(OTHER_STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(OTHER_STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
     void testSetPosition() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = defaultBuilder
+                .build();
 
         // WHEN
         underTest.setPosition(
-            Position.builder()
-                .withName(OTHER_POSITION)
-                .build()
+                Position.builder()
+                        .withName(OTHER_POSITION)
+                        .build()
         );
 
         // THEN
         assertAll(
-            () -> assertEquals(ARCHIVED, underTest.getArchived()),
-            () -> assertEquals(NICKNAME, underTest.getNickname()),
-            () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
-            () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
-            () -> assertEquals(EMAIL, underTest.getEmail()),
-            () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-            () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
-            () -> assertEquals(STATUS, underTest.getStatus().getName()),
-            () -> assertEquals(OTHER_POSITION, underTest.getPosition().getName())
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(OTHER_POSITION, underTest.getPosition().getName())
         );
-    }
-
-
-    private User.Builder getDefaultValuesBuilder() {
-        return User.builder()
-            .withNickname(NICKNAME)
-            .withGivenName(GIVEN_NAME)
-            .withFamilyName(FAMILY_NAME)
-            .withEmail(EMAIL)
-            .withDescription(DESCRIPTION)
-            .withImageUri(IMAGE_URI)
-            .withStatus(status)
-            .withPosition(position);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<User>> violations,

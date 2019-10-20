@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -35,7 +36,10 @@ final class StatusTest {
             .build();
 
         // THEN
-        assertEquals(NAME, underTest.getName());
+        assertAll(
+                () -> assertEquals(NAME, underTest.getName()),
+                () -> assertNull(underTest.getUsers())
+        );
     }
 
     @Test
@@ -53,15 +57,15 @@ final class StatusTest {
     @Test
     void testEqualsAndHash() {
         // GIVEN
-        Status.Builder builder = Status.builder()
+        final Status.Builder builder = Status.builder()
                 .withName(NAME);
 
         // WHEN
-        Status validStatus1 = Status.builder()
+        final Status validStatus1 = Status.builder()
                 .withName(NAME).build();
-        Status validStatus2 = Status.builder()
+        final Status validStatus2 = Status.builder()
                 .withName(NAME).build();
-        Status invalidStatus = builder
+        final Status invalidStatus = builder
             .withName("something else")
             .build();
 

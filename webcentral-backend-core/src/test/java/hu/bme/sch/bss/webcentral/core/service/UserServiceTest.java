@@ -27,7 +27,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 final class UserServiceTest {
 
     private static final Long USER_ID = 16L;
-
     private static final String NICKNAME = "nickname";
     private static final String GIVEN_NAME = "Given_name";
     private static final String FAMILY_NAME = "Family_name";
@@ -92,7 +91,6 @@ final class UserServiceTest {
                 .build();
 
         userResult = User.builder()
-                .withId(USER_ID)
                 .withNickname(NICKNAME)
                 .withGivenName(GIVEN_NAME)
                 .withFamilyName(FAMILY_NAME)
@@ -117,15 +115,14 @@ final class UserServiceTest {
         then(mockUserDao).should().save(user);
 
         assertAll(
-                () -> assertEquals(USER_ID, result.getId()),
-                () -> assertEquals(NICKNAME, result.getNickname()),
-                () -> assertEquals(GIVEN_NAME, result.getGivenName()),
-                () -> assertEquals(FAMILY_NAME, result.getFamilyName()),
-                () -> assertEquals(EMAIL, result.getEmail()),
-                () -> assertEquals(DESCRIPTION, result.getDescription()),
-                () -> assertEquals(IMAGE_URI, result.getImageUri()),
-                () -> assertEquals(STATUS, result.getStatus()),
-                () -> assertEquals(POSITION, result.getPosition())
+                () -> assertEquals(userRequest.getNickname(), result.getNickname()),
+                () -> assertEquals(userRequest.getGivenName(), result.getGivenName()),
+                () -> assertEquals(userRequest.getFamilyName(), result.getFamilyName()),
+                () -> assertEquals(userRequest.getEmail(), result.getEmail()),
+                () -> assertEquals(userRequest.getDescription(), result.getDescription()),
+                () -> assertEquals(userRequest.getImageUri(), result.getImageUri()),
+                () -> assertEquals(userRequest.getStatus(), result.getStatus()),
+                () -> assertEquals(userRequest.getPosition(), result.getPosition())
         );
     }
 

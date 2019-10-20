@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 final class PositionTest {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-        .getValidator();
+            .getValidator();
 
     private static final String NAME = "name";
 
@@ -34,10 +35,13 @@ final class PositionTest {
         // WHEN
         underTest = Position.builder()
                 .withName(NAME)
-            .build();
+                .build();
 
         // THEN
-        assertEquals(NAME, underTest.getName());
+        assertAll(
+                () -> assertEquals(NAME, underTest.getName()),
+                () -> assertNull(underTest.getUsers())
+        );
     }
 
     @Test
@@ -55,17 +59,17 @@ final class PositionTest {
     @Test
     void testEqualsAndHash() {
         // GIVEN
-        Position.Builder builder = Position.builder()
+        final Position.Builder builder = Position.builder()
                 .withName(NAME);
 
         // WHEN
-        Position validPosition1 = Position.builder()
+        final Position validPosition1 = Position.builder()
                 .withName(NAME).build();
-        Position validPosition2 = Position.builder()
+        final Position validPosition2 = Position.builder()
                 .withName(NAME).build();
-        Position invalidPosition = builder
-            .withName("something else")
-            .build();
+        final Position invalidPosition = builder
+                .withName("something else")
+                .build();
 
         // THEN
         assertEquals(validPosition1, validPosition2);
@@ -82,7 +86,7 @@ final class PositionTest {
         // GIVEN
         underTest = Position.builder()
                 .withName(NAME)
-            .build();
+                .build();
 
         // WHEN
 
@@ -94,10 +98,10 @@ final class PositionTest {
     void testValidationShouldFailForMissingName() {
         // GIVEN
         underTest = Position.builder()
-            .build();
+                .build();
 
         // WHEN
-        Set<ConstraintViolation<Position>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<Position>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "name");
@@ -108,7 +112,7 @@ final class PositionTest {
         // GIVEN
         underTest = Position.builder()
                 .withName(NAME)
-            .build();
+                .build();
 
         // WHEN
         underTest.setName(OTHER_NAME);
@@ -124,4 +128,5 @@ final class PositionTest {
         assertThat(violation.getMessage(), is(expectedMessage));
         assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
     }
+
 }
