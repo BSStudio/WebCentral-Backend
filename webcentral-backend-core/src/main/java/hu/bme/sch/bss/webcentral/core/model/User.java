@@ -72,7 +72,6 @@ public final class User extends DomainAuditModel {
     }
 
     public User(final Builder builder) {
-        this.id = builder.id;
         this.archived = builder.archived;
         this.nickname = builder.nickname;
         this.givenName = builder.givenName;
@@ -213,7 +212,6 @@ public final class User extends DomainAuditModel {
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-        private Long id;
         private Boolean archived = false;
         private String nickname;
         private String givenName;
