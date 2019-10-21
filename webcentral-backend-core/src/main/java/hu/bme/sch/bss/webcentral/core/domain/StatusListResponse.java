@@ -1,19 +1,20 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.model.Status;
 
 import java.util.List;
 
+import lombok.Getter;
+
 @JsonSerialize
+@Getter
 public final class StatusListResponse {
+
     private final Status[] statuses;
 
-    public Status[] getStatuses() {
-        return statuses;
-    }
-
-    public StatusListResponse(final Builder builder) {
+    private StatusListResponse(final Builder builder) {
         this.statuses = builder.statuses;
     }
 

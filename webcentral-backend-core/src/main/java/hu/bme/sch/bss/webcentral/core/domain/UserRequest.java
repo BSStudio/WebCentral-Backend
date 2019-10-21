@@ -7,10 +7,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@SuppressWarnings("finalclass")
+import lombok.Getter;
+
 @JsonDeserialize(builder = UserRequest.Builder.class)
 @JsonRootName("user")
-public class UserRequest {
+@Getter
+public final class UserRequest {
 
     @NotNull
     private Boolean archived;
@@ -46,34 +48,6 @@ public class UserRequest {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUri() {
-        return imageUri;
     }
 
     @SuppressWarnings("hiddenfield")
