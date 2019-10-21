@@ -132,24 +132,4 @@ final class PositionServiceTest {
         // THEN
         assertEquals(OTHER_NAME, result.getName());
     }
-
-    @Test
-    void testFindAll() {
-        // GIVEN setup
-        List<Position> positionList = new ArrayList<>();
-
-        Position position2 = Position.builder()
-            .build();
-
-        positionList.add(position);
-        positionList.add(position2);
-
-        given(mockPositionDao.findAll()).willReturn(positionList);
-
-        // WHEN
-        List<Position> result = underTest.findAll();
-
-        // THEN
-        assertEquals(positionList, result);
-    }
 }

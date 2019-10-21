@@ -1,6 +1,6 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -8,34 +8,40 @@ import javax.validation.Validator;
 import java.util.Set;
 
 import static hu.bme.sch.bss.webcentral.WcTestUtil.thenValidationFails;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 final class StatusTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-        .getValidator();
+            .getValidator();
 
     private static final String NAME = "name";
 
     private static final String OTHER_NAME = "other name";
 
+    private static final String TO_STRING_RESULT = "Status{id=null, name='name'}";
 
     private Status underTest;
 
     @Test
-    public void testConstructor() {
+    void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = Status.builder()
+                .withName(NAME)
+                .build();
 
         // THEN
-        assertEquals(NAME, underTest.getName());
+        assertAll(
+                () -> assertEquals(NAME, underTest.getName()),
+                () -> assertNull(underTest.getUsers())
+        );
     }
 
     @Test
-    public void testNoArgConstructor() {
+    void testNoArgConstructor() {
         // GIVEN
 
         // WHEN
@@ -47,10 +53,10 @@ final class StatusTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingName() {
+    void testValidationShouldFailForMissingName() {
         // GIVEN
         underTest = Status.builder()
-            .build();
+                .build();
 
         // WHEN
         Set<ConstraintViolation<Status>> violations = VALIDATOR.validate(underTest);
@@ -60,10 +66,11 @@ final class StatusTest {
     }
 
     @Test
-    public void testSetName() {
+    void testSetName() {
         // GIVEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = Status.builder()
+                .withName(NAME)
+                .build();
 
         // WHEN
         underTest.setName(OTHER_NAME);
@@ -71,10 +78,4 @@ final class StatusTest {
         // THEN
         assertEquals(OTHER_NAME, underTest.getName());
     }
-
-    private Status.Builder getDefaultValuesBuilder() {
-        return Status.builder()
-            .withName(NAME);
-    }
-
 }

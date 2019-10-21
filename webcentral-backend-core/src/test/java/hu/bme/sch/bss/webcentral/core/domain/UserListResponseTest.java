@@ -1,53 +1,69 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
 import hu.bme.sch.bss.webcentral.core.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 final class UserListResponseTest {
+
+    private User user1;
+    private User user2;
+
+    private UserListResponse underTest;
+
+    @BeforeEach
+    void init() {
+        user1 = User.builder().withNickname("a").build();
+        user2 = User.builder().withNickname("b").build();
+    }
 
     @Test
     void testBuilderWithList() {
         //GIVEN
-        List<User> userList = new ArrayList<>();
-
-        User user1 = User.builder().build();
-        User user2 = User.builder().build();
-
-        userList.add(user1);
-        userList.add(user2);
+        final List<User> userList = List.of(user1, user2);
 
         //WHEN
-        UserListResponse response = UserListResponse.builder()
-            .withUsers(userList)
-            .build();
+        underTest = UserListResponse.builder()
+                .withUsers(userList)
+                .build();
 
         //THEN
-        assertEquals(userList, Arrays.asList(response.getUsers()));
+        assertArrayEquals(userList.toArray(), underTest.getUsers());
+    }
+
+    @Test
+    void testBuilderWithSet() {
+        //GIVEN
+        final Set<User> userList = Set.of(user1, user2);
+
+        //WHEN
+        underTest = UserListResponse.builder()
+                .withUsers(userList)
+                .build();
+
+        //THEN
+        assertArrayEquals(userList.toArray(), underTest.getUsers());
     }
 
     @Test
     void testBuilderWithArray() {
         //GIVEN
-        User[] userList = new User[2];
-
-        User user1 = User.builder().build();
-        User user2 = User.builder().build();
-
+        final User[] userList = new User[2];
         userList[0] = user1;
         userList[1] = user2;
 
         //WHEN
-        UserListResponse response = UserListResponse.builder()
-            .withUsers(userList)
-            .build();
+        underTest = UserListResponse.builder()
+                .withUsers(userList)
+                .build();
 
         //THEN
-        assertEquals(userList, response.getUsers());
+        assertArrayEquals(userList, underTest.getUsers());
     }
+
 }

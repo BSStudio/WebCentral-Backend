@@ -1,6 +1,5 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
-import hu.bme.sch.bss.webcentral.core.domain.PositionListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
@@ -10,9 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -126,24 +122,5 @@ final class PositionControllerTest {
         then(mockPositionService).should().update(request, position);
 
         assertEquals(request.getName(), response.getName());
-    }
-
-    @Test
-    void testListAllPosition() {
-        // GIVEN
-        List<Position> positionList = new ArrayList<>();
-
-        Position position2 = Position.builder()
-            .build();
-
-        positionList.add(position);
-        positionList.add(position2);
-
-        given(mockPositionService.findAll()).willReturn(positionList);
-
-        // WHEN
-        PositionListResponse response = underTest.listAllPositions();
-
-        assertEquals(positionList, Arrays.asList(response.getPositions()));
     }
 }
