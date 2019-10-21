@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image 'maven:3.6.0-jdk-11-slim' }
+        docker { image 'maven:3.6.2-jdk-12' }
     }
     stages {
         stage('Install') {
