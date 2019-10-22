@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PositionControllerTest {
+final class PositionControllerTest {
 
     private static final Long POSITION_ID = 8L;
     private static final String NAME = "name";

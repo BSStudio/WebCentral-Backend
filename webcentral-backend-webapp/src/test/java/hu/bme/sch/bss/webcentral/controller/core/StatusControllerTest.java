@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.controller.core;
 
+import hu.bme.sch.bss.webcentral.core.domain.StatusListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.domain.StatusResponse;
 import hu.bme.sch.bss.webcentral.core.model.Status;
@@ -9,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +23,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class StatusControllerTest {
+final class StatusControllerTest {
 
     private static final Long STATUS_ID = 8L;
     private static final String NAME = "name";
@@ -51,7 +55,7 @@ public class StatusControllerTest {
         given(mockStatusService.create(request)).willReturn(status);
 
         // WHEN
-        StatusResponse response = underTest.createUser(request);
+        StatusResponse response = underTest.createStatus(request);
 
         // THEN
         assertEquals(request.getName(), response.getName());
@@ -124,4 +128,22 @@ public class StatusControllerTest {
         assertEquals(request.getName(), response.getName());
     }
 
+    @Test
+    void testListAllStatuses() {
+        // GIVEN
+        List<Status> statusList = new ArrayList<>();
+
+        Status status2 = Status.builder()
+            .build();
+
+        statusList.add(status);
+        statusList.add(status2);
+
+        given(mockStatusService.findAll()).willReturn(statusList);
+
+        // WHEN
+        StatusListResponse response = underTest.listAllStatuses();
+
+        assertEquals(statusList, Arrays.asList(response.getStatuses()));
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 
 @JsonSerialize
 public final class ErrorDetails {
+
     private final Date timestamp;
     private final HttpStatus status;
     private final String message;

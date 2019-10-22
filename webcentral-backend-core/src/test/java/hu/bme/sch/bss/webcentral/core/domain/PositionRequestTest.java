@@ -1,6 +1,5 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
-import hu.bme.sch.bss.webcentral.core.model.Position;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
@@ -13,21 +12,21 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PositionRequestTest {
+final class PositionRequestTest {
 
-    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-        .getValidator();
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
     private static final String NAME = "name";
 
     private PositionRequest underTest;
 
     @Test
-    void testConstructorAndGetters() {
+    void testConstructorAndBuilder() {
         // GIVEN
 
         // WHEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = PositionRequest.builder()
+                .withName(NAME)
+                .build();
 
         // THEN
         assertEquals(NAME, underTest.getName());
@@ -37,18 +36,13 @@ public class PositionRequestTest {
     void testValidationShouldFailForBlankName() {
         // GIVEN
         underTest = PositionRequest.builder()
-            .build();
+                .build();
 
         // WHEN
-        Set<ConstraintViolation<PositionRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<PositionRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "name");
-    }
-
-    private PositionRequest.Builder getDefaultValuesBuilder() {
-        return PositionRequest.builder()
-            .withName(NAME);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<PositionRequest>> violations,
@@ -58,4 +52,5 @@ public class PositionRequestTest {
         assertThat(violation.getMessage(), is(expectedMessage));
         assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
     }
+
 }
