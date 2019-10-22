@@ -1,4 +1,4 @@
-# BSS-WC
+# BSS-WC [![Build Status](https://travis-ci.org/BSStudio/WebCentral-Backend.svg?branch=master)](https://travis-ci.org/BSStudio/WebCentral-Backend)
 
 This is the backend of our university studio's central web application.
 
