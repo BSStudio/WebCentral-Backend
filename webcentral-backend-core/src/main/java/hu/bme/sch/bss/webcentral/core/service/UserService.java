@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@SuppressWarnings("designforextension")
-public class UserService {
+public final class UserService {
 
     private static final String USER_CREATE_STARTED = "User creation started. {}";
     private static final String USER_CREATE_SUCCEED = "User creation succeed. {}";
@@ -40,7 +39,6 @@ public class UserService {
         this.userDao = userDao;
         this.logger = logger;
     }
-
 
     public User create(final UserRequest request) {
         logger.info(USER_CREATE_STARTED, request);

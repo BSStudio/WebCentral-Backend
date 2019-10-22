@@ -14,19 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 final class PositionRequestTest {
 
-    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-        .getValidator();
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
     private static final String NAME = "name";
 
     private PositionRequest underTest;
 
     @Test
-    void testConstructorAndGetters() {
+    void testConstructorAndBuilder() {
         // GIVEN
 
         // WHEN
-        underTest = getDefaultValuesBuilder()
-            .build();
+        underTest = PositionRequest.builder()
+                .withName(NAME)
+                .build();
 
         // THEN
         assertEquals(NAME, underTest.getName());
@@ -36,18 +36,13 @@ final class PositionRequestTest {
     void testValidationShouldFailForBlankName() {
         // GIVEN
         underTest = PositionRequest.builder()
-            .build();
+                .build();
 
         // WHEN
-        Set<ConstraintViolation<PositionRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<PositionRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "name");
-    }
-
-    private PositionRequest.Builder getDefaultValuesBuilder() {
-        return PositionRequest.builder()
-            .withName(NAME);
     }
 
     private void thenValidationFails(Set<ConstraintViolation<PositionRequest>> violations,
@@ -57,4 +52,5 @@ final class PositionRequestTest {
         assertThat(violation.getMessage(), is(expectedMessage));
         assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
     }
+
 }
