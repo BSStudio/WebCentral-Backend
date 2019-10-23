@@ -3,9 +3,10 @@ package hu.bme.sch.bss.webcentral.core.domain;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.core.model.Position;
-import lombok.Getter;
 
 import java.util.List;
+
+import lombok.Getter;
 
 @Getter
 @JsonSerialize

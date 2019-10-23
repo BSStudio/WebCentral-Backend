@@ -16,5 +16,5 @@ public class HomeController {
     public final String home(@RequestBody final String name) {
         return WELCOME + name;
     }
-    
+
 }
