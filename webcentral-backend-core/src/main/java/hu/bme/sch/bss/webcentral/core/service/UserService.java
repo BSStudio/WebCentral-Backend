@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public final class UserService {
 
     private static final String USER_CREATE_STARTED = "User creation started. {}";

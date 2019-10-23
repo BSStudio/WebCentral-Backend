@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public final class StatusService {
 
     private static final String STATUS_CREATE_STARTED = "Status creation started. {}";
