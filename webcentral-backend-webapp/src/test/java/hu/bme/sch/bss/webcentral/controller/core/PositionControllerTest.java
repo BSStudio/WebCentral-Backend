@@ -5,9 +5,13 @@ import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
 import org.mockito.Mock;
+
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -15,8 +19,8 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
@@ -49,13 +53,13 @@ final class PositionControllerTest {
     @Test
     void testCreateUser() {
         // GIVEN
-        PositionRequest request = PositionRequest.builder()
+        final PositionRequest request = PositionRequest.builder()
             .withName(NAME)
             .build();
         given(mockPositionService.create(request)).willReturn(position);
 
         // WHEN
-        PositionResponse response = underTest.createUser(request);
+        final PositionResponse response = underTest.createUser(request);
 
         // THEN
         assertEquals(request.getName(), response.getName());
@@ -64,14 +68,14 @@ final class PositionControllerTest {
     @Test
     void testGetPosition() {
         // GIVEN
-        Position actual = Position.builder()
+        final Position actual = Position.builder()
             .withName(NAME)
             .build();
 
         given(mockPositionService.findById(POSITION_ID)).willReturn(actual);
 
         // WHEN
-        PositionResponse response = underTest.getPosition(POSITION_ID);
+        final PositionResponse response = underTest.getPosition(POSITION_ID);
 
         // THEN
         assertEquals(actual.getName(), response.getName());
@@ -83,17 +87,10 @@ final class PositionControllerTest {
         given(mockPositionService.findById(POSITION_ID)).willThrow(new NoSuchElementException());
 
         // WHEN
-        Exception exception = null;
-        PositionResponse response = null;
-        try {
-            response = underTest.getPosition(POSITION_ID);
-        } catch (Exception e) {
-            exception = e;
-        }
+        final Executable testSubject = () -> underTest.getPosition(POSITION_ID);
 
         // THEN
-        assertNotNull(exception);
-        assertNull(response);
+        assertThrows(NoSuchElementException.class, testSubject);
         verify(mockPositionService).findById(POSITION_ID);
     }
 

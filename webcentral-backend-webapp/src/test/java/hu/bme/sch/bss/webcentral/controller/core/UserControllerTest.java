@@ -11,10 +11,13 @@ import hu.bme.sch.bss.webcentral.core.model.User;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+
 import org.mockito.Mock;
+
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -28,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;

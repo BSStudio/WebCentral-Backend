@@ -7,6 +7,7 @@ import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
@@ -44,20 +46,20 @@ final class StatusControllerTest {
         initMocks(this);
         underTest = new StatusController(mockStatusService, mockLogger);
         status = Status.builder()
-            .withName(NAME)
-            .build();
+                .withName(NAME)
+                .build();
     }
 
     @Test
     void testCreateUser() {
         // GIVEN
-        StatusRequest request = StatusRequest.builder()
-            .withName(NAME)
-            .build();
+        final StatusRequest request = StatusRequest.builder()
+                .withName(NAME)
+                .build();
         given(mockStatusService.create(request)).willReturn(status);
 
         // WHEN
-        StatusResponse response = underTest.createStatus(request);
+        final StatusResponse response = underTest.createStatus(request);
 
         // THEN
         assertEquals(request.getName(), response.getName());
@@ -66,14 +68,13 @@ final class StatusControllerTest {
     @Test
     void testGetStatus() {
         // GIVEN
-        Status actual = Status.builder()
-            .withName(NAME)
-            .build();
-
+        final Status actual = Status.builder()
+                .withName(NAME)
+                .build();
         given(mockStatusService.findById(STATUS_ID)).willReturn(actual);
 
         // WHEN
-        StatusResponse response = underTest.getStatus(STATUS_ID);
+        final StatusResponse response = underTest.getStatus(STATUS_ID);
 
         // THEN
         assertEquals(actual.getName(), response.getName());
@@ -85,17 +86,10 @@ final class StatusControllerTest {
         given(mockStatusService.findById(STATUS_ID)).willThrow(new NoSuchElementException());
 
         // WHEN
-        Exception exception = null;
-        StatusResponse response = null;
-        try {
-            response = underTest.getStatus(STATUS_ID);
-        } catch (Exception e) {
-            exception = e;
-        }
+        final Executable testSubject = () -> underTest.getStatus(STATUS_ID);
 
         // THEN
-        assertNotNull(exception);
-        assertNull(response);
+        assertThrows(NoSuchElementException.class, testSubject);
         verify(mockStatusService).findById(STATUS_ID);
     }
 
@@ -116,8 +110,8 @@ final class StatusControllerTest {
     void testUpdateStatus() {
         // GIVEN
         final StatusRequest request = StatusRequest.builder()
-            .withName(OTHER_NAME)
-            .build();
+                .withName(OTHER_NAME)
+                .build();
         final Status serviceResult = Status.builder().withName(OTHER_NAME).build();
         given(mockStatusService.findById(STATUS_ID)).willReturn(status);
         given(mockStatusService.update(request, status)).willReturn(serviceResult);
@@ -145,4 +139,5 @@ final class StatusControllerTest {
 
         assertArrayEquals(statusList.toArray(), response.getStatuses());
     }
+
 }
