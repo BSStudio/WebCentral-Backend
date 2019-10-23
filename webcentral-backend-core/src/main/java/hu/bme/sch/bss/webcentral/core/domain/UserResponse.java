@@ -40,4 +40,5 @@ public final class UserResponse {
         this.status = user.getStatus();
         this.position = user.getPosition();
     }
+
 }

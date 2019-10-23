@@ -24,32 +24,29 @@ final class PositionListResponseTest {
     }
 
     @Test
-    void testBuilderWithList() {
+    void testConstructorWithList() {
         //GIVEN
         final List<Position> positionList = List.of(position1, position2);
 
         //WHEN
-        underTest = PositionListResponse.builder()
-            .withPositions(positionList)
-            .build();
+        underTest = new PositionListResponse(positionList);
 
         //THEN
         assertEquals(positionList, Arrays.asList(underTest.getPositions()));
     }
 
     @Test
-    void testBuilderWithArray() {
+    void testConstructorWithArray() {
         //GIVEN
         final Position[] positionList = new Position[2];
         positionList[0] = position1;
         positionList[1] = position2;
 
         //WHEN
-        underTest = PositionListResponse.builder()
-            .withPositions(positionList)
-            .build();
+        underTest = new PositionListResponse(positionList);
 
         //THEN
         assertEquals(positionList, underTest.getPositions());
     }
+
 }

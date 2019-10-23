@@ -44,4 +44,5 @@ final class PositionRequestTest {
         // THEN
         thenValidationFails(violations, "must not be blank", "name");
     }
+
 }

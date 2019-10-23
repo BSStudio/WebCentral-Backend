@@ -36,5 +36,7 @@ public final class PositionRequest {
         public PositionRequest build() {
             return new PositionRequest(this);
         }
+
     }
+
 }

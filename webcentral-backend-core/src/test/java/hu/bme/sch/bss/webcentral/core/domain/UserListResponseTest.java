@@ -23,44 +23,38 @@ final class UserListResponseTest {
     }
 
     @Test
-    void testBuilderWithList() {
+    void testConstructorWithList() {
         //GIVEN
         final List<User> userList = List.of(user1, user2);
 
         //WHEN
-        underTest = UserListResponse.builder()
-                .withUsers(userList)
-                .build();
+        underTest = new UserListResponse(userList);
 
         //THEN
         assertArrayEquals(userList.toArray(), underTest.getUsers());
     }
 
     @Test
-    void testBuilderWithSet() {
+    void testConstructorWithSet() {
         //GIVEN
         final Set<User> userList = Set.of(user1, user2);
 
         //WHEN
-        underTest = UserListResponse.builder()
-                .withUsers(userList)
-                .build();
+        underTest = new UserListResponse(userList);
 
         //THEN
         assertArrayEquals(userList.toArray(), underTest.getUsers());
     }
 
     @Test
-    void testBuilderWithArray() {
+    void testConstructorWithArray() {
         //GIVEN
         final User[] userList = new User[2];
         userList[0] = user1;
         userList[1] = user2;
 
         //WHEN
-        underTest = UserListResponse.builder()
-                .withUsers(userList)
-                .build();
+        underTest = new UserListResponse(userList);
 
         //THEN
         assertArrayEquals(userList, underTest.getUsers());

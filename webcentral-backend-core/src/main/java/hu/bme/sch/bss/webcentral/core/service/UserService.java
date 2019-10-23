@@ -137,4 +137,5 @@ public final class UserService {
         logger.info(USER_POSITION_UPDATE_SUCCEED, user, position);
         return result;
     }
+
 }

@@ -98,4 +98,5 @@ public final class PositionService {
         logger.info(USER_SEARCH_BY_POSITION_ID_SUCCEED, id);
         return position.getUsers();
     }
+
 }

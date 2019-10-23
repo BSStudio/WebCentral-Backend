@@ -69,4 +69,5 @@ import lombok.Setter;
             return new Status(this);
         }
     }
+
 }

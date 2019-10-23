@@ -70,4 +70,5 @@ import lombok.Setter;
             return new Position(this);
         }
     }
+
 }

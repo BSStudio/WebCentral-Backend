@@ -1,6 +1,5 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
@@ -78,4 +77,5 @@ final class PositionTest {
         // THEN
         assertEquals(OTHER_NAME, underTest.getName());
     }
+
 }

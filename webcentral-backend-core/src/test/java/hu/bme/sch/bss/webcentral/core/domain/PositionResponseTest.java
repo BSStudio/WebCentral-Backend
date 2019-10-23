@@ -26,4 +26,5 @@ final class PositionResponseTest {
         assertEquals(position.getId(), underTest.getId());
         assertEquals(position.getName(), underTest.getName());
     }
+
 }

@@ -3,6 +3,7 @@ package hu.bme.sch.bss.webcentral.controller.core;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
@@ -16,14 +17,13 @@ import hu.bme.sch.bss.webcentral.core.service.PositionService;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/user", produces = APPLICATION_JSON_VALUE)
 public final class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
@@ -139,20 +139,16 @@ public final class UserController {
     @ResponseStatus(FOUND)
     public UserListResponse listAllUsers() {
         logger.info(REQUEST_USERS_LIST);
-        final ArrayList<User> users = new ArrayList<>(userService.findAll());
-        return UserListResponse.builder()
-            .withUsers(users)
-            .build();
+        final List<User> users = userService.findAll();
+        return new UserListResponse(users);
     }
 
     @GetMapping("/archived")
     @ResponseStatus(FOUND)
     public UserListResponse listAllArchived() {
         logger.info(REQUEST_ARCHIVED_USERS_LIST);
-        final ArrayList<User> users = new ArrayList<>(userService.findArchived());
-        return UserListResponse.builder()
-            .withUsers(users)
-            .build();
+        final List<User> users = userService.findArchived();
+        return new UserListResponse(users);
     }
 
     @GetMapping("/status/{id}")
@@ -160,9 +156,7 @@ public final class UserController {
     public UserListResponse listAllWithStatusOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
         final Set<User> users = statusService.findAllUserByStatusId(id);
-        return UserListResponse.builder()
-                .withUsers(users)
-                .build();
+        return new UserListResponse(users);
     }
 
     @GetMapping("/position/{id}")
@@ -170,8 +164,7 @@ public final class UserController {
     public UserListResponse listAllWithPositionOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
         final Set<User> users = positionService.findAllUserByPositionId(id);
-        return UserListResponse.builder()
-                .withUsers(users)
-                .build();
+        return new UserListResponse(users);
     }
+
 }
