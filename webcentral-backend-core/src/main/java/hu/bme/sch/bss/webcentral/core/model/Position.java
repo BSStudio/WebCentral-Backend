@@ -1,12 +1,18 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
+import static javax.persistence.CascadeType.ALL;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +25,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Entity
 @Table(name = "position")
@@ -35,10 +40,12 @@ import lombok.Setter;
     private Long id;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany
+    @JsonIgnore
     @Setter(AccessLevel.NONE)
+    @OneToMany(targetEntity = User.class, cascade = ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "position")
     private Set<User> users;
 
     private Position(final Builder builder) {

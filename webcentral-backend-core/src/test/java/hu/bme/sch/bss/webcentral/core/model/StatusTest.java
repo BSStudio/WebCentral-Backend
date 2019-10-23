@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 final class StatusTest {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
-            .getValidator();
+        .getValidator();
 
     private static final String NAME = "name";
 
@@ -31,7 +31,7 @@ final class StatusTest {
         // WHEN
         underTest = Status.builder()
                 .withName(NAME)
-                .build();
+            .build();
 
         // THEN
         assertAll(
@@ -56,7 +56,7 @@ final class StatusTest {
     void testValidationShouldFailForMissingName() {
         // GIVEN
         underTest = Status.builder()
-                .build();
+            .build();
 
         // WHEN
         Set<ConstraintViolation<Status>> violations = VALIDATOR.validate(underTest);
@@ -70,7 +70,7 @@ final class StatusTest {
         // GIVEN
         underTest = Status.builder()
                 .withName(NAME)
-                .build();
+            .build();
 
         // WHEN
         underTest.setName(OTHER_NAME);

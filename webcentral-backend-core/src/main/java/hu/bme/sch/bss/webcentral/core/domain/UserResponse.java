@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 import lombok.Getter;
@@ -13,6 +15,7 @@ import lombok.Getter;
 @JsonTypeName("user")
 @Getter
 public final class UserResponse {
+
     private final Long id;
     private final Boolean archived;
     private final String nickname;
@@ -21,6 +24,9 @@ public final class UserResponse {
     private final String email;
     private final String description;
     private final String imageUri;
+    private final Status status;
+    private final Position position;
+
 
     public UserResponse(final User user) {
         this.id = user.getId();
@@ -31,6 +37,7 @@ public final class UserResponse {
         this.email = user.getEmail();
         this.description = user.getDescription();
         this.imageUri = user.getImageUri();
+        this.status = user.getStatus();
+        this.position = user.getPosition();
     }
-
 }

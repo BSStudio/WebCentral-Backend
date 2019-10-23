@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/user/status", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/status", produces = MediaType.APPLICATION_JSON_VALUE)
 public final class StatusController {
 
     private static final String REQUEST_STATUS_CREATE = "Request for status creation received. {}";
@@ -36,6 +36,7 @@ public final class StatusController {
     private static final String REQUEST_STATUS_DELETE = "Request to delete status received for id: {}";
     private static final String REQUEST_STATUS_EDIT = "Request to update user received for id {}";
     private static final String REQUEST_STATUS_LIST = "Request to find all statuses received.";
+
     private final StatusService statusService;
     private final Logger logger;
 
@@ -73,8 +74,8 @@ public final class StatusController {
     public StatusResponse updateStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
         logger.info(REQUEST_STATUS_EDIT, id);
         final Status status = statusService.findById(id);
-        statusService.update(request, status);
-        return new StatusResponse(status);
+        final Status result = statusService.update(request, status);
+        return new StatusResponse(result);
     }
 
     @GetMapping("/all")

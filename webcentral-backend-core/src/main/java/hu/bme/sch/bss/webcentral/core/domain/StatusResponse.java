@@ -22,5 +22,4 @@ public final class StatusResponse {
         this.id = result.getId();
         this.name = result.getName();
     }
-
 }
