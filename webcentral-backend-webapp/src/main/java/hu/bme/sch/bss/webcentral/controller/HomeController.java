@@ -13,8 +13,8 @@ public class HomeController {
     private static final String WELCOME = "Hello";
 
     @RequestMapping("/")
-    public final String home(@RequestBody final String name) {
-        return WELCOME + name;
+    public final String home() {
+        return WELCOME;
     }
 
 }
