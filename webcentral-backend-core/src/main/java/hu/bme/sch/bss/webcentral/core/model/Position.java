@@ -69,6 +69,5 @@ import lombok.Setter;
         public Position build() {
             return new Position(this);
         }
-
     }
 }

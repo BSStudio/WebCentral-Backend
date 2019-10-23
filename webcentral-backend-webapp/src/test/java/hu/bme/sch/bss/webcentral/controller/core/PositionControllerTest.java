@@ -10,11 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -134,19 +133,15 @@ final class PositionControllerTest {
     @Test
     void testListAllPosition() {
         // GIVEN
-        List<Position> positionList = new ArrayList<>();
-
-        Position position2 = Position.builder()
-            .build();
-
-        positionList.add(position);
-        positionList.add(position2);
+        final Position position2 = Position.builder()
+                .build();
+        final List<Position> positionList = List.of(position, position2);
 
         given(mockPositionService.findAll()).willReturn(positionList);
 
         // WHEN
-        PositionListResponse response = underTest.listAllPositions();
+        final PositionListResponse response = underTest.listAllPositions();
 
-        assertEquals(positionList, Arrays.asList(response.getPositions()));
+        assertArrayEquals(positionList.toArray(), response.getPositions());
     }
 }

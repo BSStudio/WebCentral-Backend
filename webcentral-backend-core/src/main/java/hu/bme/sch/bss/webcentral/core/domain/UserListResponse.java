@@ -47,5 +47,6 @@ public final class UserListResponse {
         public UserListResponse build() {
             return new UserListResponse(this);
         }
+
     }
 }
