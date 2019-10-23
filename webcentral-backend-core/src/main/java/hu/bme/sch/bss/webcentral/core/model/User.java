@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -52,6 +53,12 @@ import lombok.Setter;
     private String description;
 
     private String imageUri;
+
+    @ManyToOne
+    private Position position;
+
+    @ManyToOne
+    private Status status;
 
     private User(final Builder builder) {
         this.archived = builder.archived;

@@ -1,6 +1,7 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -8,6 +9,7 @@ import javax.validation.Validator;
 import java.util.Set;
 
 import static hu.bme.sch.bss.webcentral.WcTestUtil.thenValidationFails;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -18,24 +20,28 @@ final class PositionTest {
 
     private static final String NAME = "name";
 
+    private static final String OTHER_NAME = "other name";
+
     private Position underTest;
 
     @Test
-    public void testConstructor() {
+    void testConstructorAndGetters() {
         // GIVEN
-        final Position.Builder builder = Position.builder()
-                .withName(NAME);
 
         // WHEN
-        underTest = builder
+        underTest = Position.builder()
+                .withName(NAME)
                 .build();
 
         // THEN
-        assertEquals(NAME, underTest.getName());
+        assertAll(
+                () -> assertEquals(NAME, underTest.getName()),
+                () -> assertNull(underTest.getUsers())
+        );
     }
 
     @Test
-    public void testNoArgConstructor() {
+    void testNoArgConstructor() {
         // GIVEN
 
         // WHEN
@@ -46,18 +52,30 @@ final class PositionTest {
         assertNull(underTest.getName());
     }
 
-
     @Test
-    public void testValidationShouldFailForMissingName() {
+    void testValidationShouldFailForMissingName() {
         // GIVEN
         underTest = Position.builder()
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<Position>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<Position>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "name");
     }
 
+    @Test
+    void testSetName() {
+        // GIVEN
+        underTest = Position.builder()
+                .withName(NAME)
+                .build();
+
+        // WHEN
+        underTest.setName(OTHER_NAME);
+
+        // THEN
+        assertEquals(OTHER_NAME, underTest.getName());
+    }
 }

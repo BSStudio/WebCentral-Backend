@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -32,6 +35,10 @@ import lombok.Setter;
 
     @NotBlank
     private String name;
+
+    @OneToMany
+    @Setter(AccessLevel.NONE)
+    private Set<User> users;
 
     private Status(final Builder builder) {
         this.name = builder.name;

@@ -123,5 +123,4 @@ final class PositionControllerTest {
 
         assertEquals(request.getName(), response.getName());
     }
-
 }
