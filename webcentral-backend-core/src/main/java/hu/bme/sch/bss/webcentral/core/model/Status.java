@@ -30,7 +30,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "status")
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data public final class Status extends DomainAuditModel {
 
     @Id
@@ -45,6 +45,7 @@ import lombok.Setter;
     //TODO read more about it
     @JsonIgnore
     @Setter(AccessLevel.NONE)
+    @EqualsAndHashCode.Exclude
     @OneToMany(targetEntity = User.class, cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "status")
     private Set<User> users;
 

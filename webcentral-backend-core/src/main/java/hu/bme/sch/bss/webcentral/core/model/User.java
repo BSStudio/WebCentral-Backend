@@ -31,7 +31,7 @@ import lombok.Setter;
 @JsonSerialize
 @JsonDeserialize(builder = User.Builder.class)
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data public final class User extends DomainAuditModel {
 
     @Id
@@ -72,11 +72,13 @@ import lombok.Setter;
     @JoinColumn
     @ManyToOne(targetEntity = Status.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Status status;
 
     @NotNull
     @JoinColumn
     @ManyToOne
+    @EqualsAndHashCode.Exclude
     private Position position;
 
     private User(final Builder builder) {
