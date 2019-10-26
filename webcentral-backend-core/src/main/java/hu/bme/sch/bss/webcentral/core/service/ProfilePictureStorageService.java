@@ -20,7 +20,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 @Service
-public class ProfilePictureStorageService {
+public final class ProfilePictureStorageService {
+
+    private final static String FAILED_TO_STORE_EMPTY = "Failed to store empty file ";
+    private final static String CAN_NOT_STORE_OUTSIDE_DIRECTORY = "Cannot store file with relative path outside current directory ";
 
     private final Logger logger;
     private final Path rootLocation = Paths.get(URI.create("file:///C:/public/"));
@@ -33,14 +36,13 @@ public class ProfilePictureStorageService {
         final String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
             if (file.isEmpty()) {
-                logger.info("Failed to store empty file " + filename);
-                throw new RuntimeException("Failed to store empty file " + filename);
+                throw new RuntimeException(FAILED_TO_STORE_EMPTY + filename);
             }
             if (filename.contains("..")) {
-                throw new RuntimeException("Cannot store file with relative path outside current directory " + filename);
+                throw new RuntimeException(CAN_NOT_STORE_OUTSIDE_DIRECTORY + filename);
             }
             try (final InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, rootLocation.resolve(filename), StandardCopyOption.ATOMIC_MOVE);
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file: " + filename + ". It might be an invalid image format.", e);
