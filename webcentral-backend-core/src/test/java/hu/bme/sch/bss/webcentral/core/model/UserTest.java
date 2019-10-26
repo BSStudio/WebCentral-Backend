@@ -1,6 +1,6 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -10,7 +10,6 @@ import java.util.Set;
 import static hu.bme.sch.bss.webcentral.WcTestUtil.thenValidationFails;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 final class UserTest {
@@ -25,6 +24,8 @@ final class UserTest {
     private static final String EMAIL = "email@address.com";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_URI = "image/uri.png";
+    private static final String STATUS = "status";
+    private static final String POSITION = "position";
 
     private static final Boolean OTHER_ARCHIVED = true;
     private static final String OTHER_NICKNAME = "other nickname";
@@ -33,23 +34,36 @@ final class UserTest {
     private static final String OTHER_EMAIL = "other@address.com";
     private static final String OTHER_DESCRIPTION = "other description";
     private static final String OTHER_IMAGE_URI = "image/other.png";
-    private static final String TOSTRING_RESULT = "User{id=null, archived=false, nickname='nickname', givenName='given name', familyName='family name', email='email@address.com', description='description', imageUri='image/uri.png'}";
+    private static final String OTHER_STATUS = "other status";
+    private static final String OTHER_POSITION = "other position";
+
+    private static final String TO_STRING_RESULT = "User{id=null, archived=false, nickname='nickname', givenName='given name', familyName='family name', email='email@address.com', description='description', imageUri='image/uri.png', status=Status{id=null, name='status'}, position=Position{id=null, name='position'}}";
+
 
     private User underTest;
+    private Status status = Status.builder()
+            .withName(STATUS)
+            .build();
+    private Position position = Position.builder()
+            .withName(POSITION)
+            .build();
+    private User.Builder defaultBuilder = User.builder()
+            .withArchived(ARCHIVED)
+            .withNickname(NICKNAME)
+            .withGivenName(GIVEN_NAME)
+            .withFamilyName(FAMILY_NAME)
+            .withEmail(EMAIL)
+            .withDescription(DESCRIPTION)
+            .withImageUri(IMAGE_URI)
+            .withStatus(status)
+            .withPosition(position);
 
     @Test
-    public void testConstructorAndGetters() {
+    void testConstructorAndGetters() {
         // GIVEN
 
         // WHEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // THEN
@@ -65,7 +79,7 @@ final class UserTest {
     }
 
     @Test
-    public void testNoArgConstructor() {
+    void testNoArgConstructor() {
         // GIVEN
 
         // WHEN
@@ -87,87 +101,11 @@ final class UserTest {
         );
     }
 
+
     @Test
-    public void testEqualsAndHash() {
+    void testValidationShouldFailForMissingNickname() {
         // GIVEN
-        User.Builder builder = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI);
-
-        // WHEN
-        User validUser1 = builder.build();
-        User validUser2 = builder.build();
-        User invalidUser = builder
-                .withNickname("something else")
-                .build();
-
-        // THEN
-        assertEquals(validUser1, validUser2);
-        assertNotEquals(validUser1, invalidUser);
-        assertNotEquals(validUser1, null);
-        assertNotEquals(validUser1, new Object());
-        assertNotEquals(validUser2, invalidUser);
-        assertEquals(validUser1.hashCode(), validUser2.hashCode());
-    }
-
-    @Test
-    public void testToString() {
-        // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .build();
-
-        // WHEN
-
-        // THEN
-        assertEquals(TOSTRING_RESULT, underTest.toString());
-    }
-
-
-    @Test
-    public void testValidationShouldFailForNullArchived() {
-        //GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
-                .withArchived(null)
-                .build();
-
-        // WHEN
-        Set<ConstraintViolation<User>> violations = VALIDATOR.validate(underTest);
-
-        // THEN
-        thenValidationFails(violations, "must not be null", "archived");
-    }
-
-
-    @Test
-    public void testValidationShouldFailForMissingNickname() {
-        // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .withNickname("")
                 .build();
 
@@ -179,16 +117,9 @@ final class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingGivenName() {
+    void testValidationShouldFailForMissingGivenName() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .withGivenName("")
                 .build();
 
@@ -200,16 +131,9 @@ final class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingFamilyName() {
+    void testValidationShouldFailForMissingFamilyName() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .withFamilyName("")
                 .build();
 
@@ -221,16 +145,9 @@ final class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForNotWellFormedEmailAddress() {
+    void testValidationShouldFailForNotWellFormedEmailAddress() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .withEmail("asd")
                 .build();
 
@@ -243,16 +160,9 @@ final class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForNullEmail() {
+    void testValidationShouldFailForNullEmail() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .withEmail(null)
                 .build();
 
@@ -265,16 +175,9 @@ final class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForBlankEmail() {
+    void testValidationShouldFailForBlankEmail() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .withEmail("")
                 .build();
 
@@ -287,16 +190,9 @@ final class UserTest {
     }
 
     @Test
-    public void testValidationShouldFailForMissingDescription() {
+    void testValidationShouldFailForMissingDescription() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .withDescription("")
                 .build();
 
@@ -309,16 +205,9 @@ final class UserTest {
 
 
     @Test
-    public void testSetArchived() {
+    void testSetArchived() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // WHEN
@@ -333,21 +222,16 @@ final class UserTest {
                 () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
                 () -> assertEquals(EMAIL, underTest.getEmail()),
                 () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-                () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
-    public void testSetNickname() {
+    void testSetNickname() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // WHEN
@@ -361,21 +245,16 @@ final class UserTest {
                 () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
                 () -> assertEquals(EMAIL, underTest.getEmail()),
                 () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-                () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
-    public void testSetGivenName() {
+    void testSetGivenName() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // WHEN
@@ -389,21 +268,16 @@ final class UserTest {
                 () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
                 () -> assertEquals(EMAIL, underTest.getEmail()),
                 () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-                () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
-    public void testSetFamilyName() {
+    void testSetFamilyName() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // WHEN
@@ -417,21 +291,16 @@ final class UserTest {
                 () -> assertEquals(OTHER_FAMILY_NAME, underTest.getFamilyName()),
                 () -> assertEquals(EMAIL, underTest.getEmail()),
                 () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-                () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
-    public void testSetEmail() {
+    void testSetEmail() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // WHEN
@@ -445,21 +314,16 @@ final class UserTest {
                 () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
                 () -> assertEquals(OTHER_EMAIL, underTest.getEmail()),
                 () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-                () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
-    public void testSetDescription() {
+    void testSetDescription() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // WHEN
@@ -473,21 +337,16 @@ final class UserTest {
                 () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
                 () -> assertEquals(EMAIL, underTest.getEmail()),
                 () -> assertEquals(OTHER_DESCRIPTION, underTest.getDescription()),
-                () -> assertEquals(IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
     @Test
-    public void testSetImageUri() {
+    void testSetImageUri() {
         // GIVEN
-        underTest = User.builder()
-                .withArchived(ARCHIVED)
-                .withNickname(NICKNAME)
-                .withGivenName(GIVEN_NAME)
-                .withFamilyName(FAMILY_NAME)
-                .withEmail(EMAIL)
-                .withDescription(DESCRIPTION)
-                .withImageUri(IMAGE_URI)
+        underTest = defaultBuilder
                 .build();
 
         // WHEN
@@ -501,8 +360,63 @@ final class UserTest {
                 () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
                 () -> assertEquals(EMAIL, underTest.getEmail()),
                 () -> assertEquals(DESCRIPTION, underTest.getDescription()),
-                () -> assertEquals(OTHER_IMAGE_URI, underTest.getImageUri())
+                () -> assertEquals(OTHER_IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
         );
     }
 
+    @Test
+    void testSetStatus() {
+        // GIVEN
+        underTest = defaultBuilder
+                .build();
+
+        // WHEN
+        underTest.setStatus(
+                Status.builder()
+                        .withName(OTHER_STATUS)
+                        .build()
+        );
+
+        // THEN
+        assertAll(
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(OTHER_STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(POSITION, underTest.getPosition().getName())
+        );
+    }
+
+    @Test
+    void testSetPosition() {
+        // GIVEN
+        underTest = defaultBuilder
+                .build();
+
+        // WHEN
+        underTest.setPosition(
+                Position.builder()
+                        .withName(OTHER_POSITION)
+                        .build()
+        );
+
+        // THEN
+        assertAll(
+                () -> assertEquals(ARCHIVED, underTest.getArchived()),
+                () -> assertEquals(NICKNAME, underTest.getNickname()),
+                () -> assertEquals(GIVEN_NAME, underTest.getGivenName()),
+                () -> assertEquals(FAMILY_NAME, underTest.getFamilyName()),
+                () -> assertEquals(EMAIL, underTest.getEmail()),
+                () -> assertEquals(DESCRIPTION, underTest.getDescription()),
+                () -> assertEquals(IMAGE_URI, underTest.getImageUri()),
+                () -> assertEquals(STATUS, underTest.getStatus().getName()),
+                () -> assertEquals(OTHER_POSITION, underTest.getPosition().getName())
+        );
+    }
 }

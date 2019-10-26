@@ -1,13 +1,20 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -30,28 +37,47 @@ import lombok.Setter;
     @Id
     @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @NotNull
+    @Column(nullable = false)
     private Boolean archived;
 
     @NotBlank
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @NotBlank
+    @Column(name = "given_name", nullable = false)
     private String givenName;
 
     @NotBlank
+    @Column(name = "family_name", nullable = false)
     private String familyName;
 
     @Email
     @NotBlank
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank
+    @Column(nullable = false)
     private String description;
 
+    @Column(name = "image_uri", nullable = false, unique = true)
     private String imageUri;
+
+    //TODO read more about it
+    @JoinColumn
+    @ManyToOne(targetEntity = Status.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Status status;
+
+    @NotNull
+    @JoinColumn
+    @ManyToOne
+    private Position position;
 
     private User(final Builder builder) {
         this.archived = builder.archived;
@@ -61,6 +87,8 @@ import lombok.Setter;
         this.email = builder.email;
         this.description = builder.description;
         this.imageUri = builder.imageUri;
+        this.status = builder.status;
+        this.position = builder.position;
     }
 
     public static Builder builder() {
@@ -70,13 +98,15 @@ import lombok.Setter;
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
 
-        private Boolean archived;
+        private Boolean archived = false;
         private String nickname;
         private String givenName;
         private String familyName;
         private String email;
         private String description;
         private String imageUri;
+        private Status status;
+        private Position position;
 
         public Builder withArchived(final Boolean archived) {
             this.archived = archived;
@@ -113,8 +143,20 @@ import lombok.Setter;
             return this;
         }
 
+        public Builder withStatus(final Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder withPosition(final Position position) {
+            this.position = position;
+            return this;
+        }
+
         public User build() {
             return new User(this);
         }
+
     }
+
 }

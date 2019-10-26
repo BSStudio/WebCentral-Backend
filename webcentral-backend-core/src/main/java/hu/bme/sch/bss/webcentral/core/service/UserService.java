@@ -2,6 +2,8 @@ package hu.bme.sch.bss.webcentral.core.service;
 
 import hu.bme.sch.bss.webcentral.core.dao.UserDao;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 
 import java.util.List;
@@ -9,7 +11,6 @@ import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public final class UserService {
@@ -31,6 +32,10 @@ public final class UserService {
     private static final String USER_RESTORE_SUCCEED = "User restore succeed. {}";
     private static final String USER_DELETE_STARTED = "User delete started. {}";
     private static final String USER_DELETE_SUCCEED = "User delete succeed. {}";
+    private static final String USER_STATUS_UPDATE_STARTED = "User status update started. {}\n" + "New Status: {}";
+    private static final String USER_STATUS_UPDATE_SUCCEED = "User status update started. {}\n" + "New Status: {}";
+    private static final String USER_POSITION_UPDATE_STARTED = "User status update started. {}\n" + "New Status: {}";
+    private static final String USER_POSITION_UPDATE_SUCCEED = "User status update started. {}\n" + "New Status: {}";
 
     private final UserDao userDao;
     private final Logger logger;
@@ -40,20 +45,56 @@ public final class UserService {
         this.logger = logger;
     }
 
-    public User create(final UserRequest request) {
+    public User create(final UserRequest request, final Status status, final Position position) {
         logger.info(USER_CREATE_STARTED, request);
         final User user = User.builder()
-                .withArchived(request.getArchived())
-                .withDescription(request.getDescription())
-                .withEmail(request.getEmail())
-                .withFamilyName(request.getFamilyName())
-                .withGivenName(request.getGivenName())
-                .withImageUri(request.getImageUri())
-                .withNickname(request.getNickname())
-                .build();
-        userDao.save(user);
+            .withDescription(request.getDescription())
+            .withEmail(request.getEmail())
+            .withFamilyName(request.getFamilyName())
+            .withGivenName(request.getGivenName())
+            .withImageUri(request.getImageUri())
+            .withNickname(request.getNickname())
+            .withStatus(status)
+            .withPosition(position)
+            .build();
+        final User userResult = userDao.save(user);
         logger.info(USER_CREATE_SUCCEED, user);
-        return user;
+        return userResult;
+    }
+
+    public User update(final UserRequest request, final User user) {
+        logger.info(USER_UPDATE_STARTED, user);
+        user.setNickname(request.getNickname());
+        user.setGivenName(request.getGivenName());
+        user.setFamilyName(request.getFamilyName());
+        user.setEmail(request.getEmail());
+        user.setDescription(request.getDescription());
+        user.setImageUri(request.getImageUri());
+        final User result = userDao.save(user);
+        logger.info(USER_UPDATE_SUCCEED, user);
+        return result;
+    }
+
+    public User archive(final User user) {
+        logger.info(USER_ARCHIVE_STARTED, user);
+        user.setArchived(true);
+        final User result = userDao.save(user);
+        logger.info(USER_ARCHIVE_SUCCEED, user);
+        return result;
+    }
+
+    public User restore(final User user) {
+        logger.info(USER_RESTORE_STARTED, user);
+        user.setArchived(false);
+        final User result = userDao.save(user);
+        logger.info(USER_RESTORE_SUCCEED, user);
+        return result;
+    }
+
+    public void delete(final User user) {
+        logger.info(USER_DELETE_STARTED, user);
+        userDao.delete(user);
+        logger.info(USER_DELETE_SUCCEED, user);
     }
 
     public User findById(final Long id) {
@@ -69,48 +110,31 @@ public final class UserService {
 
     public List<User> findAll() {
         logger.info(USERS_ALL_SEARCH_STARTED);
-        List<User> userList = userDao.findAllNotArchived();
+        final List<User> userList = userDao.findAll();
         logger.info(USERS_ALL_SEARCH_SUCCEED);
         return userList;
     }
 
     public List<User> findArchived() {
         logger.info(USERS_ARCHIVED_SEARCH_STARTED);
-        List<User> archivedUserList = userDao.findAllArchived();
+        final List<User> archivedUserList = userDao.findAllArchived();
         logger.info(USERS_ARCHIVED_SEARCH_SUCCEED);
         return archivedUserList;
     }
 
-    public void update(final UserRequest request, final User user) {
-        logger.info(USER_UPDATE_STARTED, user);
-        user.setNickname(request.getNickname());
-        user.setGivenName(request.getGivenName());
-        user.setFamilyName(request.getFamilyName());
-        user.setEmail(request.getEmail());
-        user.setDescription(request.getDescription());
-        user.setImageUri(request.getImageUri());
-        userDao.save(user);
-        logger.info(USER_UPDATE_SUCCEED, user);
+    public User updateUserStatus(final User user, final Status status) {
+        logger.info(USER_STATUS_UPDATE_STARTED, user, status);
+        user.setStatus(status);
+        final User result = userDao.save(user);
+        logger.info(USER_STATUS_UPDATE_SUCCEED, user, status);
+        return result;
     }
 
-    public void archive(final User user) {
-        logger.info(USER_ARCHIVE_STARTED, user);
-        user.setArchived(true);
-        userDao.save(user);
-        logger.info(USER_ARCHIVE_SUCCEED, user);
+    public User updateUserPosition(final User user, final Position position) {
+        logger.info(USER_POSITION_UPDATE_STARTED, user, position);
+        user.setPosition(position);
+        final User result = userDao.save(user);
+        logger.info(USER_POSITION_UPDATE_SUCCEED, user, position);
+        return result;
     }
-
-    public void restore(final User user) {
-        logger.info(USER_RESTORE_STARTED, user);
-        user.setArchived(false);
-        userDao.save(user);
-        logger.info(USER_RESTORE_SUCCEED, user);
-    }
-
-    public void delete(final User user) {
-        logger.info(USER_DELETE_STARTED, user);
-        userDao.delete(user);
-        logger.info(USER_DELETE_SUCCEED, user);
-    }
-
 }

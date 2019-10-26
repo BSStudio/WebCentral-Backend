@@ -4,13 +4,20 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
+import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
+import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.UserRequest;
 import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
+import hu.bme.sch.bss.webcentral.core.model.Position;
+import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
+import hu.bme.sch.bss.webcentral.core.service.PositionService;
+import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -40,12 +47,19 @@ public final class UserController {
     private static final String REQUEST_USER_RESTORE = "Request to restore user received for id: {}";
     private static final String REQUEST_USER_ARCHIVE = "Request to archive user received for id: {}";
     private static final String REQUEST_USER_DELETE = "Request to delete user received for id: {}";
+    private static final String REQUEST_USER_UPDATE_STATUS = "Request to update user status requested for id: {}";
+    private static final String REQUEST_USER_UPDATE_POSITION = "Request to update user position requested for id: {}";
+    private static final String REQUEST_USERS_WITH_POSITION_OF = "Request users with position of: {}";
 
     private final UserService userService;
+    private final PositionService positionService;
+    private final StatusService statusService;
     private final Logger logger;
 
-    UserController(final UserService userService, final Logger logger) {
+    UserController(final UserService userService, final PositionService positionService, final StatusService statusService, final Logger logger) {
         this.userService = userService;
+        this.positionService = positionService;
+        this.statusService = statusService;
         this.logger = logger;
     }
 
@@ -53,7 +67,9 @@ public final class UserController {
     @ResponseStatus(CREATED)
     public UserResponse createUser(@Valid @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_CREATE, request);
-        final User result = userService.create(request);
+        final Status status = statusService.findByName(request.getStatus().getName());
+        final Position position = positionService.findByName(request.getPosition().getName());
+        final User result = userService.create(request, status, position);
         return new UserResponse(result);
     }
 
@@ -70,24 +86,26 @@ public final class UserController {
     public UserResponse updateUser(@PathVariable("id") final Long id, @RequestBody final UserRequest request) {
         logger.info(REQUEST_USER_UPDATE, id);
         final User user = userService.findById(id);
-        userService.update(request, user);
-        return new UserResponse(user);
+        final User result = userService.update(request, user);
+        return new UserResponse(result);
     }
 
     @PutMapping("/{id}/archive")
     @ResponseStatus(OK)
-    public void archiveUser(@PathVariable("id") final Long id) {
+    public UserResponse archiveUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_ARCHIVE, id);
         final User user = userService.findById(id);
-        userService.archive(user);
+        final User result = userService.archive(user);
+        return new UserResponse(result);
     }
 
     @PutMapping("/{id}/restore")
     @ResponseStatus(OK)
-    public void restoreUser(@PathVariable("id") final Long id) {
+    public UserResponse restoreUser(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USER_RESTORE, id);
         final User user = userService.findById(id);
-        userService.restore(user);
+        final User result = userService.restore(user);
+        return new UserResponse(result);
     }
 
     @DeleteMapping("/{id}")
@@ -96,6 +114,26 @@ public final class UserController {
         logger.info(REQUEST_USER_DELETE, id);
         final User user = userService.findById(id);
         userService.delete(user);
+    }
+
+    @PutMapping("/{id}/status")
+    @ResponseStatus(OK)
+    public UserResponse updateUserStatus(@PathVariable("id") final Long id, @Valid @RequestBody final StatusRequest request) {
+        logger.info(REQUEST_USER_UPDATE_STATUS, id);
+        final User user = userService.findById(id);
+        final Status status = statusService.findByName(request.getName());
+        final User result = userService.updateUserStatus(user, status);
+        return new UserResponse(result);
+    }
+
+    @PutMapping("/{id}/position")
+    @ResponseStatus(OK)
+    public UserResponse updateUserPosition(@PathVariable("id") final Long id, @Valid @RequestBody final PositionRequest request) {
+        logger.info(REQUEST_USER_UPDATE_POSITION, id);
+        final User user = userService.findById(id);
+        final Position position = positionService.findByName(request.getName());
+        final User result = userService.updateUserPosition(user, position);
+        return new UserResponse(result);
     }
 
     @GetMapping("/all")
@@ -118,4 +156,23 @@ public final class UserController {
             .build();
     }
 
+    @GetMapping("/status/{id}")
+    @ResponseStatus(FOUND)
+    public UserListResponse listAllWithStatusOf(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
+        final Set<User> users = statusService.findAllUserByStatusId(id);
+        return UserListResponse.builder()
+                .withUsers(users)
+                .build();
+    }
+
+    @GetMapping("/position/{id}")
+    @ResponseStatus(FOUND)
+    public UserListResponse listAllWithPositionOf(@PathVariable("id") final Long id) {
+        logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
+        final Set<User> users = positionService.findAllUserByPositionId(id);
+        return UserListResponse.builder()
+                .withUsers(users)
+                .build();
+    }
 }

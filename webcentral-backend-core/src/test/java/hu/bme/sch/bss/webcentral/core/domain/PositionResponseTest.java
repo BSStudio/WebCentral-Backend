@@ -1,9 +1,10 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
-import hu.bme.sch.bss.webcentral.core.model.Position;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import hu.bme.sch.bss.webcentral.core.model.Position;
+
+import org.junit.jupiter.api.Test;
 
 final class PositionResponseTest {
 

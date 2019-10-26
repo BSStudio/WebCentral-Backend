@@ -14,7 +14,7 @@ public final class WcTestUtil {
         throw new UnsupportedOperationException();
     }
 
-    public static <T extends DomainAuditModel> void thenValidationFails(Set<ConstraintViolation<T>> violations,
+    public static <T> void thenValidationFails(Set<ConstraintViolation<T>> violations,
                                      String expectedMessage, String expectedProperty) {
         assertThat(violations.size(), is(1));
         ConstraintViolation<T> violation = violations.stream().findFirst().get();
