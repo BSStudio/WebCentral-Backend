@@ -1,5 +1,8 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -23,9 +26,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "users")
