@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "users")
@@ -65,7 +66,7 @@ import lombok.Setter;
     @Column(nullable = false)
     private String description;
 
-    @Column(name = "image_uri", nullable = false, unique = true)
+    @Column(name = "image_uri")
     private String imageUri;
 
     //TODO read more about it
@@ -104,7 +105,7 @@ import lombok.Setter;
         private String familyName;
         private String email;
         private String description;
-        private String imageUri;
+        private String imageUri = "";
         private Status status;
         private Position position;
 

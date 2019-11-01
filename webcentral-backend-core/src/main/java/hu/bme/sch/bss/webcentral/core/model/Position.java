@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "position")
@@ -44,6 +45,8 @@ import lombok.Setter;
     private String name;
 
     @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)
     @OneToMany(targetEntity = User.class, cascade = ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "position")
     private Set<User> users;

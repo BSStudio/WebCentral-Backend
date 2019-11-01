@@ -115,7 +115,6 @@ final class UserServiceTest {
         verify(userRequest).getFamilyName();
         verify(userRequest).getEmail();
         verify(userRequest).getDescription();
-        verify(userRequest).getImageUri();
         assertAll(
                 () -> assertNotNull(result),
                 () -> assertFalse(result.getArchived()),
@@ -124,7 +123,7 @@ final class UserServiceTest {
                 () -> assertEquals(userRequest.getFamilyName(), result.getFamilyName()),
                 () -> assertEquals(userRequest.getEmail(), result.getEmail()),
                 () -> assertEquals(userRequest.getDescription(), result.getDescription()),
-                () -> assertEquals(userRequest.getImageUri(), result.getImageUri()),
+                () -> assertEquals(userRequest.getImageUri(), ""),
                 () -> assertEquals(userRequest.getStatus(), result.getStatus()),
                 () -> assertEquals(userRequest.getPosition(), result.getPosition())
         );
@@ -139,7 +138,7 @@ final class UserServiceTest {
                 .withFamilyName(OTHER_FAMILY_NAME)
                 .withEmail(OTHER_EMAIL)
                 .withDescription(OTHER_DESCRIPTION)
-                .withImageUri(OTHER_IMAGE_URI)
+                .withImageUri(IMAGE_URI)
                 .withStatus(status)
                 .withPosition(position)
                 .build());
@@ -149,7 +148,7 @@ final class UserServiceTest {
                 .withFamilyName(OTHER_FAMILY_NAME)
                 .withEmail(OTHER_EMAIL)
                 .withDescription(OTHER_DESCRIPTION)
-                .withImageUri(OTHER_IMAGE_URI)
+                .withImageUri(IMAGE_URI)
                 .withStatus(status)
                 .withPosition(position)
                 .build();
@@ -160,12 +159,11 @@ final class UserServiceTest {
         final User result = underTest.update(userRequest, user);
 
         // THEN
-        verify(user).setNickname(any()); verify(userRequest).getNickname();
-        verify(user).setGivenName(any()); verify(userRequest).getGivenName();
-        verify(user).setFamilyName(any()); verify(userRequest).getFamilyName();
-        verify(user).setEmail(any()); verify(userRequest).getEmail();
-        verify(user).setDescription(any()); verify(userRequest).getDescription();
-        verify(user).setImageUri(any()); verify(userRequest).getImageUri();
+        then(user).should().setNickname(OTHER_NICKNAME); then(userRequest).should().getNickname();
+        then(user).should().setGivenName(OTHER_GIVEN_NAME); then(userRequest).should().getGivenName();
+        then(user).should().setFamilyName(OTHER_FAMILY_NAME); then(userRequest).should().getFamilyName();
+        then(user).should().setEmail(OTHER_EMAIL); then(userRequest).should().getEmail();
+        then(user).should().setDescription(OTHER_DESCRIPTION); then(userRequest).should().getDescription();
         assertAll(
                 () -> assertNotNull(result),
                 () -> assertFalse(result.getArchived()),
@@ -174,7 +172,7 @@ final class UserServiceTest {
                 () -> assertEquals(OTHER_FAMILY_NAME, result.getFamilyName()),
                 () -> assertEquals(OTHER_EMAIL, result.getEmail()),
                 () -> assertEquals(OTHER_DESCRIPTION, result.getDescription()),
-                () -> assertEquals(OTHER_IMAGE_URI, result.getImageUri()),
+                () -> assertEquals(IMAGE_URI, result.getImageUri()),
                 () -> assertEquals(status, result.getStatus()),
                 () -> assertEquals(position, result.getPosition())
         );
@@ -322,6 +320,23 @@ final class UserServiceTest {
         then(mockUserDao).should().save(user);
         then(user).should().setPosition(OTHER_POSITION);
         assertEquals(result.getPosition(), OTHER_POSITION);
+    }
+
+    @Test
+    void testUpdateUserPictureUri() {
+        // GIVEN
+        final User updatedUser = defaultUserBuilder
+                .withImageUri(OTHER_IMAGE_URI)
+                .build();
+        given(mockUserDao.save(user)).willReturn(updatedUser);
+
+        // WHEN
+        final User result = underTest.updateUserPictureUri(user, OTHER_IMAGE_URI);
+
+        // THEN
+        then(mockUserDao).should().save(user);
+        then(user).should().setImageUri(OTHER_IMAGE_URI);
+        assertEquals(result.getImageUri(), OTHER_IMAGE_URI);
     }
 
 }

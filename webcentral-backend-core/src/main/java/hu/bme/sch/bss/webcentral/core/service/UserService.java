@@ -33,9 +33,11 @@ public final class UserService {
     private static final String USER_DELETE_STARTED = "User delete started. {}";
     private static final String USER_DELETE_SUCCEED = "User delete succeed. {}";
     private static final String USER_STATUS_UPDATE_STARTED = "User status update started. {}\n" + "New Status: {}";
-    private static final String USER_STATUS_UPDATE_SUCCEED = "User status update started. {}\n" + "New Status: {}";
+    private static final String USER_STATUS_UPDATE_SUCCEED = "User status update succeed. {}\n" + "New Status: {}";
     private static final String USER_POSITION_UPDATE_STARTED = "User status update started. {}\n" + "New Status: {}";
-    private static final String USER_POSITION_UPDATE_SUCCEED = "User status update started. {}\n" + "New Status: {}";
+    private static final String USER_POSITION_UPDATE_SUCCEED = "User status update succeed. {}\n" + "New Status: {}";
+    private static final String USER_IMAGE_URI_UPDATE_STARTED = "User image URI update started. {}\n" + "New URI: {}";
+    private static final String USER_IMAGE_URI_UPDATE_SUCCEED = "User image URI update succeed. {}\n" + "New URI: {}";
 
     private final UserDao userDao;
     private final Logger logger;
@@ -52,7 +54,6 @@ public final class UserService {
             .withEmail(request.getEmail())
             .withFamilyName(request.getFamilyName())
             .withGivenName(request.getGivenName())
-            .withImageUri(request.getImageUri())
             .withNickname(request.getNickname())
             .withStatus(status)
             .withPosition(position)
@@ -69,7 +70,6 @@ public final class UserService {
         user.setFamilyName(request.getFamilyName());
         user.setEmail(request.getEmail());
         user.setDescription(request.getDescription());
-        user.setImageUri(request.getImageUri());
         final User result = userDao.save(user);
         logger.info(USER_UPDATE_SUCCEED, user);
         return result;
@@ -137,4 +137,13 @@ public final class UserService {
         logger.info(USER_POSITION_UPDATE_SUCCEED, user, position);
         return result;
     }
+
+    public User updateUserPictureUri(final User user, final String imageUri) {
+        logger.info(USER_IMAGE_URI_UPDATE_STARTED, user, imageUri);
+        user.setImageUri(imageUri);
+        final User result = userDao.save(user);
+        logger.info(USER_IMAGE_URI_UPDATE_SUCCEED, user, imageUri);
+        return result;
+    }
+
 }

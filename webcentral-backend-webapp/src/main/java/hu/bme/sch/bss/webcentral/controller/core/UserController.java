@@ -13,6 +13,7 @@ import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
+import hu.bme.sch.bss.webcentral.core.service.ProfilePictureStorageService;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
@@ -24,7 +25,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,11 +32,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE )
+@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public final class UserController {
 
     private static final String REQUEST_USER_CREATE = "Request for user creation received. {}";
@@ -49,17 +51,24 @@ public final class UserController {
     private static final String REQUEST_USER_DELETE = "Request to delete user received for id: {}";
     private static final String REQUEST_USER_UPDATE_STATUS = "Request to update user status requested for id: {}";
     private static final String REQUEST_USER_UPDATE_POSITION = "Request to update user position requested for id: {}";
+    private static final String REQUEST_USER_UPDATE_PICTURE = "Request to update user profilePicture requested for id: {}";
     private static final String REQUEST_USERS_WITH_POSITION_OF = "Request users with position of: {}";
 
     private final UserService userService;
     private final PositionService positionService;
     private final StatusService statusService;
+    private final ProfilePictureStorageService profilePictureStorageService;
     private final Logger logger;
 
-    UserController(final UserService userService, final PositionService positionService, final StatusService statusService, final Logger logger) {
+    UserController(final UserService userService,
+                   final PositionService positionService,
+                   final StatusService statusService,
+                   final ProfilePictureStorageService profilePictureStorageService,
+                   final Logger logger) {
         this.userService = userService;
         this.positionService = positionService;
         this.statusService = statusService;
+        this.profilePictureStorageService = profilePictureStorageService;
         this.logger = logger;
     }
 
@@ -136,14 +145,24 @@ public final class UserController {
         return new UserResponse(result);
     }
 
+    @PostMapping("/{id}/image")
+    @ResponseStatus(OK)
+    public UserResponse updateUserPicture(@PathVariable("id") final Long id, @RequestParam("picture") final MultipartFile picture) {
+        logger.info(REQUEST_USER_UPDATE_PICTURE, id);
+        final User user = userService.findById(id);
+        final String imageUri = profilePictureStorageService.storeImage(picture);
+        final User result = userService.updateUserPictureUri(user, imageUri);
+        return new UserResponse(result);
+    }
+
     @GetMapping("/all")
     @ResponseStatus(FOUND)
     public UserListResponse listAllUsers() {
         logger.info(REQUEST_USERS_LIST);
         final ArrayList<User> users = new ArrayList<>(userService.findAll());
         return UserListResponse.builder()
-            .withUsers(users)
-            .build();
+                .withUsers(users)
+                .build();
     }
 
     @GetMapping("/archived")
@@ -152,8 +171,8 @@ public final class UserController {
         logger.info(REQUEST_ARCHIVED_USERS_LIST);
         final ArrayList<User> users = new ArrayList<>(userService.findArchived());
         return UserListResponse.builder()
-            .withUsers(users)
-            .build();
+                .withUsers(users)
+                .build();
     }
 
     @GetMapping("/status/{id}")
@@ -175,4 +194,5 @@ public final class UserController {
                 .withUsers(users)
                 .build();
     }
+
 }

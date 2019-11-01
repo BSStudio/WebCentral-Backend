@@ -9,6 +9,7 @@ import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
+import hu.bme.sch.bss.webcentral.core.service.ProfilePictureStorageService;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 
 import org.slf4j.Logger;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -69,12 +72,14 @@ final class UserControllerTest {
     @Mock
     private StatusService mockStatusService;
     @Mock
+    private ProfilePictureStorageService profilePictureStorageService;
+    @Mock
     private Logger mockLogger;
 
     @BeforeEach
     void init() {
         initMocks(this);
-        underTest = new UserController(mockUserService, mockPositionService, mockStatusService, mockLogger);
+        underTest = new UserController(mockUserService, mockPositionService, mockStatusService, profilePictureStorageService, mockLogger);
         defaultBuilder = User.builder()
                 .withArchived(ARCHIVED)
                 .withNickname(NICKNAME)
@@ -308,6 +313,24 @@ final class UserControllerTest {
 
         // THEN
         assertEquals(otherPosition, response.getPosition());
+    }
+
+    @Test
+    void updateUserPicture() {
+        // GIVEN
+        final MultipartFile picture = mock(MultipartFile.class);
+        final User updatedUser = User.builder()
+                .withImageUri(IMAGE_URI)
+                .build();
+        given(mockUserService.findById(USER_ID)).willReturn(user);
+        given(profilePictureStorageService.storeImage(picture)).willReturn(IMAGE_URI);
+        given(mockUserService.updateUserPictureUri(user, IMAGE_URI)).willReturn(updatedUser);
+
+        // WHEN
+        final UserResponse response = underTest.updateUserPicture(USER_ID, picture);
+
+        // THEN
+        assertEquals(IMAGE_URI, response.getImageUri());
     }
 
     @Test
