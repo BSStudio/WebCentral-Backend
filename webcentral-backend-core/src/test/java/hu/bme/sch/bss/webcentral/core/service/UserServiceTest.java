@@ -159,11 +159,12 @@ final class UserServiceTest {
         final User result = underTest.update(userRequest, user);
 
         // THEN
-        then(user).should().setNickname(OTHER_NICKNAME); then(userRequest).should().getNickname();
-        then(user).should().setGivenName(OTHER_GIVEN_NAME); then(userRequest).should().getGivenName();
-        then(user).should().setFamilyName(OTHER_FAMILY_NAME); then(userRequest).should().getFamilyName();
-        then(user).should().setEmail(OTHER_EMAIL); then(userRequest).should().getEmail();
-        then(user).should().setDescription(OTHER_DESCRIPTION); then(userRequest).should().getDescription();
+        verify(user).setNickname(any()); verify(userRequest).getNickname();
+        verify(user).setGivenName(any()); verify(userRequest).getGivenName();
+        verify(user).setFamilyName(any()); verify(userRequest).getFamilyName();
+        verify(user).setEmail(any()); verify(userRequest).getEmail();
+        verify(user).setDescription(any()); verify(userRequest).getDescription();
+        verify(user).setImageUri(any()); verify(userRequest).getImageUri();
         assertAll(
                 () -> assertNotNull(result),
                 () -> assertFalse(result.getArchived()),
