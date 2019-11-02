@@ -50,14 +50,15 @@ public final class UserService {
     public User create(final UserRequest request, final Status status, final Position position) {
         logger.info(USER_CREATE_STARTED, request);
         final User user = User.builder()
-            .withDescription(request.getDescription())
-            .withEmail(request.getEmail())
-            .withFamilyName(request.getFamilyName())
-            .withGivenName(request.getGivenName())
-            .withNickname(request.getNickname())
-            .withStatus(status)
-            .withPosition(position)
-            .build();
+                .withDescription(request.getDescription())
+                .withEmail(request.getEmail())
+                .withFamilyName(request.getFamilyName())
+                .withGivenName(request.getGivenName())
+                .withNickname(request.getNickname())
+                .withImageUri("")
+                .withStatus(status)
+                .withPosition(position)
+                .build();
         final User userResult = userDao.save(user);
         logger.info(USER_CREATE_SUCCEED, user);
         return userResult;

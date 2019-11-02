@@ -9,7 +9,7 @@ import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
-import hu.bme.sch.bss.webcentral.core.service.ProfilePictureStorageService;
+import hu.bme.sch.bss.webcentral.core.service.FileStoreService;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -37,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -72,14 +74,14 @@ final class UserControllerTest {
     @Mock
     private StatusService mockStatusService;
     @Mock
-    private ProfilePictureStorageService profilePictureStorageService;
+    private FileStoreService mockFileStoreService;
     @Mock
     private Logger mockLogger;
 
     @BeforeEach
     void init() {
         initMocks(this);
-        underTest = new UserController(mockUserService, mockPositionService, mockStatusService, profilePictureStorageService, mockLogger);
+        underTest = new UserController(mockUserService, mockPositionService, mockStatusService, mockFileStoreService, mockLogger);
         defaultBuilder = User.builder()
                 .withArchived(ARCHIVED)
                 .withNickname(NICKNAME)
@@ -90,8 +92,8 @@ final class UserControllerTest {
                 .withImageUri(IMAGE_URI)
                 .withStatus(STATUS)
                 .withPosition(POSITION);
-        user = defaultBuilder
-                .build();
+        user = spy(defaultBuilder
+                .build());
         userRequest = UserRequest.builder()
                 .withArchived(ARCHIVED)
                 .withNickname(NICKNAME)
@@ -263,7 +265,7 @@ final class UserControllerTest {
     }
 
     @Test
-    void testDeleteUser() {
+    void testDeleteUser() throws IOException {
         // GIVEN
         given(mockUserService.findById(USER_ID)).willReturn(user);
 
@@ -272,7 +274,9 @@ final class UserControllerTest {
 
         // THEN
         then(mockUserService).should().findById(USER_ID);
+        then(user).should().getImageUri();
         then(mockUserService).should().delete(user);
+        then(mockFileStoreService).should().deleteFileWithNameOf(IMAGE_URI);
     }
 
     @Test
@@ -316,20 +320,22 @@ final class UserControllerTest {
     }
 
     @Test
-    void updateUserPicture() {
+    void updateUserPicture() throws IOException {
         // GIVEN
         final MultipartFile picture = mock(MultipartFile.class);
         final User updatedUser = User.builder()
                 .withImageUri(IMAGE_URI)
                 .build();
         given(mockUserService.findById(USER_ID)).willReturn(user);
-        given(profilePictureStorageService.storeImage(picture)).willReturn(IMAGE_URI);
+        given(mockFileStoreService.storeImage(picture)).willReturn(IMAGE_URI);
         given(mockUserService.updateUserPictureUri(user, IMAGE_URI)).willReturn(updatedUser);
 
         // WHEN
         final UserResponse response = underTest.updateUserPicture(USER_ID, picture);
 
         // THEN
+        then(user).should().getImageUri();
+        then(mockFileStoreService).should().deleteFileWithNameOf(IMAGE_URI);
         assertEquals(IMAGE_URI, response.getImageUri());
     }
 

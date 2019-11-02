@@ -13,10 +13,11 @@ import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
-import hu.bme.sch.bss.webcentral.core.service.ProfilePictureStorageService;
+import hu.bme.sch.bss.webcentral.core.service.FileStoreService;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -57,18 +58,18 @@ public final class UserController {
     private final UserService userService;
     private final PositionService positionService;
     private final StatusService statusService;
-    private final ProfilePictureStorageService profilePictureStorageService;
+    private final FileStoreService fileStoreService;
     private final Logger logger;
 
     UserController(final UserService userService,
                    final PositionService positionService,
                    final StatusService statusService,
-                   final ProfilePictureStorageService profilePictureStorageService,
+                   final FileStoreService fileStoreService,
                    final Logger logger) {
         this.userService = userService;
         this.positionService = positionService;
         this.statusService = statusService;
-        this.profilePictureStorageService = profilePictureStorageService;
+        this.fileStoreService = fileStoreService;
         this.logger = logger;
     }
 
@@ -119,10 +120,12 @@ public final class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
-    public void deleteUser(@PathVariable("id") final Long id) {
+    public void deleteUser(@PathVariable("id") final Long id) throws IOException {
         logger.info(REQUEST_USER_DELETE, id);
         final User user = userService.findById(id);
+        final String fileName = user.getImageUri();
         userService.delete(user);
+        fileStoreService.deleteFileWithNameOf(fileName);
     }
 
     @PutMapping("/{id}/status")
@@ -147,10 +150,12 @@ public final class UserController {
 
     @PostMapping("/{id}/image")
     @ResponseStatus(OK)
-    public UserResponse updateUserPicture(@PathVariable("id") final Long id, @RequestParam("picture") final MultipartFile picture) {
+    public UserResponse updateUserPicture(@PathVariable("id") final Long id, @RequestParam("picture") final MultipartFile picture) throws IOException {
         logger.info(REQUEST_USER_UPDATE_PICTURE, id);
         final User user = userService.findById(id);
-        final String imageUri = profilePictureStorageService.storeImage(picture);
+        final String oldName = user.getImageUri();
+        final String imageUri = fileStoreService.storeImage(picture);
+        fileStoreService.deleteFileWithNameOf(oldName);
         final User result = userService.updateUserPictureUri(user, imageUri);
         return new UserResponse(result);
     }

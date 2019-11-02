@@ -6,10 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +23,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "users")
@@ -69,15 +66,16 @@ import lombok.ToString;
     @Column(name = "image_uri")
     private String imageUri;
 
-    //TODO read more about it
+    @NotNull
     @JoinColumn
-    @ManyToOne(targetEntity = Status.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     private Status status;
 
     @NotNull
     @JoinColumn
     @ManyToOne
+    @JsonIgnore
     private Position position;
 
     private User(final Builder builder) {

@@ -43,12 +43,11 @@ import lombok.ToString;
     @Column(nullable = false, unique = true)
     private String name;
 
-    //TODO read more about it
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)
-    @OneToMany(targetEntity = User.class, cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "status")
+    @OneToMany(targetEntity = User.class, cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "status") //TODO read more about it
     private Set<User> users;
 
     private Status(final Builder builder) {
