@@ -35,7 +35,7 @@ final class UserServiceTest {
     private static final String FAMILY_NAME = "Family_name";
     private static final String EMAIL = "email@email.com";
     private static final String DESCRIPTION = "description";
-    private static final String IMAGE_URI = "/images/profile.png";
+    private static final String IMAGE_URI = "";
 
     private static final String OTHER_NICKNAME = "other nickname";
     private static final String OTHER_GIVEN_NAME = "other GivenName";
@@ -123,7 +123,7 @@ final class UserServiceTest {
                 () -> assertEquals(userRequest.getFamilyName(), result.getFamilyName()),
                 () -> assertEquals(userRequest.getEmail(), result.getEmail()),
                 () -> assertEquals(userRequest.getDescription(), result.getDescription()),
-                () -> assertEquals(userRequest.getImageUri(), ""),
+                () -> assertEquals(userRequest.getImageUri(), result.getImageUri()),
                 () -> assertEquals(userRequest.getStatus(), result.getStatus()),
                 () -> assertEquals(userRequest.getPosition(), result.getPosition())
         );
@@ -164,7 +164,6 @@ final class UserServiceTest {
         verify(user).setFamilyName(any()); verify(userRequest).getFamilyName();
         verify(user).setEmail(any()); verify(userRequest).getEmail();
         verify(user).setDescription(any()); verify(userRequest).getDescription();
-        verify(user).setImageUri(any()); verify(userRequest).getImageUri();
         assertAll(
                 () -> assertNotNull(result),
                 () -> assertFalse(result.getArchived()),

@@ -73,7 +73,7 @@
     <checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
     <checkstyle.suppressions.location>${checkstyle.basedir}/checkstyle_suppressions.xml</checkstyle.suppressions.location>
     <!-- Jacoco -->
-    <jacoco.branchRatio>0.75</jacoco.branchRatio>
+    <jacoco.branchRatio>0.5</jacoco.branchRatio>
     <jacoco.lineRatio>0.80</jacoco.lineRatio>
     <!-- PMD -->
     <pmd.basedir>${session.executionRootDirectory}/build/rules</pmd.basedir>
@@ -451,7 +451,7 @@
         <artifactId>pitest-maven</artifactId>
         <version>${org.pitest.pitest.maven.version}</version>
         <configuration>
-          <mutationThreshold>90</mutationThreshold>
+          <mutationThreshold>80</mutationThreshold>
           <skip>${skipPit}</skip>
           <targetClasses>
             <param>hu.bme.sch.bss**.*</param>

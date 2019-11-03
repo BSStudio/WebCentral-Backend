@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +24,7 @@ public final class FileStoreService {
     private static final String IMAGE_RATIO_IS_NOT_1_BY_1 = "Image ratio is not 1:1";
     private static final String FILE_DELETED_WITH_NAME = "File deleted with name {}";
 
-    @Value("${wc.storageLocation}") //TODO make it work
+    //TODO make it work @Value("${wc.storageLocation}")
     private String storageLocation = "C:/public/";
     private Path rootLocation = Path.of(storageLocation);
 
@@ -33,10 +32,6 @@ public final class FileStoreService {
 
     FileStoreService(final Logger logger) {
         this.logger = logger;
-    }
-
-    void setRootLocation(final Path rootLocation) {
-        this.rootLocation = rootLocation;
     }
 
     @PostConstruct

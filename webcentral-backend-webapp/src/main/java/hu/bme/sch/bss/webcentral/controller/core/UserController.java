@@ -12,8 +12,8 @@ import hu.bme.sch.bss.webcentral.core.domain.UserResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.model.User;
-import hu.bme.sch.bss.webcentral.core.service.PositionService;
 import hu.bme.sch.bss.webcentral.core.service.FileStoreService;
+import hu.bme.sch.bss.webcentral.core.service.PositionService;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 import hu.bme.sch.bss.webcentral.core.service.UserService;
 
@@ -150,7 +150,8 @@ public final class UserController {
 
     @PostMapping("/{id}/image")
     @ResponseStatus(OK)
-    public UserResponse updateUserPicture(@PathVariable("id") final Long id, @RequestParam("picture") final MultipartFile picture) throws IOException {
+    public UserResponse updateUserPicture(@PathVariable("id") final Long id,
+                                          @RequestParam("picture") final MultipartFile picture) throws IOException {
         logger.info(REQUEST_USER_UPDATE_PICTURE, id);
         final User user = userService.findById(id);
         final String oldName = user.getImageUri();
