@@ -1,8 +1,5 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -69,15 +66,16 @@ import lombok.Setter;
     @Column(name = "image_uri", nullable = false, unique = true)
     private String imageUri;
 
-    //TODO read more about it
-    @JoinColumn
-    @ManyToOne(targetEntity = Status.class, fetch = EAGER, cascade = ALL)
+    @NotNull
+    @ManyToOne
     @JsonIgnore
+    @JoinColumn
     private Status status;
 
     @NotNull
-    @JoinColumn
     @ManyToOne
+    @JsonIgnore
+    @JoinColumn
     private Position position;
 
     private User(final Builder builder) {
