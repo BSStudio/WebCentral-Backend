@@ -82,6 +82,8 @@ public final class PositionController {
     public PositionListResponse listAllPositions() {
         logger.info(REQUEST_POSITION_LIST);
         final List<Position> positions = positionService.findAll();
-        return new PositionListResponse(positions);
+        return PositionListResponse.builder()
+            .withPositions(positions)
+            .build();
     }
 }

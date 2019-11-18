@@ -70,6 +70,7 @@ import lombok.ToString;
         public Status build() {
             return new Status(this);
         }
+
     }
 
 }

@@ -83,6 +83,8 @@ public final class StatusController {
     public StatusListResponse listAllStatuses() {
         logger.info(REQUEST_STATUS_LIST);
         final List<Status> statuses = statusService.findAll();
-        return new StatusListResponse(statuses);
+        return StatusListResponse.builder()
+            .withStatuses(statuses)
+            .build();
     }
 }

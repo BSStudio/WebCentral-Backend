@@ -140,7 +140,9 @@ public final class UserController {
     public UserListResponse listAllUsers() {
         logger.info(REQUEST_USERS_LIST);
         final List<User> users = userService.findAll();
-        return new UserListResponse(users);
+        return UserListResponse.builder()
+            .withUsers(users)
+            .build();
     }
 
     @GetMapping("/archived")
@@ -148,7 +150,9 @@ public final class UserController {
     public UserListResponse listAllArchived() {
         logger.info(REQUEST_ARCHIVED_USERS_LIST);
         final List<User> users = userService.findArchived();
-        return new UserListResponse(users);
+        return UserListResponse.builder()
+            .withUsers(users)
+            .build();
     }
 
     @GetMapping("/status/{id}")
@@ -156,7 +160,9 @@ public final class UserController {
     public UserListResponse listAllWithStatusOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
         final Set<User> users = statusService.findAllUserByStatusId(id);
-        return new UserListResponse(users);
+        return UserListResponse.builder()
+                .withUsers(users)
+                .build();
     }
 
     @GetMapping("/position/{id}")
@@ -164,7 +170,9 @@ public final class UserController {
     public UserListResponse listAllWithPositionOf(@PathVariable("id") final Long id) {
         logger.info(REQUEST_USERS_WITH_POSITION_OF, id);
         final Set<User> users = positionService.findAllUserByPositionId(id);
-        return new UserListResponse(users);
+        return UserListResponse.builder()
+                .withUsers(users)
+                .build();
     }
 
 }

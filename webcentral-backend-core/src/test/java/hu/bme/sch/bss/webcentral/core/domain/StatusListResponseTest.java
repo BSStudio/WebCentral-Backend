@@ -23,26 +23,30 @@ final class StatusListResponseTest {
     }
 
     @Test
-    void testConstructorWithList() {
+    void testBuilderWithList() {
         //GIVEN
         final List<Status> statusList = List.of(status1, status2);
 
         //WHEN
-        underTest = new StatusListResponse(statusList);
+        underTest = StatusListResponse.builder()
+            .withStatuses(statusList)
+            .build();
 
         //THEN
         assertArrayEquals(statusList.toArray(), underTest.getStatuses());
     }
 
     @Test
-    void testConstructorWithArray() {
+    void testBuilderWithArray() {
         //GIVEN
         final Status[] statusList = new Status[2];
         statusList[0] = status1;
         statusList[1] = status2;
 
         //WHEN
-        underTest = new StatusListResponse(statusList);
+        underTest = StatusListResponse.builder()
+            .withStatuses(statusList)
+            .build();
 
         //THEN
         assertArrayEquals(statusList, underTest.getStatuses());

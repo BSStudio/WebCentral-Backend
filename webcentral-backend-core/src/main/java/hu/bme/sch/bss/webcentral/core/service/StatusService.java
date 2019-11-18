@@ -97,4 +97,5 @@ public final class StatusService {
         logger.info(USER_SEARCH_BY_STATUS_ID_SUCCEED, id);
         return status.getUsers();
     }
+
 }

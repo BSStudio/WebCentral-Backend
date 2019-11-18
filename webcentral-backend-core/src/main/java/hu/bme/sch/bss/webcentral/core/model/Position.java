@@ -72,6 +72,7 @@ import lombok.ToString;
         public Position build() {
             return new Position(this);
         }
+
     }
 
 }

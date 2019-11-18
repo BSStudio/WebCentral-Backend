@@ -12,15 +12,35 @@ import lombok.Getter;
 @JsonSerialize
 public final class PositionListResponse {
 
-    private Position[] positions;
+    private final Position[] positions;
 
-    PositionListResponse(final Position[] positions) {
-        this.positions = positions;
+    private PositionListResponse(final Builder builder) {
+        this.positions = builder.position;
     }
 
-    public PositionListResponse(final List<Position> positions) {
-        this.positions = new Position[positions.size()];
-        this.positions = positions.toArray(this.positions);
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @SuppressWarnings("hiddenfield")
+    public static final class Builder {
+        private Position[] position;
+
+        public Builder withPositions(final Position[] position) {
+            this.position = position;
+            return this;
+        }
+
+        public Builder withPositions(final List<Position> position) {
+            this.position = new Position[position.size()];
+            this.position = position.toArray(this.position);
+            return this;
+        }
+
+        public PositionListResponse build() {
+            return new PositionListResponse(this);
+        }
+
     }
 
 }

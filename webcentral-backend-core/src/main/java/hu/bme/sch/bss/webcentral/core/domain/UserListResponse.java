@@ -13,20 +13,41 @@ import lombok.Getter;
 @JsonSerialize
 public final class UserListResponse {
 
-    private User[] users;
+    private final User[] users;
 
-    UserListResponse(final User[] users) {
-        this.users = users;
+    private UserListResponse(final Builder builder) {
+        this.users = builder.users;
     }
 
-    public UserListResponse(final List<User> users) {
-        this.users = new User[users.size()];
-        this.users = users.toArray(this.users);
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public UserListResponse(final Set<User> users) {
-        this.users = new User[users.size()];
-        this.users = users.toArray(this.users);
+    @SuppressWarnings("hiddenfield")
+    public static final class Builder {
+        private User[] users;
+
+        public Builder withUsers(final User[] users) {
+            this.users = users;
+            return this;
+        }
+
+        public Builder withUsers(final List<User> users) {
+            this.users = new User[users.size()];
+            this.users = users.toArray(this.users);
+            return this;
+        }
+
+        public Builder withUsers(final Set<User> users) {
+            this.users = new User[users.size()];
+            this.users = users.toArray(this.users);
+            return this;
+        }
+
+        public UserListResponse build() {
+            return new UserListResponse(this);
+        }
+
     }
 
 }
