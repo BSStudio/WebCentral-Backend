@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 final class StatusTest {
+
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory()
         .getValidator();
 
@@ -59,7 +60,7 @@ final class StatusTest {
             .build();
 
         // WHEN
-        Set<ConstraintViolation<Status>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<Status>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "name");

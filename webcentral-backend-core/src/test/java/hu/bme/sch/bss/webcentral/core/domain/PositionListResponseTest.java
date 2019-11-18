@@ -52,4 +52,5 @@ final class PositionListResponseTest {
         //THEN
         assertEquals(positionList, underTest.getPositions());
     }
+
 }

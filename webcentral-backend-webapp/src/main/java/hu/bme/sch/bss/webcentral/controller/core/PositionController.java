@@ -3,6 +3,7 @@ package hu.bme.sch.bss.webcentral.controller.core;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import hu.bme.sch.bss.webcentral.core.domain.PositionListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.PositionRequest;
@@ -10,7 +11,7 @@ import hu.bme.sch.bss.webcentral.core.domain.PositionResponse;
 import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.service.PositionService;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/position", produces = "application/json")
+@RequestMapping(value = "/api/position", produces = APPLICATION_JSON_VALUE)
 public final class PositionController {
 
     private static final String REQUEST_POSITION_CREATE = "Request for position creation received. {}";
@@ -80,7 +81,7 @@ public final class PositionController {
     @ResponseStatus(FOUND)
     public PositionListResponse listAllPositions() {
         logger.info(REQUEST_POSITION_LIST);
-        final ArrayList<Position> positions = new ArrayList<>(positionService.findAll());
+        final List<Position> positions = positionService.findAll();
         return PositionListResponse.builder()
             .withPositions(positions)
             .build();

@@ -9,8 +9,8 @@ import java.util.Set;
 
 import lombok.Getter;
 
-@JsonSerialize
 @Getter
+@JsonSerialize
 public final class UserListResponse {
 
     private final User[] users;
@@ -49,4 +49,5 @@ public final class UserListResponse {
         }
 
     }
+
 }

@@ -1,6 +1,8 @@
 package hu.bme.sch.bss.webcentral.core.model;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
+import static lombok.AccessLevel.NONE;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -12,7 +14,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,11 +21,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "position")
@@ -35,7 +36,7 @@ import lombok.Setter;
 @Data() public final class Position extends DomainAuditModel {
 
     @Id
-    @Setter(AccessLevel.NONE)
+    @Setter(NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -44,8 +45,10 @@ import lombok.Setter;
     private String name;
 
     @JsonIgnore
-    @Setter(AccessLevel.NONE)
-    @OneToMany(targetEntity = User.class, cascade = ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "position")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Setter(NONE)
+    @OneToMany(targetEntity = User.class, cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "position")
     private Set<User> users;
 
     private Position(final Builder builder) {
@@ -69,5 +72,7 @@ import lombok.Setter;
         public Position build() {
             return new Position(this);
         }
+
     }
+
 }

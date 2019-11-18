@@ -14,7 +14,7 @@ final class StatusResponseTest {
     @Test
     void testConstructorAndGetters() {
         // GIVEN
-        Status position = Status.builder()
+        final Status position = Status.builder()
             .withName(NAME)
             .build();
 
@@ -25,4 +25,5 @@ final class StatusResponseTest {
         assertEquals(position.getId(), underTest.getId());
         assertEquals(position.getName(), underTest.getName());
     }
+
 }

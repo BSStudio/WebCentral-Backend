@@ -3,6 +3,7 @@ package hu.bme.sch.bss.webcentral.controller.core;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import hu.bme.sch.bss.webcentral.core.domain.StatusListResponse;
 import hu.bme.sch.bss.webcentral.core.domain.StatusRequest;
@@ -10,13 +11,12 @@ import hu.bme.sch.bss.webcentral.core.domain.StatusResponse;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import hu.bme.sch.bss.webcentral.core.service.StatusService;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/status", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/status", produces = APPLICATION_JSON_VALUE)
 public final class StatusController {
 
     private static final String REQUEST_STATUS_CREATE = "Request for status creation received. {}";
@@ -82,7 +82,7 @@ public final class StatusController {
     @ResponseStatus(FOUND)
     public StatusListResponse listAllStatuses() {
         logger.info(REQUEST_STATUS_LIST);
-        final ArrayList<Status> statuses = new ArrayList<>(statusService.findAll());
+        final List<Status> statuses = statusService.findAll();
         return StatusListResponse.builder()
             .withStatuses(statuses)
             .build();

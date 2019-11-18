@@ -51,4 +51,5 @@ final class StatusListResponseTest {
         //THEN
         assertArrayEquals(statusList, underTest.getStatuses());
     }
+
 }

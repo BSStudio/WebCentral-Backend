@@ -1,12 +1,10 @@
 package hu.bme.sch.bss.webcentral;
 
-import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public final class WcTestUtil {
 
@@ -14,11 +12,15 @@ public final class WcTestUtil {
         throw new UnsupportedOperationException();
     }
 
-    public static <T> void thenValidationFails(Set<ConstraintViolation<T>> violations,
-                                     String expectedMessage, String expectedProperty) {
+    public static <T> void thenValidationFails(final Set<ConstraintViolation<T>> violations,
+                                               final String expectedMessage, final String expectedProperty) {
         assertThat(violations.size(), is(1));
-        ConstraintViolation<T> violation = violations.stream().findFirst().get();
-        assertThat(violation.getMessage(), is(expectedMessage));
-        assertThat(violation.getPropertyPath().toString(), is(expectedProperty));
+        violations.stream()
+                .findFirst()
+                .ifPresent(constraintViolation -> {
+                    assertThat(constraintViolation.getMessage(), is(expectedMessage));
+                    assertThat(constraintViolation.getPropertyPath().toString(), is(expectedProperty));
+                });
     }
+
 }

@@ -6,10 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -68,15 +66,16 @@ import lombok.Setter;
     @Column(name = "image_uri", nullable = false, unique = true)
     private String imageUri;
 
-    //TODO read more about it
-    @JoinColumn
-    @ManyToOne(targetEntity = Status.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @NotNull
+    @ManyToOne
     @JsonIgnore
+    @JoinColumn
     private Status status;
 
     @NotNull
-    @JoinColumn
     @ManyToOne
+    @JsonIgnore
+    @JoinColumn
     private Position position;
 
     private User(final Builder builder) {

@@ -40,4 +40,5 @@ public abstract class DomainAuditModel implements Serializable {
     public final Date getUpdatedAt() {
         return updatedAt;
     }
+
 }

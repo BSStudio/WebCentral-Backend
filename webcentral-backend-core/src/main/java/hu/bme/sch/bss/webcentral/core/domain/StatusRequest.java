@@ -36,5 +36,7 @@ public final class StatusRequest {
         public StatusRequest build() {
             return new StatusRequest(this);
         }
+
     }
+
 }

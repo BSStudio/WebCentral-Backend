@@ -24,6 +24,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @JsonSerialize
 @JsonDeserialize(builder = Status.Builder.class)
@@ -42,8 +43,9 @@ import lombok.Setter;
     @Column(nullable = false, unique = true)
     private String name;
 
-    //TODO read more about it
     @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)
     @OneToMany(targetEntity = User.class, cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "status")
     private Set<User> users;
@@ -68,5 +70,7 @@ import lombok.Setter;
         public Status build() {
             return new Status(this);
         }
+
     }
+
 }

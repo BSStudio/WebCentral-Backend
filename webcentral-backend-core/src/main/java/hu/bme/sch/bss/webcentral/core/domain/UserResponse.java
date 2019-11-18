@@ -27,7 +27,6 @@ public final class UserResponse {
     private final Status status;
     private final Position position;
 
-
     public UserResponse(final User user) {
         this.id = user.getId();
         this.archived = user.getArchived();
@@ -40,4 +39,5 @@ public final class UserResponse {
         this.status = user.getStatus();
         this.position = user.getPosition();
     }
+
 }

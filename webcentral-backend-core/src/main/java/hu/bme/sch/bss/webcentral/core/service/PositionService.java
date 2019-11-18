@@ -10,10 +10,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-
-@Component
+@Service
 public final class PositionService {
 
     private static final String POSITION_CREATE_STARTED = "Position creation started. {}";
@@ -98,4 +97,5 @@ public final class PositionService {
         logger.info(USER_SEARCH_BY_POSITION_ID_SUCCEED, id);
         return position.getUsers();
     }
+
 }

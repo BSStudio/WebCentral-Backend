@@ -40,5 +40,7 @@ public final class StatusListResponse {
         public StatusListResponse build() {
             return new StatusListResponse(this);
         }
+
     }
+
 }

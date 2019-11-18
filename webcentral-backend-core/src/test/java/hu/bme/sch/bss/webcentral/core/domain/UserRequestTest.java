@@ -1,6 +1,5 @@
 package hu.bme.sch.bss.webcentral.core.domain;
 
-
 import hu.bme.sch.bss.webcentral.core.model.Position;
 import hu.bme.sch.bss.webcentral.core.model.Status;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,7 +98,7 @@ final class UserRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "nickname");
@@ -113,7 +112,7 @@ final class UserRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "givenName");
@@ -127,7 +126,7 @@ final class UserRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "familyName");
@@ -141,7 +140,7 @@ final class UserRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "email");
@@ -155,7 +154,7 @@ final class UserRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be blank", "description");
@@ -169,7 +168,7 @@ final class UserRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be null", "status");
@@ -183,9 +182,10 @@ final class UserRequestTest {
                 .build();
 
         // WHEN
-        Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
+        final Set<ConstraintViolation<UserRequest>> violations = VALIDATOR.validate(underTest);
 
         // THEN
         thenValidationFails(violations, "must not be null", "position");
     }
+
 }

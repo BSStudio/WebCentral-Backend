@@ -6,17 +6,16 @@ import hu.bme.sch.bss.webcentral.core.model.Position;
 
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 @JsonSerialize
 public final class PositionListResponse {
 
-    private final Position[] position;
-
-    public Position[] getPositions() {
-        return position;
-    }
+    private final Position[] positions;
 
     private PositionListResponse(final Builder builder) {
-        this.position = builder.position;
+        this.positions = builder.position;
     }
 
     public static Builder builder() {
@@ -41,5 +40,7 @@ public final class PositionListResponse {
         public PositionListResponse build() {
             return new PositionListResponse(this);
         }
+
     }
+
 }
