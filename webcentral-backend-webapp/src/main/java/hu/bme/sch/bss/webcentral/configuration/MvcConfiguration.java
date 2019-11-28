@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
 
 @Configuration
 @EnableWebSecurity
@@ -16,11 +19,11 @@ public class MvcConfiguration extends WebSecurityConfigurerAdapter {
     private static final Integer B_CRYPT_STRENGTH = 31;
 
     //@Value("hu.bme.sch.bss.webcentral.userDnPatterns")
-    private String userDnPatterns = "OU=Users,OU=Budavári Schönherz Stúdió,OU=Simonyi Károly Szakkollégium,DC=sch,DC=bme,DC=hu";
+    private String userDnPatterns;
     //@Value("hu.bme.sch.bss.webcentral.userSearchBase")
-    private String userSearchBase = "CN=bss admin,OU=Users,OU=Budavári Schönherz Stúdió,OU=Simonyi Károly Szakkollégium,DC=sch,DC=bme,DC=hu";
+    private String userSearchBase;
     //7@Value("hu.bme.sch.bss.webcentral.ldap_url")
-    private String ldap_url = "ldaps://dc.sch.bme.hu";
+    private String ldap_url;
 
 
     @Override
@@ -51,13 +54,14 @@ public class MvcConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordCompare()
                 .passwordEncoder(new BCryptPasswordEncoder(B_CRYPT_STRENGTH))
                 .passwordAttribute(PASSWORD_ATTRIBUTE);
+    }
 
-        /* example code
-        auth.ldapAuthentication()
-                .authoritiesMapper(authorities -> {
-                    return authorities;
-                })
-                .contextSource()
+        private void example(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.ldapAuthentication()
+                    .authoritiesMapper(authorities -> {
+                        return authorities;
+                    })
+                    .contextSource()
                     .url("")
                     .managerDn("")
                     .managerPassword("")
@@ -77,7 +81,7 @@ public class MvcConfiguration extends WebSecurityConfigurerAdapter {
                 .userDnPatterns()
                 .userSearchBase("")
                 .userSearchFilter("")
-                .withObjectPostProcessor(null);*/
+                .withObjectPostProcessor(null);
     }
 
 }
