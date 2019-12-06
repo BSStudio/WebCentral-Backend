@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,6 +85,7 @@ public class VideoController {
         return new VideoResponse(video);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     @ResponseStatus(FOUND)
     public final VideoResponse getVideo(@PathVariable("id") final Long id) {
