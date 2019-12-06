@@ -1,5 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DEV" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="11" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="hu.bme.sch.bss.webcentral.Application" />
     <module name="webcentral-backend-webapp" />
     <option name="VM_PARAMETERS" value="-Dspring.profiles.active=dev" />

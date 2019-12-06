@@ -3,6 +3,7 @@ package hu.bme.sch.bss.webcentral.videoportal.domain;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
@@ -27,6 +28,8 @@ public class VideoRequest {
     @NotBlank
     private final String videoType;
 
+    private final List<String> videoTags;
+
     @NotNull
     private final Boolean visible;
 
@@ -42,6 +45,7 @@ public class VideoRequest {
         this.projectName = builder.projectName;
         this.description = builder.description;
         this.videoType = builder.videoType;
+        this.videoTags = builder.videoTags;
         this.visible = builder.visible;
         this.videoLocation = builder.videoLocation;
         this.imageLocation = builder.imageLocation;
@@ -65,6 +69,10 @@ public class VideoRequest {
 
     public String getVideoType() {
         return videoType;
+    }
+
+    public List<String> getVideoTags() {
+        return videoTags;
     }
 
     public Boolean getVisible() {
@@ -132,6 +140,7 @@ public class VideoRequest {
         private String projectName;
         private String description;
         private String videoType;
+        private List<String> videoTags;
         private Boolean visible;
         private String videoLocation;
         private String imageLocation;
@@ -159,6 +168,11 @@ public class VideoRequest {
 
         public Builder withVideoType(final String videoType) {
             this.videoType = videoType;
+            return this;
+        }
+
+        public Builder withVideoTags(final List<String> videoTags) {
+            this.videoTags = videoTags;
             return this;
         }
 

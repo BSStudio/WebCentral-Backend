@@ -3,8 +3,11 @@ package hu.bme.sch.bss.webcentral.videoportal.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.core.DomainAuditModel;
+import org.hibernate.annotations.Type;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +15,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -33,6 +39,12 @@ public final class Video extends DomainAuditModel {
     @JoinColumn
     private VideoType videoType;
 
+    @ManyToMany
+    @JoinTable(name = "video2tags",
+            joinColumns = @JoinColumn(name = "video_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
+    private Set<VideoTag> videoTags;
+
     @NotBlank
     @Column(name = "long_name", nullable = false)
     private String longName;
@@ -46,7 +58,7 @@ public final class Video extends DomainAuditModel {
     private String projectName;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @NotNull
@@ -67,6 +79,7 @@ public final class Video extends DomainAuditModel {
 
     public Video() {
         // No-arg constructor for hibernate
+        videoTags = new HashSet<>();
     }
 
     private Video(final Builder builder) {
@@ -78,6 +91,7 @@ public final class Video extends DomainAuditModel {
         this.videoLocation = builder.videoLocation;
         this.imageLocation = builder.imageLocation;
         this.videoType = builder.videoType;
+        this.videoTags = builder.videoTags;
         this.archived = false;
     }
 
@@ -137,6 +151,10 @@ public final class Video extends DomainAuditModel {
         return videoType;
     }
 
+    public Set<VideoTag> getVideoTags() {
+        return videoTags;
+    }
+
     public String getVideoLocation() {
         return videoLocation;
     }
@@ -153,6 +171,9 @@ public final class Video extends DomainAuditModel {
         this.imageLocation = imageLocation;
     }
 
+    public void addVideoTag(final VideoTag videoTag){
+        videoTags.add(videoTag);
+    }
 
     public static Builder builder() {
         return new Builder();
@@ -213,6 +234,7 @@ public final class Video extends DomainAuditModel {
         private String description;
         private Boolean visible;
         private VideoType videoType;
+        private Set<VideoTag> videoTags;
         private String videoLocation;
         private String imageLocation;
 
@@ -244,6 +266,11 @@ public final class Video extends DomainAuditModel {
 
         public Builder withVideoType(final VideoType videoType) {
             this.videoType = videoType;
+            return this;
+        }
+
+        public Builder withVideoTags(final Set<VideoTag> videoTags) {
+            this.videoTags = videoTags;
             return this;
         }
 

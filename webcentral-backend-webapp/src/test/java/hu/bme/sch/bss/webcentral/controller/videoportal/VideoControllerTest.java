@@ -54,7 +54,7 @@ class VideoControllerTest {
     @BeforeEach
     void init() {
         initMocks(this);
-        underTest = new VideoController(mockVideoService, mockVideoTypeService, mockLogger);
+        underTest = new VideoController(mockVideoService, mockVideoTypeService, null, mockLogger);
         video = Video.builder()
             .withLongName(LONG_NAME)
             .withCanonicalName(CANONICAL_NAME)
@@ -83,7 +83,7 @@ class VideoControllerTest {
             .withVideoType(VIDEO_TYPE_CANONICAL_NAME)
             .build();
 
-        given(mockVideoService.create(request, mockVideoType)).willReturn(video);
+        given(mockVideoService.create(request, mockVideoType, null)).willReturn(video);
 
         // WHEN
         VideoResponse response = underTest.createVideo(request);

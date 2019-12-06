@@ -15,14 +15,12 @@ import javax.validation.constraints.NotBlank;
 @JsonDeserialize(builder = VideoTypeRequest.Builder.class)
 @JsonRootName("videoType")
 public class VideoTypeRequest {
-
     @NotBlank
     private final String longName;
 
     @NotBlank
     private final String canonicalName;
 
-    @NotBlank
     private final String description;
 
     private VideoTypeRequest(final Builder builder) {
@@ -81,7 +79,6 @@ public class VideoTypeRequest {
 
     @SuppressWarnings("hiddenfield")
     public static final class Builder {
-
         private String longName;
         private String canonicalName;
         private String description;

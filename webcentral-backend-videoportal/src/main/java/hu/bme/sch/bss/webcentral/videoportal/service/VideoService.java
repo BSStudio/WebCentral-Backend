@@ -3,11 +3,14 @@ package hu.bme.sch.bss.webcentral.videoportal.service;
 import hu.bme.sch.bss.webcentral.videoportal.dao.VideoDao;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoTag;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -39,15 +42,19 @@ public class VideoService {
     private static final String VIDEOS_ALL_SEARCH_STARTED = "Search for all videos started.";
     private static final String VIDEOS_ALL_SEARCH_SUCCEED = "Search for all videos succeed. Found {}";
 
+    private final VideoTypeService videoTypeService;
+    private final VideoTagService videoTagService;
     private final VideoDao videoDao;
     private final Logger logger;
 
-    VideoService(final VideoDao videoDao, final Logger logger) {
+    public VideoService(VideoTypeService videoTypeService, VideoTagService videoTagService, VideoDao videoDao, Logger logger) {
+        this.videoTypeService = videoTypeService;
+        this.videoTagService = videoTagService;
         this.videoDao = videoDao;
         this.logger = logger;
     }
 
-    public Video create(final VideoRequest request, final VideoType videoType) {
+    public Video create(final VideoRequest request, final VideoType videoType, final Set<VideoTag> videoTags) {
         logger.info(VIDEO_CREATE_STARTED, request);
         Video video = Video.builder()
             .withLongName(request.getLongName())
@@ -56,6 +63,7 @@ public class VideoService {
             .withDescription(request.getDescription())
             .withVisible(request.getVisible())
             .withVideoType(videoType)
+            .withVideoTags(videoTags)
             .withVideoLocation(request.getVideoLocation())
             .withImageLocation(request.getImageLocation())
             .build();
@@ -111,6 +119,16 @@ public class VideoService {
         logger.info(VIDEO_DELETE_SUCCEED, video);
     }
 
+    public void addTag(final Video video, final VideoTag videoTag){
+        video.getVideoTags().add(videoTag);
+        videoDao.save(video);
+    }
+
+    public void removeTag(final Video video, final VideoTag videoTag){
+        video.getVideoTags().remove(videoTag);
+        videoDao.save(video);
+    }
+
     public Video findById(final Long id) {
         logger.info(VIDEO_SEARCH_STARTED, id);
         Optional<Video> video = videoDao.findById(id);
@@ -129,6 +147,26 @@ public class VideoService {
         return videoList;
     }
 
+    public List<Video> finByType(String type) {
+        VideoType videoType = videoTypeService.findByCanonicalName(type);
+        List<Video> videoList = new ArrayList<>();
+        videoDao.findAll().forEach((video) -> {
+            if (video.getVideoType().equals(videoType))
+                videoList.add(video);
+        });
+        return videoList;
+    }
+
+    public List<Video> findByTag(String tag) {
+        VideoTag videoTag = videoTagService.findByCanonicalName(tag);
+        List<Video> videoList = new ArrayList<>();
+        videoDao.findAll().forEach((video) -> {
+            if (video.getVideoTags().contains(videoTag))
+                videoList.add(video);
+        });
+        return videoList;
+    }
+
     public List<Video> findPublished() {
         logger.info(VIDEOS_PUBLIC_SEARCH_STARTED);
         List<Video> publicVideoList = videoDao.findAllPublished();
@@ -142,4 +180,5 @@ public class VideoService {
         logger.info(VIDEOS_ARCHIVED_SEARCH_SUCCEED, archivedList);
         return archivedList;
     }
+
 }

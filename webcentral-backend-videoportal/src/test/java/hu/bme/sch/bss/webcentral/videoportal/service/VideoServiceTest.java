@@ -60,7 +60,7 @@ class VideoServiceTest {
     @BeforeEach
     void init() {
         initMocks(this);
-        underTest = new VideoService(mockVideoDao, mockLogger);
+        underTest = new VideoService(null, null, mockVideoDao, mockLogger);
 
         given(mockVideoRequest.getLongName()).willReturn(LONG_NAME);
         given(mockVideoRequest.getCanonicalName()).willReturn(CANONICAL_NAME);
@@ -87,7 +87,7 @@ class VideoServiceTest {
         // GIVEN
 
         // WHEN
-        Video result = underTest.create(mockVideoRequest, mockVideoType);
+        Video result = underTest.create(mockVideoRequest, mockVideoType, null);
 
         // THEN
         then(mockVideoDao).should().save(video);

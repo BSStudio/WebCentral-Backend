@@ -8,11 +8,16 @@ import hu.bme.sch.bss.webcentral.videoportal.domain.VideoListResponse;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoResponse;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoTag;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 import hu.bme.sch.bss.webcentral.videoportal.service.VideoService;
+import hu.bme.sch.bss.webcentral.videoportal.service.VideoTagService;
 import hu.bme.sch.bss.webcentral.videoportal.service.VideoTypeService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -48,11 +53,13 @@ public class VideoController {
 
     private final VideoService videoService;
     private final VideoTypeService videoTypeService;
+    private final VideoTagService videoTagService;
     private final Logger logger;
 
-    VideoController(final VideoService videoService, final VideoTypeService videoTypeService, final Logger logger) {
+    public VideoController(VideoService videoService, VideoTypeService videoTypeService, VideoTagService videoTagService, Logger logger) {
         this.videoService = videoService;
         this.videoTypeService = videoTypeService;
+        this.videoTagService = videoTagService;
         this.logger = logger;
     }
 
@@ -61,7 +68,10 @@ public class VideoController {
     public final VideoResponse createVideo(@Valid @RequestBody final VideoRequest request) {
         logger.info(REQUEST_VIDEO_CREATE, request);
         final VideoType videoType = videoTypeService.findByCanonicalName(request.getVideoType());
-        final Video result = videoService.create(request, videoType);
+        final Set<VideoTag> videoTags = new HashSet<>();
+        if(request.getVideoTags() != null)
+            request.getVideoTags().forEach((videoTag) -> videoTags.add(videoTagService.findByCanonicalName(videoTag)));
+        final Video result = videoService.create(request, videoType, videoTags);
         return new VideoResponse(result);
     }
 
@@ -113,12 +123,28 @@ public class VideoController {
         videoService.restore(video);
     }
 
+    @PutMapping("/{id}/tag/{tagName}")
+    @ResponseStatus(OK)
+    public final void addTag(@PathVariable("id") final Long id, @PathVariable("tagName") final String tagName) {
+        final Video video = videoService.findById(id);
+        final VideoTag videoTag = videoTagService.findByCanonicalName(tagName);
+        videoService.addTag(video, videoTag);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
     public final void deleteVideo(@PathVariable("id") final Long id) {
         logger.info(REQUEST_VIDEO_DELETE, id);
         final Video video = videoService.findById(id);
         videoService.delete(video);
+    }
+
+    @DeleteMapping("/{id}/tag/{tagName}")
+    @ResponseStatus(OK)
+    public final void removeTag(@PathVariable("id") final Long id, @PathVariable("tagName") final String tagName) {
+        final Video video = videoService.findById(id);
+        final VideoTag videoTag = videoTagService.findByCanonicalName(tagName);
+        videoService.removeTag(video, videoTag);
     }
 
     @GetMapping("/published")

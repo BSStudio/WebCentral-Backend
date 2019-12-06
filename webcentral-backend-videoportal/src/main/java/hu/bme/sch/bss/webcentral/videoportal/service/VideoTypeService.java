@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 public class VideoTypeService {
     private static final String VIDEO_TYPE_CREATE_STARTED = "Video type creation started. {}";
     private static final String VIDEO_TYPE_CREATE_SUCCEED = "Video type creation succeed. Created {}";
+    private static final String VIDEO_TYPE_NOT_FOUND_WITH_CANONICAL_NAME = "Video type not found with canonical name {}";
 
     private final VideoTypeDao videoTypeDao;
     private final Logger logger;
@@ -43,7 +44,7 @@ public class VideoTypeService {
     public VideoType findByCanonicalName(final String canonicalName) {
         Optional<VideoType> videoType = videoTypeDao.findByCanonicalName(canonicalName);
         if (videoType.isEmpty()) {
-            logger.warn("Video type not found with canonical name {}", canonicalName);
+            logger.warn(VIDEO_TYPE_NOT_FOUND_WITH_CANONICAL_NAME, canonicalName);
             throw new NoSuchElementException("Video Type Not Found");
         }
         return videoType.get();
