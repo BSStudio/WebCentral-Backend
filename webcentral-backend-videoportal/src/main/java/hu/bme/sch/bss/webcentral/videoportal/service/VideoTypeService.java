@@ -4,6 +4,7 @@ import hu.bme.sch.bss.webcentral.videoportal.dao.VideoTypeDao;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTypeRequest;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class VideoTypeService {
     public VideoTypeService(final VideoTypeDao videoTypeDao, final Logger logger) {
         this.videoTypeDao = videoTypeDao;
         this.logger = logger;
+    }
+
+    public List<VideoType> findAll() {
+        List<VideoType> videoTypes = videoTypeDao.findAll();
+        return videoTypes;
     }
 
     public VideoType create(final VideoTypeRequest request) {

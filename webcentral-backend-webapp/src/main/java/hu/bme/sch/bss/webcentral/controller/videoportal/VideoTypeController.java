@@ -1,8 +1,6 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.FOUND;
-
+import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTypeListResponse;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTypeRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTypeResponse;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * @author Péter Veress
@@ -35,6 +35,14 @@ public class VideoTypeController {
     VideoTypeController(final VideoTypeService videoTypeService, final Logger logger) {
         this.videoTypeService = videoTypeService;
         this.logger = logger;
+    }
+
+    @GetMapping("")
+    @ResponseStatus(OK)
+    public final VideoTypeListResponse getAllVideoType() {
+        return VideoTypeListResponse.builder()
+                .withVideoTypes(videoTypeService.findAll())
+                .build();
     }
 
     @PostMapping()

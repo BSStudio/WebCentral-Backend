@@ -147,7 +147,7 @@ public class VideoService {
         return videoList;
     }
 
-    public List<Video> finByType(String type) {
+    public List<Video> findByType(String type) {
         VideoType videoType = videoTypeService.findByCanonicalName(type);
         List<Video> videoList = new ArrayList<>();
         videoDao.findAll().forEach((video) -> {
@@ -165,6 +165,13 @@ public class VideoService {
                 videoList.add(video);
         });
         return videoList;
+    }
+
+    public List<Video> findRelated(final Video video){
+        var videos = videoDao.findAll();
+        if (videos.size() > 10)
+            return videos.subList(0, 10);
+        return  videos;
     }
 
     public List<Video> findPublished() {

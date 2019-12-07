@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface VideoDao extends JpaRepository<Video, Long> {
 
-    String LIST_PUBLISHED_NOT_ARCHIVED_QUERY =
-            "SELECT vid FROM Video vid WHERE vid.visible=true and vid.archived=false";
+    String LIST_PUBLISHED_NOT_ARCHIVED_QUERY = "SELECT vid FROM Video vid WHERE vid.visible=true and vid.archived=false";
     String LIST_NOT_ARCHIVED_QUERY = "SELECT vid FROM Video vid WHERE vid.archived=false";
     String LIST_ARCHIVED_QUERY = "SELECT vid FROM Video vid WHERE vid.archived=true";
 

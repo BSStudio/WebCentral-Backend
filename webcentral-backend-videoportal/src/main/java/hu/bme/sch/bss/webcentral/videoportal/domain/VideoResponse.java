@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
+import hu.bme.sch.bss.webcentral.videoportal.model.VideoTag;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @JsonSerialize
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
@@ -17,6 +21,7 @@ public final class VideoResponse {
     private final String projectName;
     private final String description;
     private final String videoType;
+    private final Set<VideoTag> videoTags;
     private final Boolean visible;
     private final Boolean archived;
     private final String videoLocation;
@@ -29,6 +34,7 @@ public final class VideoResponse {
         this.projectName = video.getProjectName();
         this.description = video.getDescription();
         this.videoType = video.getVideoType().getCanonicalName();
+        videoTags = video.getVideoTags();
         this.visible = video.getVisible();
         this.archived = video.getArchived();
         this.videoLocation = video.getVideoLocation();
@@ -57,6 +63,10 @@ public final class VideoResponse {
 
     public String getVideoType() {
         return videoType;
+    }
+
+    public Set<VideoTag> getVideoTags() {
+        return videoTags;
     }
 
     public Boolean getVisible() {

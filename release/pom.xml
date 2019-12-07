@@ -34,7 +34,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>hu.bme.sch.bss.Application</mainClass>
+                    <mainClass>hu.bme.sch.bss.webcentral.Application</mainClass>
                     <additionalProperties>
                         <label>${project.version}</label>
                         <releaseDate>${timestamp}</releaseDate>
@@ -77,27 +77,48 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.2.0</version>
+                <configuration>
+                    <skipDockerBuild>${skipDocker}</skipDockerBuild>
+                    <imageName>webcentral-backend</imageName>
+                    <dockerDirectory>${project.parent.basedir}/build/docker</dockerDirectory>
+                    <serverId>docker-hub</serverId>
+                    <registryUrl>https://hub.docker.com/</registryUrl>
+                    <forceTags>true</forceTags>
+                    <imageTags>
+                        <imageTag>${releaseVersion}.${build.number}</imageTag>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <buildArgs>
+                        <DIRPATH>${project.parent.basedir}</DIRPATH>
+                    </buildArgs>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>build-docker-image</id>
+                        <id>build-image</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
+                    </execution>
+                    <execution>
+                        <id>tag-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
                         <configuration>
-                            <skipDockerBuild>${skipDocker}</skipDockerBuild>
-                            <serverId>${docker.server.id}</serverId>
-                            <registryUrl>${docker.repository}</registryUrl>
-                            <imageName>${docker.repository}/repository/docker/${docker.organisation}/${docker.image.name}</imageName>
-                            <dockerDirectory>${project.parent.basedir}/build/docker</dockerDirectory>
-                            <forceTags>true</forceTags>
-                            <imageTags>
-                                <imageTag>${releaseVersion}.${build.number}</imageTag>
-                                <imageTag>latest</imageTag>
-                            </imageTags>
-                            <buildArgs>
-                                <DIRPATH>/bss/share/webcentral</DIRPATH>
-                            </buildArgs>
+                            <image>webcentral-backend</image>
+                            <newName>veresspeter/webcentral-backend:${project.version}</newName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>push-image</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <imageName>veresspeter/webcentral-backend:${project.version}</imageName>
                         </configuration>
                     </execution>
                 </executions>

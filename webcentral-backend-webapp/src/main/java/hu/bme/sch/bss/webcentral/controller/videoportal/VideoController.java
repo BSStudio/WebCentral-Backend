@@ -14,23 +14,11 @@ import hu.bme.sch.bss.webcentral.videoportal.service.VideoService;
 import hu.bme.sch.bss.webcentral.videoportal.service.VideoTagService;
 import hu.bme.sch.bss.webcentral.videoportal.service.VideoTypeService;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Péter Veress
@@ -87,7 +75,7 @@ public class VideoController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
-    @ResponseStatus(FOUND)
+    @ResponseStatus(OK)
     public final VideoResponse getVideo(@PathVariable("id") final Long id) {
         logger.info(REQUEST_VIDEO_SEARCH, id);
         return new VideoResponse(videoService.findById(id));
@@ -133,6 +121,15 @@ public class VideoController {
         videoService.addTag(video, videoTag);
     }
 
+    @GetMapping("/{id}/related")
+    @ResponseStatus(OK)
+    public final VideoListResponse addTag(@PathVariable("id") final Long id) {
+        Video video = videoService.findById(id);
+        return VideoListResponse.builder()
+                .withVideos(videoService.findRelated(video))
+                .build();
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
     public final void deleteVideo(@PathVariable("id") final Long id) {
@@ -160,10 +157,18 @@ public class VideoController {
 
     @GetMapping("/all")
     @ResponseStatus(OK)
-    public final VideoListResponse listAllVideos() {
+    public final VideoListResponse listAllVideos(@RequestParam HashMap<String, String> searchParams) {
         logger.info(REQUEST_VIDEOS_LIST_ALL);
+        List<Video> result;
+
+        if(searchParams.size() == 0){
+            result = videoService.findAll();
+        } else {
+            result = videoService.findByType(searchParams.get("type"));
+        }
+
         return VideoListResponse.builder()
-            .withVideos(new ArrayList<>(videoService.findAll()))
+            .withVideos(new ArrayList<>(result))
             .build();
     }
 

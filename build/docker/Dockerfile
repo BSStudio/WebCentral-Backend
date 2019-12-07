@@ -1,3 +1,5 @@
-FROM alpine:3.9
+FROM openjdk:11.0.5-jre-stretch
 
-CMD ["/bin/sh"]
+COPY application.jar .
+
+ENTRYPOINT java -jar application.jar

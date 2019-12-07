@@ -6,6 +6,7 @@ import hu.bme.sch.bss.webcentral.videoportal.model.VideoTag;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -50,6 +51,10 @@ public class VideoTagService {
             throw new NoSuchElementException(VIDEO_TAG_NOT_FOUND);
         }
         return videoTag.get();
+    }
+
+    public List<VideoTag> findAll() {
+        return videoTagDao.findAll();
     }
 
     public void archive(final VideoTag videoTag){

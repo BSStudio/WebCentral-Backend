@@ -22,8 +22,10 @@
     <module>webcentral-backend-webapp</module>
     <module>webcentral-backend-core</module>
     <module>webcentral-backend-videoportal</module>
+    <!--
     <module>webcentral-backend-broadcastmanager</module>
     <module>webcentral-backend-productionmanager</module>
+    -->
     <module>release</module>
   </modules>
 
@@ -37,11 +39,11 @@
     <application.version>webcentral.${releaseVersion}.${build.number}</application.version>
     <timestamp>${maven.build.timestamp}</timestamp>
     <!-- Skip mvn goal -->
-    <skipCheckstyle>false</skipCheckstyle>
-    <skipJacoco>false</skipJacoco>
-    <skipPit>false</skipPit>
-    <skipPmd>false</skipPmd>
-    <skipDocker>true</skipDocker>
+    <skipCheckstyle>true</skipCheckstyle>
+    <skipJacoco>true</skipJacoco>
+    <skipPit>true</skipPit>
+    <skipPmd>true</skipPmd>
+    <skipDocker>false</skipDocker>
     <!-- Siblings -->
     <webcentral-backend-core.version>0.0.1-SNAPSHOT</webcentral-backend-core.version>
     <webcentral-backend-videoportal.version>0.0.1-SNAPSHOT</webcentral-backend-videoportal.version>

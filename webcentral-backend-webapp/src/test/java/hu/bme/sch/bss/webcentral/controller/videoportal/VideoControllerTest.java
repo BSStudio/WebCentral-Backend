@@ -195,7 +195,7 @@ class VideoControllerTest {
         given(mockVideoService.findAll()).willReturn(videoList);
 
         // WHEN
-        VideoListResponse response = underTest.listAllVideos();
+        VideoListResponse response = underTest.listAllVideos(null);
 
         // THEN
         assertEquals(responseList, Arrays.asList(response.getVideos()));

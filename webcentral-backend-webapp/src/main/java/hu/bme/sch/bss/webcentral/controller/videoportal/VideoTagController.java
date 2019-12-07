@@ -1,5 +1,6 @@
 package hu.bme.sch.bss.webcentral.controller.videoportal;
 
+import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTagListResponse;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTagRequest;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoTagResponse;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoTag;
@@ -16,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping(value = "/api/video/tag", produces = "application/json")
@@ -31,6 +31,14 @@ public class VideoTagController {
     VideoTagController(final VideoTagService videoTagService, final Logger logger) {
         this.videoTagService = videoTagService;
         this.logger = logger;
+    }
+
+    @GetMapping("")
+    @ResponseStatus(OK)
+    public final VideoTagListResponse getAllVideoTag() {
+        return VideoTagListResponse.builder()
+                .withVideoTags(videoTagService.findAll())
+                .build();
     }
 
     @PostMapping()
