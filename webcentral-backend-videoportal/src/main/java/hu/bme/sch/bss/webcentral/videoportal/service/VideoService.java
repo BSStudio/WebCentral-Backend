@@ -1,16 +1,13 @@
 package hu.bme.sch.bss.webcentral.videoportal.service;
 
+import com.google.common.collect.Sets;
 import hu.bme.sch.bss.webcentral.videoportal.dao.VideoDao;
 import hu.bme.sch.bss.webcentral.videoportal.domain.VideoRequest;
 import hu.bme.sch.bss.webcentral.videoportal.model.Video;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoTag;
 import hu.bme.sch.bss.webcentral.videoportal.model.VideoType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -57,16 +54,16 @@ public class VideoService {
     public Video create(final VideoRequest request, final VideoType videoType, final Set<VideoTag> videoTags) {
         logger.info(VIDEO_CREATE_STARTED, request);
         Video video = Video.builder()
-            .withLongName(request.getLongName())
-            .withCanonicalName(request.getCanonicalName())
-            .withProjectName(request.getProjectName())
-            .withDescription(request.getDescription())
-            .withVisible(request.getVisible())
-            .withVideoType(videoType)
-            .withVideoTags(videoTags)
-            .withVideoLocation(request.getVideoLocation())
-            .withImageLocation(request.getImageLocation())
-            .build();
+                .withLongName(request.getLongName())
+                .withCanonicalName(request.getCanonicalName())
+                .withProjectName(request.getProjectName())
+                .withDescription(request.getDescription())
+                .withVisible(request.getVisible())
+                .withVideoType(videoType)
+                .withVideoTags(videoTags)
+                .withVideoLocation(request.getVideoLocation())
+                .withImageLocation(request.getImageLocation())
+                .build();
         videoDao.save(video);
         logger.info(VIDEO_CREATE_SUCCEED, video);
         return video;
@@ -119,12 +116,12 @@ public class VideoService {
         logger.info(VIDEO_DELETE_SUCCEED, video);
     }
 
-    public void addTag(final Video video, final VideoTag videoTag){
+    public void addTag(final Video video, final VideoTag videoTag) {
         video.getVideoTags().add(videoTag);
         videoDao.save(video);
     }
 
-    public void removeTag(final Video video, final VideoTag videoTag){
+    public void removeTag(final Video video, final VideoTag videoTag) {
         video.getVideoTags().remove(videoTag);
         videoDao.save(video);
     }
@@ -167,11 +164,40 @@ public class VideoService {
         return videoList;
     }
 
-    public List<Video> findRelated(final Video video){
+    public List<Video> findRelated(final Video video) {
         var videos = videoDao.findAll();
-        if (videos.size() > 10)
-            return videos.subList(0, 10);
-        return  videos;
+        var relatedVideos = new ArrayList<RelatedVideo>();
+        for (int i = 0; i < videos.size(); i++) {
+            var point = 0;
+            if (video.getVideoType().equals(videos.get(i).getVideoType()))
+                point += 1;
+            if (video.getProjectName().equals(videos.get(i).getProjectName()))
+                point += 3;
+
+            var tags = video.getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
+            for (int j = 0; j < tags.length; j++) {
+                var otherTags = videos.get(i).getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
+                for (int k = 0; k < otherTags.length; k++) {
+                    if(tags[j].getId() == otherTags[k].getId())
+                        point += 1;
+                }
+            }
+            relatedVideos.add(new RelatedVideo(videos.get(i), point));
+        }
+
+
+
+        var results = new ArrayList<Video>();
+        var resultsNumber = 10;
+        Collections.sort(relatedVideos);
+
+        if (videos.size() < 10)
+            resultsNumber = videos.size();
+        for (int i = 0; i < resultsNumber; i++) {
+            results.add(relatedVideos.get(i).video);
+        }
+
+        return results;
     }
 
     public List<Video> findPublished() {
@@ -186,6 +212,21 @@ public class VideoService {
         List<Video> archivedList = videoDao.findAllArchived();
         logger.info(VIDEOS_ARCHIVED_SEARCH_SUCCEED, archivedList);
         return archivedList;
+    }
+
+    private class RelatedVideo implements Comparable<RelatedVideo> {
+        private Video video;
+        private Integer point;
+
+        public RelatedVideo(Video video, Integer point) {
+            this.video = video;
+            this.point = point;
+        }
+
+        @Override
+        public int compareTo(RelatedVideo relatedVideo) {
+            return relatedVideo.point - point;
+        }
     }
 
 }
