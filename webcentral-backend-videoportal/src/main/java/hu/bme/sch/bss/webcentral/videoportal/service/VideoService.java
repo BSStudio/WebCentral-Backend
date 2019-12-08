@@ -168,23 +168,24 @@ public class VideoService {
         var videos = videoDao.findAll();
         var relatedVideos = new ArrayList<RelatedVideo>();
         for (int i = 0; i < videos.size(); i++) {
-            var point = 0;
-            if (video.getVideoType().equals(videos.get(i).getVideoType()))
-                point += 1;
-            if (video.getProjectName().equals(videos.get(i).getProjectName()))
-                point += 3;
+            if (videos.get(i).getId() != video.getId()) {
+                var point = 0;
+                if (video.getVideoType().equals(videos.get(i).getVideoType()))
+                    point += 5;
+                if (video.getProjectName().equals(videos.get(i).getProjectName()))
+                    point += 10;
 
-            var tags = video.getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
-            for (int j = 0; j < tags.length; j++) {
-                var otherTags = videos.get(i).getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
-                for (int k = 0; k < otherTags.length; k++) {
-                    if(tags[j].getId() == otherTags[k].getId())
-                        point += 1;
+                var tags = video.getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
+                for (int j = 0; j < tags.length; j++) {
+                    var otherTags = videos.get(i).getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
+                    for (int k = 0; k < otherTags.length; k++) {
+                        if (tags[j].getId() == otherTags[k].getId())
+                            point += 2;
+                    }
                 }
+                relatedVideos.add(new RelatedVideo(videos.get(i), point));
             }
-            relatedVideos.add(new RelatedVideo(videos.get(i), point));
         }
-
 
 
         var results = new ArrayList<Video>();
