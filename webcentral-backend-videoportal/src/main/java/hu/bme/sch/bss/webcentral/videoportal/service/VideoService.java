@@ -177,7 +177,7 @@ public class VideoService {
 
                 var tags = video.getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
                 for (int j = 0; j < tags.length; j++) {
-                    var otherTags = videos.get(i).getVideoTags().toArray(new VideoTag[video.getVideoTags().size()]);
+                    var otherTags = videos.get(i).getVideoTags().toArray(new VideoTag[videos.get(i).getVideoTags().size()]);
                     for (int k = 0; k < otherTags.length; k++) {
                         if (tags[j].getId() == otherTags[k].getId())
                             point += 2;
